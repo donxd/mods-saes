@@ -1,18 +1,29 @@
-chrome.extension.onRequest.addListener(
-	function(request, sender, callback) {
-		switch(request.command){
+var version = 0.48;
+function log(mensaje){
+	console.log (mensaje);
+}
+chrome.runtime.onInstalled.addListener(function() {
+	log("-> Instalado");
+});
+chrome.extension.onMessage.addListener (
+	function (request, sender, callback) {
+		switch (request.command){
 			case "getVersion":
 				callback({
-					version 	: 0.47
+					version : version
 				});
 				break;
 			case "getDatos":
+				var autoIdentificar = true;
+				if (localStorage.autoIdentificar == undefined){
+					autoIdentificar = false;
+				}
 				callback({
 					command 	: request.command,
 					escuela		: localStorage.escuela,
 					boleta 		: localStorage.boleta,
 					pass 		: localStorage.pass,
-					identificar : localStorage.autoIdentificar=="true"
+					identificar : autoIdentificar
 				});
 				break;
 			case "setDatos":
@@ -66,3 +77,6 @@ chrome.extension.onRequest.addListener(
 		}
 	}
 );
+chrome.runtime.onSuspend.addListener(function() {
+	log("Descansando....");
+});

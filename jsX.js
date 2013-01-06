@@ -596,7 +596,7 @@ function procesaRespuesta() {
 				case "1":
 					var respuestaXML = peticion_http.responseXML;					
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
-					chrome.extension.sendRequest({command : "getVersion"}, function(respuesta){
+					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
 						if(respuesta.version<raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
 							generaAdvertenciaActualizacion();
 						}	
@@ -756,9 +756,9 @@ function recordar(){
 	var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
 	var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
 	if(this.checked!=true){
-		chrome.extension.sendRequest({command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: false}, identificar);
+		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: false}, identificar);
 	} else {
-		chrome.extension.sendRequest({command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
+		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
 	}
 	document.getElementById("cambiosIdentificar").style.display = "";
 }
@@ -966,10 +966,10 @@ function tiempoHorarios1(){
 function detectaPantalla(){
 	switch(location.pathname){
 		case "/":
-			chrome.extension.sendRequest({command : "getDatos"}, identificar);
+			chrome.extension.sendMessage( { command : "getDatos"}, identificar);
 			break;
 		case "/Default.aspx":
-			chrome.extension.sendRequest({command : "getDatos"}, reaccion);
+			chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
 			break;
 		case "/alumnos/default.aspx":
 			var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
@@ -1748,7 +1748,7 @@ function tablaAtajos(){
 	seccionAtajos.setAttribute("style","display:none; position: fixed; background-color: maroon; color: white; top: 10%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; width:290px; margin: 0px 0px 0px -145px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000;");
 	// document.getElementById("mensajeAtajos").parentNode.insertBefore(seccionAtajos,document.getElementById("mensajeAtajos"));
 	document.body.appendChild(seccionAtajos);
-	chrome.extension.sendRequest({command : "getAtajos" }, function(respuesta){
+	chrome.extension.sendMessage( { command : "getAtajos" }, function(respuesta){
 		var seccionAtajos 		= document.getElementById("seccionAtajos");
 		seccionAtajos.innerHTML = "<table style='border-collapse: collapse; width:100%;'></table>";
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>Atajo</td><td style='padding:0px 10px 0px 10px;'>Secci&oacute;n</td></tr>";

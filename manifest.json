@@ -1,19 +1,22 @@
 {
 	"name":"MODS SAES",
-	"permissions": [ "tabs", "*://*.ipn.mx/*", "http://dl.dropbox.com/u/57118204/*"],
-	"version": "0.47",
+	"version": "0.48",
 	"manifest_version": 2,
-	"description": "Modificaciones y correciones. A @1d0nXD, se aceptan sugerencias.",
+	"description": "__MSG_description__",
+    "minimum_chrome_version": "18",
 	"default_locale":"es",
-	"options_page":"opciones.html",
-	"homepage_url": "http://foroupiicsa.net/extension-saes/",
 	"icons": {
+      	"16": "/css/fu_16.png",
+      	"48": "/css/fu_48.png",
       	"128": "/css/fu_128.png"
     },
+	"permissions": [ "tabs", "*://*.ipn.mx/*", "http://dl.dropbox.com/u/57118204/*"],
+	"homepage_url": "http://foroupiicsa.net/extension-saes/",
+	"options_page":"opciones.html",
     "background":{
-    	"scripts": ["segundoPlano.js"]
+    	"scripts": ["segundoPlano.js"],
+    	"persistent": false
     },
-    "minimum_chrome_version": "18",
     "web_accessible_resources": ["css/menos.png"],
 	"content_scripts": [
 		{

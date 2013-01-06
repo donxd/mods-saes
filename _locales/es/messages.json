@@ -6,5 +6,9 @@
 	"instructions":{
 		"description": "steps for update",
 		"message": "http://dl.dropbox.com/u/57118204/update.html"
+	},
+	"description":{
+		"description": "information for extension",
+		"message": "Modificaciones y correciones. A @1d0nXD, se aceptan sugerencias."	
 	}
 }

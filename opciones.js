@@ -6,7 +6,7 @@ function guarda(){
 	var boleta  = document.getElementById("boleta").value;
 	var pass 	= document.getElementById("pass").value;
 	var esc 	= "www.saes."+document.getElementById("esc").value+".ipn.mx";
-	chrome.extension.sendRequest({command : "setDatos", escuela : esc, boleta : boleta, pass: pass, identificar: true}, function(){
+	chrome.extension.sendMessage( { command : "setDatos", escuela : esc, boleta : boleta, pass: pass, identificar: true}, function(){
 		document.getElementById("borrar").setAttribute("style","display:inline;");
 		// segundoPlano.location.reload();
 		document.getElementById("ok").setAttribute("style","display:inline;");
@@ -20,13 +20,13 @@ function limpiar(){
 	// localStorage["boleta"]="";
 	// localStorage["pass"]="";
 	// localStorage["autoIdentificar"]="false";
-	chrome.extension.sendRequest({command : "setDatos", escuela : "", boleta : "", pass: "", identificar: false}, function(){
+	chrome.extension.sendMessage( { command : "setDatos", escuela : "", boleta : "", pass: "", identificar: false}, function(){
 		document.getElementById("borrar").setAttribute("style","display:none;");
 	});
 }
 function cargaDatos(){
-	chrome.extension.sendRequest({command : "getDatos"}, function(respuesta){
-		if(respuesta.identificar!="false"){
+	chrome.extension.sendMessage( { command : "getDatos"}, function(respuesta){
+		if(respuesta.identificar != false){
 			document.getElementById("boleta").value = respuesta.boleta;
 			document.getElementById("pass").value  	= respuesta.pass;
 			document.getElementById("esc").value 	= respuesta.escuela.substring(9,respuesta.escuela.lastIndexOf(".ipn"));
@@ -40,7 +40,7 @@ function cargaDatos(){
 	// 	document.getElementById("borrar").setAttribute("style","display:inline;");
 	// }
 }
-// chrome.extension.sendRequest({command : "getAtajos"}, function(respuesta){
+// chrome.extension.sendMessage({command : "getAtajos"}, function(respuesta){
 // 	var teclaAtajo = 48;
 // 	for(var i=0; i<respuesta.atajos.length; i++){
 // 		if(respuesta.atajos[i].visible){
