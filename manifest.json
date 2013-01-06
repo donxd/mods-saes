@@ -1,0 +1,30 @@
+{
+	"name":"MODS SAES",
+	"permissions": [ "tabs", "*://*.ipn.mx/*", "http://dl.dropbox.com/u/57118204/*"],
+	"version": "0.47",
+	"manifest_version": 2,
+	"description": "Modificaciones y correciones. A @1d0nXD, se aceptan sugerencias.",
+	"default_locale":"es",
+	"options_page":"opciones.html",
+	"homepage_url": "http://foroupiicsa.net/extension-saes/",
+	"icons": {
+      	"128": "/css/fu_128.png"
+    },
+    "background":{
+    	"scripts": ["segundoPlano.js"]
+    },
+    "minimum_chrome_version": "18",
+    "web_accessible_resources": ["css/menos.png"],
+	"content_scripts": [
+		{
+			"matches" : ["*://*.ipn.mx/PDF/Alumnos/Reinscripciones/*"],
+			"js" : ["sec.js"],
+			"run_at" : "document_start"
+		},{
+			"matches" : ["*://*.ipn.mx/*"],
+			"css": ["estilo.css"],
+			"js" : ["jsX.js"],
+			"run_at" : "document_end"
+		}
+	]
+}

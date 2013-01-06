@@ -1,0 +1,10 @@
+{
+	"update":{
+		"description": "url update",
+		"message": "http://dl.dropbox.com/u/57118204/uP.xml"
+	},
+	"instructions":{
+		"description": "steps for update",
+		"message": "http://dl.dropbox.com/u/57118204/update.html"
+	}
+}

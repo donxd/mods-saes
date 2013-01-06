@@ -1,0 +1,111 @@
+<!doctype html> 
+<html>
+	<head>
+		<title>Opciones</title>
+	</head>
+	<style type="text/css">
+		body{
+			background-color: #272822;
+			/*color: #AE81FF;*/
+			color: gold;
+			font-size:28px;
+		}
+		#ok{
+			color: #A6E22E;
+		}
+	</style>
+	<script src="opciones.js"></script>
+	<body>
+		<section>
+			<!-- <details>
+				<summary>Atajos</summary>
+				<table id='atajos'>
+				</table>
+				<br/>
+			</details> -->
+			<details>
+				<summary>Autoidentificaci&oacute;n</summary>
+				<br/>
+				<form id="identificacion">
+					Boleta <input type="text" id="boleta" pattern="\d{10}" size="10" maxlength="10" required><br/>
+					Contrase&ntilde;a <input type="password" id="pass" size="10" required><br/>
+					Escuela <select id = "esc">
+						<option value="cecyt1">cecyt1</option>
+						<option value="cecyt2">cecyt2</option>
+						<option value="cecyt3">cecyt3</option>
+						<option value="cecyt4">cecyt4</option>
+						<option value="cecyt5">cecyt5</option>
+						<option value="cecyt6">cecyt6</option>
+						<option value="cecyt7">cecyt7</option>
+						<option value="cecyt8">cecyt8</option>
+						<option value="cecyt9">cecyt9</option>
+						<option value="cecyt10">cecyt10</option>
+						<option value="cecyt11">cecyt11</option>
+						<option value="cecyt12">cecyt12</option>
+						<option value="cecyt13">cecyt13</option>
+						<option value="cecyt14">cecyt14</option>
+						<option value="cecyt15">cecyt15</option>
+						<option value="cet1">cet1</option>
+						<option value="esimeazc">esimeazc</option>
+						<option value="esimecu">esimecu</option>
+						<option value="esimetic">esimetic</option>
+						<option value="esimez">esimez</option>
+						<option value="esiatec">esiatec</option>
+						<option value="esiatic">esiatic</option>
+						<option value="esiaz">esiaz</option>
+						<option value="cicsma">cicsma</option>
+						<option value="cicsst">cicsst</option>
+						<option value="escasto">escasto</option>
+						<option value="escatep">escatep</option>
+						<option value="encb">encb</option>
+						<option value="enmh">enmh</option>
+						<option value="eseo">eseo</option>
+						<option value="esm">esm</option>
+						<option value="ese">ese</option>
+						<option value="est">est</option>
+						<option value="upibi">upibi</option>
+						<option value="upiicsa">upiicsa</option>
+						<option value="upiita">upiita</option>
+						<option value="escom">escom</option>
+						<option value="esfm">esfm</option>
+						<option value="esiqie">esiqie</option>
+						<option value="esit">esit</option>
+						<option value="upiig">upiig</option>
+					</select><br/>
+					<button type="submit">Guardar</button>
+					<button type="reset" id="borrar" style="display:none;">Borrar</button>					
+					<span id="ok" style="display:none;">ok</span>
+				</form>
+				<br/>
+			</details>
+			<details>
+				<summary>Modificaciones</summary>
+				<ul>
+					<li>Correcci&oacute;n en los men&uacute;s principales</li>
+					<li>Liga hacia el reglamento</li>
+					<li>Correcci&oacute;n en el k&aacute;rdex</li>
+					<li>M&aacute;s accesos r&aacute;pidos</li>
+					<li>Mejor filtrado de resultados en la ocupabilidad y los horarios</li>
+					<li>Se&ntilde;alamiento de materias no disponibles</li>
+					<li>Correci&oacute;nes en el horario y en el comprobante</li>
+					<li>Calificaci&oacute;n de los maestros con un click</li>
+					<li>Atajos</li>
+					<li>Advertencia de actualizaci&oacute;n</li>
+					<li>Autoidentificar</li>
+					<li>Autoactualizado de la ocupabilidad</li>
+					<li>Arma horarios</li>
+				</ul>
+				<br/>
+			</details>
+			<details>
+				<summary>Pr&oacute;ximamente</summary>
+				<ul>
+					<li>Contador de materias para reincripción</li>
+					<li>Importar y exportar materias seleccionadas</li>
+					<li>No s&eacute; necesitamos m&aacute;s ideas</li>
+				</ul>
+				<br/>
+			</details>
+		</section>
+	</body>
+</html>
