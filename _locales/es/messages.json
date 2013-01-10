@@ -1,11 +1,7 @@
 {
 	"update":{
 		"description": "url update",
-		"message": "http://dl.dropbox.com/u/57118204/uP.xml"
-	},
-	"instructions":{
-		"description": "steps for update",
-		"message": "http://dl.dropbox.com/u/57118204/update.html"
+		"message": "https://clients2.google.com/service/update2/crx?x=id%3Dokaihfccgfhcjfineancjmhbooocebhn%26uc"
 	},
 	"description":{
 		"description": "information for extension",

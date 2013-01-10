@@ -1,3 +1,6 @@
+function log(mensaje){
+	console.log (mensaje);
+}
 var indiceTabulador;
 function ajustarDisenio(){
 	document.getElementById("ctl00_subMenu").style.width="auto";
@@ -5,8 +8,8 @@ function ajustarDisenio(){
 	disenio.setAttribute("type","text/css");
 	disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border: none; display:inline-block;width:150px;}";
 	var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
-	for(var i=0;i<elementosMenu.length;i++){
-		if(elementosMenu[i].children.length==2){
+	for (var i=0;i<elementosMenu.length;i++){
+		if (elementosMenu[i].children.length==2){
 			elementosMenu[i].children[1].style.paddingLeft="20px";
 		}
 	}
@@ -24,15 +27,15 @@ function ajustarDisenio(){
 	document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
 	var links = document.getElementsByTagName("a");
 	var tabAsignado;
-	for(var i=0;i<links.length;i++){
-		if(links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
+	for (var i=0;i<links.length;i++){
+		if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
 			//~ Academica/agenda_escolar.aspx
 			//~ Academica/horarios.aspx
 			//~ /Academica/Ocupabilidad_grupos.aspx
 			//~ Academica/calendario_ets.aspx
-			//if(links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+			//if (links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
 
-			// if(links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+			// if (links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
 			// 	links[i].tabIndex=indiceTabulador;
 			// 	links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
 			// 	links[i+1].tabIndex=indiceTabulador+1;
@@ -51,7 +54,7 @@ function ajustarDisenio(){
 				// case "/Alumnos/default.aspx":
 				// case "/Academica/default.aspx":
 				// case "/Ayuda/Ayuda.aspx":
-				// 	if(links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
+				// 	if (links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
 				// 		links[i].tabIndex=indiceTabulador;
 				// 		links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
 				// 		indiceTabulador++;
@@ -70,7 +73,7 @@ function ajustarDisenio(){
 					// tabAsignado=true;
 					break;
 			}
-			// if(!tabAsignado){
+			// if (!tabAsignado){
 			// 	links[i].tabIndex=-1;
 			// }
 		}
@@ -102,20 +105,20 @@ function pedir(){
 }
 function califica(maximo, minimo, recomendar1, recomendar2){
 	var combos = document.getElementsByTagName("select");
-	for(var i=0;(i<combos.length)&&(i<19);i++){
+	for (var i=0;(i<combos.length)&&(i<19);i++){
 		combos[i].value=Math.floor(Math.random() * (maximo-minimo+1)) + minimo;
 	}
 	combos[i].value=Math.floor(Math.random() * (recomendar1-recomendar2+1)) + recomendar2;
 }
 function ajustaPeriodos(){
 	var numeroPeriodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table").length;
-	if(numeroPeriodos>0){
-		for(var i=0;i<numeroPeriodos;i++){
+	if (numeroPeriodos>0){
+		for (var i=0;i<numeroPeriodos;i++){
 			var periodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
 			var periodosAnidados = periodos[i].getElementsByTagName("table");
 			var celda;
-			for(;periodosAnidados.length>0;){
-				if(periodosAnidados[0].parentNode.tagName=="CENTER"&&periodosAnidados[0].parentNode.children.length==2){
+			for (;periodosAnidados.length>0;){
+				if (periodosAnidados[0].parentNode.tagName=="CENTER"&&periodosAnidados[0].parentNode.children.length==2){
 					celda = periodosAnidados[0].parentNode.parentNode;
 					var acomodar = periodosAnidados[0].parentNode.cloneNode(true);
 					periodosAnidados[0].parentNode.parentNode.removeChild(periodosAnidados[0].parentNode);
@@ -133,7 +136,7 @@ function ajustaPeriodos(){
 			while(celda.getElementsByTagName("br").length>0){
 				celda.getElementsByTagName("br")[0].parentNode.removeChild(celda.getElementsByTagName("br")[0]);
 			}
-			if(periodos[i].parentNode.tagName=="CENTER"&&periodos[i].parentNode.children.length<2){
+			if (periodos[i].parentNode.tagName=="CENTER"&&periodos[i].parentNode.children.length<2){
 				var espacio = document.createElement("br");
 				periodos[i].parentNode.appendChild(espacio);
 			}
@@ -142,14 +145,14 @@ function ajustaPeriodos(){
 }
 //##############<-buscador
 function modificaciones(){
-	if(this.value.length<1){
+	if (this.value.length<1){
     	verTodo();
 	}
 }
 var estadoSeleccion = true;
 function seleccion(){
-	if(estadoSeleccion){
-		if(this.firstChild.localName!=null){
+	if (estadoSeleccion){
+		if (this.firstChild.localName!=null){
 			buscador.value=this.firstChild.innerHTML;	
 		}else {
 		  	buscador.value=this.innerHTML;
@@ -161,11 +164,11 @@ function seleccion(){
 function enumerarRegistros(datos,inicio){
   	var visibles = new Array();
 	var numero=inicio;
-	for(var i=inicio;i<=datos.length-1;i++,numero++){
+	for (var i=inicio;i<=datos.length-1;i++,numero++){
 		datos[i].setAttribute("class","visible");
 		datos[i].numero=numero;
 		visibles.push(numero);
-		for(var j=0;j<totalColumnas;j++){
+		for (var j=0;j<totalColumnas;j++){
       		datos[i].cells[j].addEventListener("click",seleccion,false);
 		}
 	}
@@ -174,11 +177,11 @@ function enumerarRegistros(datos,inicio){
 }
 function verOcultar(datos,inicio,opc){
 	var tipo="oculto";
-	if(opc!=0){
+	if (opc!=0){
 		tipo="visible";
 	}	
 	var numeroRegistros=datos.length;
-	for(var i=inicio;i<numeroRegistros;i++){
+	for (var i=inicio;i<numeroRegistros;i++){
 		datos[i].setAttribute("class",tipo);
 	}
 	contar();
@@ -197,17 +200,17 @@ function verTodo(){
 }
 function buscarDentro(palabra, fragmento){
   	var encontrado=false;
-  	if(palabra.length>=fragmento.length){
+  	if (palabra.length>=fragmento.length){
     	var i=palabra.indexOf(fragmento.charAt(0));
     	var limite=palabra.lastIndexOf(fragmento.charAt(fragmento.length-1));
-    	if(i!=-1&&limite!=-1){
-      		if(fragmento.length<2){
+    	if (i!=-1&&limite!=-1){
+      		if (fragmento.length<2){
         		encontrado=true;
           	}else{
             	while(i<limite){
-	              	if((i+fragmento.length-1)<palabra.length){
-	                	if(palabra.charAt(i+fragmento.length-1)==fragmento.charAt(fragmento.length-1)){
-	                  		if(palabra.substring(i,i+fragmento.length)==fragmento){
+	              	if ((i+fragmento.length-1)<palabra.length){
+	                	if (palabra.charAt(i+fragmento.length-1)==fragmento.charAt(fragmento.length-1)){
+	                  		if (palabra.substring(i,i+fragmento.length)==fragmento){
 	                    		encontrado=true;
 	                    		//i=limite;
 	                    		break;
@@ -227,26 +230,26 @@ function buscarTexto(textoBuscado,columna){
 	var ocultos 	= new Array();
 	var visibles 	= new Array();
 	var encontrado;
-	if(columna!=0){
+	if (columna!=0){
 		limite=columna+1;
 		inicio=columna;
    	}
    	var registrosVisibles=document.body.datosVisibles[document.body.datosVisibles.length-1];
 	var registros=document.getElementById("regs").rows;
 	//alert("l "+visibles.length);
-	for(var i=0;i<registrosVisibles.length;i++){
+	for (var i=0;i<registrosVisibles.length;i++){
 		encontrado=false;
-		for(var j=columna;j<limite;j++){
-          	if(buscarDentro(registros[registrosVisibles[i]].cells[j].innerHTML.toUpperCase(),textoBuscado.toUpperCase())){
+		for (var j=columna;j<limite;j++){
+          	if (buscarDentro(registros[registrosVisibles[i]].cells[j].innerHTML.toUpperCase(),textoBuscado.toUpperCase())){
             	//registros[registrosVisibles[i]].cells[j].style.backgroundColor="blue";
             	encontrado=true;
             	j=limite;	
             	visibles.push(registros[registrosVisibles[i]].numero);
           	}
         }
-        if(!encontrado)ocultos.push(registros[registrosVisibles[i]].numero);
+        if (!encontrado)ocultos.push(registros[registrosVisibles[i]].numero);
     }
-    for(var j=0;j<ocultos.length;j++){
+    for (var j=0;j<ocultos.length;j++){
     	registros[ocultos[j]].setAttribute("class","oculto");
     }
     document.body.datosVisibles.push(visibles);
@@ -260,11 +263,11 @@ function buscar(lanzador){
 	switch(codigoTecla){
 		case 8:	/*del*/		case 46: //supr
 			ultimaBusqueda=textoBuscado;
-			if(textoBuscado.length>0){
+			if (textoBuscado.length>0){
 	            var registros = document.getElementById("regs").rows;
 	            document.body.datosVisibles.pop();
 	            var visibles = document.body.datosVisibles[document.body.datosVisibles.length-1];
-	            for(var i=0;i<visibles.length;i++){
+	            for (var i=0;i<visibles.length;i++){
 	             	registros[visibles[i]].setAttribute("class","visible");
 	            }
 	            contar();
@@ -273,7 +276,7 @@ function buscar(lanzador){
 			} else verTodo();
 			break;
 		case 13: //enter
-			if(textoBuscado.length>0){
+			if (textoBuscado.length>0){
 				buscarTexto(textoBuscado, this.columna);
 				//alert("buscarEnter");//buscarTexto
 			}
@@ -296,9 +299,9 @@ function buscar(lanzador){
 		//~ case 93: //menu*
 			//~ break;
 		default:
-			if(ultimaBusqueda!=textoBuscado){
+			if (ultimaBusqueda!=textoBuscado){
 				ultimaBusqueda=textoBuscado;
-				if(textoBuscado.length>0){
+				if (textoBuscado.length>0){
 					buscarTexto(textoBuscado, this.columna);
 				}
 			}
@@ -327,10 +330,6 @@ function inicializaDatos(){
   	contador = document.getElementById("contador");
   	buscador.focus();
 }
-function actualizaOcupabilidad(){
-	valida(2);
-}
-//##############<-buscador
 function agregaBuscador(opc){
 	var controlesBuscador = document.createElement("div");
 	controlesBuscador.innerHTML = '<input type="search" placeholder="Buscar..." id="buscar"/><input type="button" id="ver" value="Ver todo"><span id="contador"></span>';
@@ -353,19 +352,23 @@ function agregaBuscador(opc){
 	inicializar();
 }
 //##############<-buscador
+function actualizaOcupabilidad(){
+	alert("Inhabilitado por el momento.");
+	// valida(2);
+}
 var READY_STATE_COMPLETE=4;
 var peticion_http = null;
 function inicializa_xhr() {
-	if(window.XMLHttpRequest) {
+	if (window.XMLHttpRequest) {
 		return new XMLHttpRequest();
 	}
-	else if(window.ActiveXObject) {
+	else if (window.ActiveXObject) {
 		return new ActiveXObject("Microsoft.XMLHTTP");
 	}
 }
 function valida(opc) {
 	peticion_http = inicializa_xhr();
-	if(peticion_http) {
+	if (peticion_http) {
 		localStorage['tipoConsulta']=opc;
 		switch(opc){
 			case 1: //actualizacion
@@ -381,8 +384,8 @@ function valida(opc) {
 				var agregar 		= "";
 				var ultimo 			="";
 				// var parm = "";
-				for(var i=0;i<elementos.length;i++){
-					if(elementos[i].getAttribute("name")!=null&&elementos[i].getAttribute("name")!=ultimo){
+				for (var i=0;i<elementos.length;i++){
+					if (elementos[i].getAttribute("name")!=null&&elementos[i].getAttribute("name")!=ultimo){
 						// parm+=elementos[i].getAttribute("name")+"\t("+elementos[i].value.length+")\n";
 						switch(elementos[i].getAttribute("name")){
 							case "__EVENTTARGET":
@@ -431,19 +434,19 @@ function valida(opc) {
 								parametros += agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
 								//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
 								parametros2 += agregar+elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
-								if(elementos[i].getAttribute("type")!="radio"){
+								if (elementos[i].getAttribute("type")!="radio"){
 									ultimo = elementos[i].getAttribute("name");
 								} else {
-									if(elementos[i].checked){
+									if (elementos[i].checked){
 										ultimo = elementos[i].getAttribute("name");
 									}
 								}
 								break;
 						}
-						if(i<1){
+						if (i<1){
 							agregar="&";
 						}
-						if(false){
+						if (false){
 							// var pasa=true;
 							switch(elementos[i].getAttribute("name")){
 								//~ case "ctl00$mainCopy$rblEsquema":
@@ -489,7 +492,7 @@ function valida(opc) {
 									// ultimo=elementos[i].getAttribute("name");
 									// break;
 							// }
-							// if(pasa){
+							// if (pasa){
 							// 	switch(elementos[i].getAttribute("name")){
 								case "ctl00$mainCopy$rblEsquema":
 								case "ctl00$mainCopy$dpdcarrera":
@@ -501,7 +504,7 @@ function valida(opc) {
 									break;
 								}
 							// }
-							if(i<1){
+							if (i<1){
 								agregar="&";
 							}
 							
@@ -524,7 +527,7 @@ function valida(opc) {
 							//~ ctl00$mainCopy$dpdplan		// ultimo=elementos[i].getAttribute("name");
 									// break;
 							// }
-							// if(pasa){
+							// if (pasa){
 							// 	switch(elementos[i].getAttribute("name")){
 								case "ctl00$mainCopy$rblEsquema":
 								case "ctl00$mainCopy$dpdcarrera":
@@ -536,7 +539,7 @@ function valida(opc) {
 									break;
 								}
 							// }
-							if(i<1){
+							if (i<1){
 								agregar="&";
 							}
 							
@@ -562,7 +565,7 @@ function valida(opc) {
 				}
 				// alert(parm);
 				alert(parametros2);
-				//if(confirm("Desea continuar?")){
+				//if (confirm("Desea continuar?")){
 					peticion_http.onreadystatechange = procesaRespuesta;
 					peticion_http.open("POST", location.protocol+"//"+location.host+"/Academica/Ocupabilidad_grupos.aspx", true);
 					peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
@@ -589,15 +592,15 @@ function valida(opc) {
 	}
 }
 function procesaRespuesta() {
-	if(peticion_http.readyState == READY_STATE_COMPLETE) {
-		if(peticion_http.status == 200) {
+	if (peticion_http.readyState == READY_STATE_COMPLETE) {
+		if (peticion_http.status == 200) {
 			var variable = localStorage['tipoConsulta'];
 			switch(variable){
 				case "1":
 					var respuestaXML = peticion_http.responseXML;					
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
 					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
-						if(respuesta.version<raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
+						if (respuesta.version<raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
 							generaAdvertenciaActualizacion();
 						}	
 					});
@@ -626,7 +629,7 @@ function procesaRespuesta() {
 				 	registros.innerHTML = respuesta;
 				 	marcaOcupados();
 				 	inicializaDatos();
-					if(buscador.value.length!=0) buscarTexto(buscador.value, 0);
+					if (buscador.value.length!=0) buscarTexto(buscador.value, 0);
 
 					// var datos = respuesta.getElementById("ctl00_mainCopy_GrvOcupabilidad");
 					// datos.setAttribute("id","regs");
@@ -643,18 +646,23 @@ function procesaRespuesta() {
 }
 function generaAdvertenciaActualizacion(){
 	var mensaje = document.createElement("div");
-	mensaje.setAttribute("style","background-color:#800000;width:"+window.window.innerWidth+"px;height:18px;position:fixed;top:"+(window.innerHeight-18)+"px;left:0px;");
-	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>Actualiza complemento SAES</a>";
+	mensaje.setAttribute("style"," background-color : #800000; width :"+window.window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
+	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>&#161;Manten al d&iacute;a la extensi&oacute;n&#33;</a>";
 	document.body.appendChild(mensaje);
 	document.getElementById("actualizacionLink").addEventListener("click",actualizar,true);
+	var info 	= document.createElement("div");
+	info.id 	= "informacion";
+	info.setAttribute("style"," display : none; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; -moz-box-shadow : 0 0 5px 5px #888; -webkit-box-shadow : 0 0 21px 5px#000; box-shadow : 0 0 20px 5px #000; width : 1050px; ");
+	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>[Cerrar con Escape]</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '><p>De clicks en los elementos que se muestran en las im&aacute;genes.</p><p>Y recargue la p&aacute;gina.</p></td><td><img src='"+chrome.extension.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.extension.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
+	document.body.appendChild(info);
 }
 function actualizar(){
-	actua = window.open(chrome.i18n.getMessage("instructions"),'','');
-	actua.focus();
+	document.getElementById("informacion").style.display = "";
+	var texto = 'Para actualizar el complemento entra al menú de Herramientas->Extensiones de chrome/chromium. O ir a la siguiente ruta chrome://extensions/ \nYa dentro verás en la parte superior derecha una leyenda que dice "Modo programador" o "Modo desarrollador", haz click en él y aparecerá un botón que dice "Actualizar extensiones ahora", presionalo, cierra la pestaña del SAES y vuelve a entrar.\nY eso es todo. Es recomendable tener la extensión siempre actualizada para tener las mejoras más recientes.\nDudas, sugerencias o colaboraciones : n0s3.xd@gmail.com';
 }
 var identificado=false;
 function creaFlujo(){
-	if(document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")!=null){
+	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")!=null){
 		var salir = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession");
 		salir.tabIndex 	= 1;
 		// salir.innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+0+"</span>";
@@ -690,10 +698,12 @@ function atajosEjecucion(lanzador){
 		case 18: 	desActivaAtajos();
 			break;
 		case 27: 	//esc
-			if(atajoHorarios) ocultarHorario();
+			if (document.getElementById("asignaturas") != null) ocultarHorario();
+			if (document.getElementById("informacion") != null) ocultarInfo();
+			// if (atajoHorarios) ocultarHorario();
 			break;
 		default:
-			if((codigoTecla>47 && codigoTecla<58)||(codigoTecla>64 && codigoTecla<91)){
+			if ((codigoTecla>47 && codigoTecla<58)||(codigoTecla>64 && codigoTecla<91)){
 				teclasAtajos(codigoTecla);
 			}
 			break;
@@ -702,17 +712,17 @@ function atajosEjecucion(lanzador){
 	}
 }
 function teclasAtajos(codigoTecla){
-	if(atajos){
+	if (atajos){
 		var posicion;
-		if(codigoTecla>64){
+		if (codigoTecla>64){
 			posicion = codigoTecla-55;
 		} else {
 			posicion = parseInt(String.fromCharCode(codigoTecla));
 		}
-		if(posicion<ultimoAtajo){
+		if (posicion<ultimoAtajo){
 			switch(accesosAtajos[posicion]){
 				case "login":
-					if(document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName")!=null){
+					if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName")!=null){
 						document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
 					} else {
 						document.getElementById("__EVENTTARGET").value = "ctl00$leftColumn$LoginViewSession$LoginStatusSession$ctl00";
@@ -729,20 +739,20 @@ function teclasAtajos(codigoTecla){
 }
 function quitaAtajos(){
 	var atajos = document.getElementsByName("atajo");
-	for(var i=0;i<atajos.length;i++){
+	for (var i=0;i<atajos.length;i++){
 		atajos[i].style.display = "none";
 	}
 	document.getElementById("mensajeAtajos").style.display = "none";
 }
 function muestraAtajos(){
 	var atajos = document.getElementsByName("atajo");
-	for(var i=0;i<atajos.length;i++){
+	for (var i=0;i<atajos.length;i++){
 		atajos[i].style.display = "";
 	}
 	document.getElementById("mensajeAtajos").style.display = "";
 }
 function desActivaAtajos(){
-	if(atajos){
+	if (atajos){
 		atajos = false;
 		document.getElementById("seccionAtajos").style.display = "none";
 		// quitaAtajos();
@@ -755,7 +765,7 @@ function desActivaAtajos(){
 function recordar(){
 	var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
 	var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
-	if(this.checked!=true){
+	if (this.checked!=true){
 		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: false}, identificar);
 	} else {
 		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
@@ -765,12 +775,12 @@ function recordar(){
 function identificar(respuesta){
 	switch(respuesta.command){
 		case "getDatos":
-			if(location.host==respuesta.escuela){
+			if (location.host==respuesta.escuela){
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
-				if(respuesta.identificar&&!identificado){	
+				if (respuesta.identificar&&!identificado){	
 					// identificado = true;
 					document.forms[0].submit();
 				}
@@ -786,7 +796,7 @@ function identificar(respuesta){
 		case "setDatos":
 			var cambios = document.getElementById("cambiosIdentificar");
 			cambios.style.color = "green";
-			if(respuesta.identificar){
+			if (respuesta.identificar){
 				cambios.innerHTML = "Ok-guardado";
 			} else {
 				cambios.innerHTML = "Ok-borrado";
@@ -799,11 +809,11 @@ function ocultarCambios(){
 	document.getElementById("cambiosIdentificar").setAttribute("style","display:none;");
 }
 function reaccion(respuesta){
-	if(document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")==null){
+	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")==null){
 		var errorIdentificacion = false;
 		var spans = document.getElementsByTagName("span");
-		for(var i=0;!errorIdentificacion&&(i<spans.length);i++){
-			if(spans[i].innerText=="El intento de conexión no fue correcto. Inténtelo de nuevo.") errorIdentificacion=true;
+		for (var i=0;!errorIdentificacion&&(i<spans.length);i++){
+			if (spans[i].innerText=="El intento de conexión no fue correcto. Inténtelo de nuevo.") errorIdentificacion=true;
 		}
 		var identificar = document.createElement("span");
 		identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
@@ -812,14 +822,14 @@ function reaccion(respuesta){
 		recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
 		document.getElementById("recordar").addEventListener("click",recordar,true);
 
-		if(respuesta.command =="getDatos"){
-			if(location.host==respuesta.escuela){
+		if (respuesta.command =="getDatos"){
+			if (location.host==respuesta.escuela){
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value=respuesta.boleta;
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value=respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
-				if(respuesta.identificar){			
-					if(errorIdentificacion){
+				if (respuesta.identificar){			
+					if (errorIdentificacion){
 						alert("Tus datos para auto identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
 					} else {
 						document.getElementById("recordar").checked = true;
@@ -873,39 +883,39 @@ function conexionDiccionario(){
 		case "esiqie":
 		case "esit":
 		case "upiig":
-			// destinoConexion = "http://"+escuela+".tusprofes.tk/";
+			destinoConexion = "http://"+escuela+".tusprofes.tk/";
 			break;
 		case "upiicsa":
 			destinoConexion = "http://foroupiicsa.net/web/";
 			break;
 		default:
-			alert("No hay diccionario para tu escuela");
+			alert("No hay diccionario para tu escuela.");
 			break;
 	}
 }
 function comentarioRapido(){
-	if(destinoConexion!=""){
+	if (destinoConexion!=""){
 		var formularioEnlace 	= document.createElement("form");
 		formularioEnlace.action = destinoConexion;
-		formularioEnlace.setAttribute("id","formularioEnlace");
 		formularioEnlace.target = "_blank";
 		formularioEnlace.method = "POST";
+		formularioEnlace.setAttribute("id","formularioEnlace");
 		formularioEnlace.innerHTML = "<input type='hidden' name='profesor'><input type='hidden' name='materia'>";
 		document.body.appendChild(formularioEnlace);
 
 		var enlaces = document.getElementById("regs");
 		enlaces.rows[0].cells[10].innerHTML = "Comentar";
-		for(var i=1;i<enlaces.rows.length;i++){
+		for (var i=1;i<enlaces.rows.length;i++){
 			enlaces.rows[i].cells[10].innerHTML = "<a href='#' name='diccionario'>#</a>";
 		}
 		var nenlaces = document.getElementsByName("diccionario");
-		for(var i=0;i<nenlaces.length;i++){
+		for (var i=0;i<nenlaces.length;i++){
 			nenlaces[i].addEventListener("click",enlaceComentar,true);
 		}
 	}
 }
 function verComentarios(){
-	if(destinoConexion!=""){
+	if (destinoConexion!=""){
 		var formularioEnlace 	= document.createElement("form");
 		formularioEnlace.action = destinoConexion;
 		formularioEnlace.setAttribute("id","formularioEnlace");
@@ -915,13 +925,13 @@ function verComentarios(){
 		document.body.appendChild(formularioEnlace);
 
 		var enlaces = document.getElementById("regs");
-		for(var i=1;i<enlaces.rows.length;i++){
+		for (var i=1;i<enlaces.rows.length;i++){
 			enlaces.rows[i].cells[1].innerHTML = "<a href='#' name='diccionario'>"+enlaces.rows[i].cells[1].innerHTML+"</a>";
 			enlaces.rows[i].cells[2].innerHTML = "<a href='#' name='diccionario'>"+enlaces.rows[i].cells[2].innerHTML+"</a>";
 			// cuidado con los sin asignar y donde hay dos maestros en la misma materia
 		}
 		var nenlaces = document.getElementsByName("diccionario");
-		for(var i=0;i<nenlaces.length;i++){
+		for (var i=0;i<nenlaces.length;i++){
 			nenlaces[i].addEventListener("click",enlaceVerComentarios,false);
 		}
 	}
@@ -978,28 +988,28 @@ function detectaPantalla(){
 		// case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
 		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
 		case "/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx":
-			if(confirm("\u00BFDesea calificar a los maestros r\u00E1pidamente?")){
+			if (confirm("\u00BFDesea calificar a los maestros r\u00E1pidamente?")){
 				pedir();
 			}
 			break;
 		case "/Academica/Ocupabilidad_grupos.aspx":
 			var periodo = document.getElementsByName("ctl00$mainCopy$rblEsquema");
-			if(periodo[0].checked!=true&&periodo[1].checked!=true){
+			if (periodo[0].checked!=true&&periodo[1].checked!=true){
 				document.getElementById("ctl00_mainCopy_Chkespecialidad").disabled 	= true;
 				document.getElementById("ctl00_mainCopy_ChkSemestre").disabled 		= true;
 				document.getElementById("ctl00_mainCopy_Chkgrupo").disabled 		= true;
 				document.getElementById("ctl00_mainCopy_Chkmateria").disabled 		= true;
 			}
-			if(document.getElementById("ctl00_mainCopy_GrvOcupabilidad")!=null){
-				if(document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies.length>0&&document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies[0].rows.length>1){
+			if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad")!=null){
+				if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies.length>0&&document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies[0].rows.length>1){
 					marcaOcupados();
 					agregaBuscador(1);
 				}
 			}
 			break;
 		case "/Academica/horarios.aspx":
-			if(document.getElementById("ctl00_mainCopy_dbgHorarios")!=null){
-				if(document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies.length>0&&document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies[0].rows.length>0){
+			if (document.getElementById("ctl00_mainCopy_dbgHorarios")!=null){
+				if (document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies.length>0&&document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies[0].rows.length>0){
 					document.getElementById("ctl00_mainCopy_Panel1").setAttribute("style","");
 					agregaBuscador(2);
 					retiraSabados();
@@ -1013,7 +1023,7 @@ function detectaPantalla(){
 			break;
 		case "/Academica/Calendario.aspx":
 			var tipo = document.getElementsByName("ctl00$mainCopy$rdlconsulta");
-			if(tipo[0].checked!=true&&tipo[0].checked!=true){
+			if (tipo[0].checked!=true&&tipo[0].checked!=true){
 				document.getElementsByName("ctl00$mainCopy$dpdnombrecaptura")[0].disabled = true;
 			}
 			break;
@@ -1049,7 +1059,7 @@ function detectaPantalla(){
 		case "/Alumnos/boleta/kardex.aspx":
 			document.getElementById("ctl00_mainCopy_Panel1").removeAttribute("style");
 
-			if(document.getElementById("contentwrapper").children.length<3){
+			if (document.getElementById("contentwrapper").children.length<3){
 				var parteIzquierda=document.getElementById("rightcolumn").cloneNode(true);
 				document.getElementById("rightcolumn").parentNode.removeChild(document.getElementById("rightcolumn"));
 				document.getElementById("contentwrapper").appendChild(parteIzquierda);
@@ -1075,7 +1085,7 @@ function seleccionMaterias(){
 	var cuadros  	= document.createElement("input");
 	cuadros.type 	= "checkbox";
 	cuadros.title 	= "Agregar";
-	for(var i=1;i<tabla.rows.length;i++){
+	for (var i=1;i<tabla.rows.length;i++){
 		tabla.rows[i].insertCell(10);
 		//cuadro.value="Agregar";
 		// cuadro.setAttribute("numero",i);
@@ -1087,7 +1097,7 @@ function seleccionMaterias(){
 	var materiasSeleccionadas 	= document.createElement("div");
 	materiasSeleccionadas.id 	= "asignaturas";
 	materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
-	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div><div id='resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div><div id='controlesHorarios' style='overflow-y:auto; max-height: 450px;'><table id='tablaAsignaturas' style='width:100%;'><tr style='background-color:#FF9900; color:white;'><td>Grupo</td><td>Materia</td><td>Profesor</td><td>Lun</td><td>Mar</td><td>Mi&eacute;</td><td>Jue</td><td>Vie</td><td>Quitar</td><td>Incluir</td></tr></table></div><input type='button' id='borrarMateriasHorario' value='Borrar Todo'><input type='button' id='generarMateriasHorario' value='Generar'><div id='informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
 	mostrarMateriasHorario.value 	= "Ver Horario";
@@ -1099,25 +1109,60 @@ function seleccionMaterias(){
 	tabla.parentNode.appendChild(materiasSeleccionadas);
 	document.getElementById("borrarMateriasHorario").addEventListener("click",borrarMateriasHorario,true);
 	document.getElementById("generarMateriasHorario").addEventListener("click",generarHorarios,true);
+	document.getElementById("expImp").addEventListener("click",expImp,true);
+	document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
+	document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
+	if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
+		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
+	}
 }
-function generarHorarios(){
+function seleccionarContenido(){
+	this.select();
+}
+function importar (){
+	if (this.value != localStorage.horarioMaterias){
+		try {
+			materiasHorario = JSON.parse(this.value);
+			guardarMateriasHorario();
+			alert("Se va a recargar la p\u00E1gina.");
+			// location.reload();
+			document.forms[0].submit();
+		} catch (msj){
+			alert("Ha ingresado datos erroneos.");
+			this.value = localStorage.horarioMaterias;
+		}
+		
+	}
+}
+function expImp (){
+	if ( document.getElementById("exportar").style.display == ""){
+		document.getElementById("exportar").style.display = "none";
+	} else {
+		document.getElementById("exportar").style.display = "";
+		document.getElementById("exportarSeleccion").focus();
+	}
+}
+function generarHorarios (){
+	// log("-> Generando horarios....1");
 	cargarMateriasHorarioGuardadas();
-	if(materiasHorario.materias.length!=0){
+	if (materiasHorario.materias.length!=0){
+		// log("-> Generando horarios....1.1");
 		var materiasCombinar 	= materiasHorario;
 		var grupoMaterias 		= {materias:[]};
 		while(materiasCombinar.materias.length!=0){
+			// log("-> Generando horarios....1.1.1");
 			var agrupado = false;
 			var materiaOrdenar = materiasCombinar.materias.pop();
-			if(materiaOrdenar.estado){
-				for(var i=0;i<grupoMaterias.materias.length;i++){
-					if(materiaOrdenar.materia==grupoMaterias.materias[i].materia){
+			if (materiaOrdenar.estado){
+				for (var i=0;i<grupoMaterias.materias.length;i++){
+					if (materiaOrdenar.materia==grupoMaterias.materias[i].materia){
 						var grupo = {grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe};
 						grupoMaterias.materias[i].grupos.push(grupo);
 						agrupado = true;
 						break;
 					}
 				}
-				if(!agrupado){
+				if (!agrupado){
 					var materia = { materia : materiaOrdenar.materia, grupos : [] };
 					var grupo 	= { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
 					materia.grupos.push(grupo);
@@ -1130,8 +1175,8 @@ function generarHorarios(){
 		while(grupoMaterias.materias.length!=0){
 			var materia = grupoMaterias.materias.shift();
 			var i;
-			for(i=0; i < gruposOrdenados.materias.length;i++){
-				if(materia.grupos.length <= gruposOrdenados.materias[i].grupos.length){
+			for (i=0; i < gruposOrdenados.materias.length;i++){
+				if (materia.grupos.length <= gruposOrdenados.materias[i].grupos.length){
 					break;
 				}
 			}
@@ -1143,22 +1188,24 @@ function generarHorarios(){
 		var combinacionesDisponibles 	= true;
 
 		// alert("Numero de materias "+gruposOrdenados.materias.length);
-		if(gruposOrdenados.materias.length!=0){
-			for(var i=0;i<gruposOrdenados.materias[0].grupos.length;i++){
+		// log("-> Generando horarios....1.2");
+		if (gruposOrdenados.materias.length!=0){
+			// log("-> Generando horarios....1.2.1");
+			for (var i=0;i<gruposOrdenados.materias[0].grupos.length;i++){
 				var combinacion = {secuencia:[i], horas:gruposOrdenados.materias[0].grupos[i].horas};
 				horariosPosiblesAnteriores.combinacion.push(combinacion);
 			}
 			// alert(JSON.stringify(horariosPosiblesAnteriores));
-			for(var i=1;combinacionesDisponibles && i < gruposOrdenados.materias.length;i++){
+			for (var i=1;combinacionesDisponibles && i < gruposOrdenados.materias.length;i++){
 				//alert(i);
 				var horariosPosibles = {combinacion:[]};
 				// alert("->"+horariosPosiblesAnteriores.combinacion.length);
-				for(var j=0;j<horariosPosiblesAnteriores.combinacion.length;j++){
+				for (var j=0;j<horariosPosiblesAnteriores.combinacion.length;j++){
 					//alert("->"+j);
 					// alert("- ->"+gruposOrdenados.materias[i].grupos.length);
 					
 					var combinacion = {secuencia:horariosPosiblesAnteriores.combinacion[j].secuencia, horas:horariosPosiblesAnteriores.combinacion[j].horas};
-					for(var n=0;n<gruposOrdenados.materias[i].grupos.length;n++){
+					for (var n=0;n<gruposOrdenados.materias[i].grupos.length;n++){
 						//alert("-->"+n);
 						var encontrado = false;
 						// combinacion.horas = horariosPosiblesAnteriores.combinacion[j].horas;
@@ -1166,12 +1213,12 @@ function generarHorarios(){
 						
 						// alert(combinacion.horas+"###"+gruposOrdenados.materias[i].grupos[n].horas);
 						// alert(i+" , "+n);
-						for(var k=0;!encontrado && k<gruposOrdenados.materias[i].grupos[n].horas.length;k++){
-							if(buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k])!=-1){
+						for (var k=0;!encontrado && k<gruposOrdenados.materias[i].grupos[n].horas.length;k++){
+							if (buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k])!=-1){
 								encontrado = true;
 							}
 						}
-						if(!encontrado){
+						if (!encontrado){
 							//alert("Agregado");
 							var nuevaCombinacion = {secuencia:[], horas:combinacion.horas};
 							nuevaCombinacion.horas = nuevaCombinacion.horas.concat(gruposOrdenados.materias[i].grupos[n].horas);
@@ -1186,24 +1233,28 @@ function generarHorarios(){
 					}
 					// alert("opciones anteriores  "+j+"/"+horariosPosiblesAnteriores.combinacion.length);
 				}
-				if(horariosPosibles.combinacion.length!=0) horariosPosiblesAnteriores = horariosPosibles;
+				if (horariosPosibles.combinacion.length!=0) horariosPosiblesAnteriores = horariosPosibles;
 				else combinacionesDisponibles = false;
 				// alert("opciones anteriores  "+horariosPosiblesAnteriores.combinacion.length+" #"+JSON.stringify(horariosPosiblesAnteriores.combinacion));
 			}
 		}
 		// alert("Listo");
-		if(combinacionesDisponibles&&horariosPosiblesAnteriores.combinacion.length>0){
+		// log("-> Generando horarios....1.3");
+		if (combinacionesDisponibles&&horariosPosiblesAnteriores.combinacion.length>0){
+			// log("-> Generando horarios....1.3.1");
 			localStorage.resultados = JSON.stringify(horariosPosiblesAnteriores);
 			presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
 		} else {
+			// log("-> Generando horarios....1.3.2");
 			document.getElementById("informacionHorarios").innerHTML="No hay resultados";
 			cargarMateriasHorarioGuardadas();
 		}
 		horariosPosiblesAnteriores=null;
 	}
+	// log("-> Generando horarios....2");
 }
 function cargarHorariosGenerados(){
-	if(localStorage.resultados!=null && localStorage.resultados!="" && localStorage.resultados!="null" && 
+	if (localStorage.resultados!=null && localStorage.resultados!="" && localStorage.resultados!="null" && 
 		localStorage.armadoOrdenado!=null && localStorage.armadoOrdenado!="" && localStorage.armadoOrdenado!="null" ){
 		var gruposOrdenados = JSON.parse(localStorage.armadoOrdenado);
 		var horariosPosiblesAnteriores = JSON.parse(localStorage.resultados);
@@ -1211,7 +1262,7 @@ function cargarHorariosGenerados(){
 	}
 }
 function seleccionarHorario(){
-	if(this.value!= "" && this.value.length>0){
+	if (this.value!= "" && this.value.length>0){
 		switch(parseInt(this.value)){
 			case 0:
 				mostrarSeleccionMaterias();
@@ -1230,14 +1281,14 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 	// informacion.style = "text-aling:center;";
 	// informacion.innerHTML 	= "Hay "+nResultados+" resultados: ";
 
-	totalHorarios = parseInt(nResultados);
-	var seleccionHorarios 	= document.createElement("table");
+	totalHorarios 				= parseInt(nResultados);
+	var seleccionHorarios 		= document.createElement("table");
 	seleccionHorarios.innerHTML = "<tr><td>Hay "+nResultados+" resultados:</td><td><input id='seleccionHorarios' type='number' min='0' max='"+nResultados+"' value='0' size='4'/></td><td>Puedes usar las flechas &uArr; &dArr;</td></tr>";
 	seleccionHorarios.setAttribute("style","margin:0px auto;");
 	informacion.innerHTML = "";
 	informacion.appendChild(seleccionHorarios);
 	horarioSeleccionado = 0;
-	seleccionHorarios = document.getElementById("seleccionHorarios");
+	seleccionHorarios 	= document.getElementById("seleccionHorarios");
 	seleccionHorarios.setAttribute("style","text-align:center;");
 	seleccionHorarios.addEventListener("keyup",seleccionarHorario,true);
 
@@ -1247,20 +1298,20 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 	// seleccionMaterias.addEventListener("click",mostrarSeleccionMaterias,true);
 	// informacion.appendChild(seleccionMaterias);
 	
-	var tablaInformacion = document.createElement("table");
-	tablaInformacion.style.display = "none";
-	tablaInformacion.style.width = "100%";
-	tablaInformacion.innerHTML = "<tr style='background-color:#FF9900; color:white;'><td>Grupo</td><td>Materia</td><td>Profesor</td><td>Lun</td><td>Mar</td><td>Mi&eacute;</td><td>Jue</td><td>Vie</td></tr>";
-	for(var i=0;i<horariosPosiblesAnteriores.combinacion[0].secuencia.length;i++){
+	var tablaInformacion 			= document.createElement("table");
+	tablaInformacion.style.display 	= "none";
+	tablaInformacion.style.width 	= "100%";
+	tablaInformacion.innerHTML 		= "<tr style='background-color:#FF9900; color:white;'><td>Grupo</td><td>Materia</td><td>Profesor</td><td>Lun</td><td>Mar</td><td>Mi&eacute;</td><td>Jue</td><td>Vie</td></tr>";
+	for (var i=0;i<horariosPosiblesAnteriores.combinacion[0].secuencia.length;i++){
 		tablaInformacion.insertRow(i+1);
-		for(var k=0;k<8;k++) tablaInformacion.rows[i+1].insertCell(k);
+		for (var k=0;k<8;k++) tablaInformacion.rows[i+1].insertCell(k);
 		tablaInformacion.rows[i+1].cells[1].innerHTML=gruposOrdenados.materias[i].materia;
 	}
 
 	cargarMateriasHorarioGuardadas();
 	var resultadoHorarios = document.getElementById("resultadoHorarios");
 	resultadoHorarios.innerHTML="";
-	for(var n=0;n<nResultados;n++){
+	for (var n=0;n<nResultados;n++){
 		// var boton 	= document.createElement("input");
 		// boton.type 	= "button";
 		// boton.value = (n+1);
@@ -1268,9 +1319,9 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 		// informacion.appendChild(boton);
 		
 		var tablaInformacionN = tablaInformacion.cloneNode(true);
-		for(var i=0;i<horariosPosiblesAnteriores.combinacion[n].secuencia.length;i++){
+		for (var i=0;i<horariosPosiblesAnteriores.combinacion[n].secuencia.length;i++){
 			tablaInformacionN.rows[i+1].cells[0].innerHTML=gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].grupo;
-			if(destinoConexion!=""){
+			if (destinoConexion!=""){
 				var enlaceDiccionario = document.createElement("a");
 				enlaceDiccionario.href = "#";
 				enlaceDiccionario.setAttribute("style","color : #F90;");
@@ -1282,14 +1333,14 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 			}
 			var j;
 			// alert("t "+materiasHorario.materias.length);
-			for(j=0;j<materiasHorario.materias.length;j++){
+			for (j=0;j<materiasHorario.materias.length;j++){
 				// alert(tablaInformacionN.rows[i+1].cells[0].innerHTML+"/"+materiasHorario.materias[j].grupo);
-				if(tablaInformacionN.rows[i+1].cells[0].innerHTML == materiasHorario.materias[j].grupo &&  tablaInformacionN.rows[i+1].cells[1].innerHTML == materiasHorario.materias[j].materia){
+				if (tablaInformacionN.rows[i+1].cells[0].innerHTML == materiasHorario.materias[j].grupo &&  tablaInformacionN.rows[i+1].cells[1].innerHTML == materiasHorario.materias[j].materia){
 					break;
 				}
 			}
 			// alert(j);
-			for(var k=3;k<8;k++) {
+			for (var k=3;k<8;k++) {
 				tablaInformacionN.rows[i+1].cells[k].innerHTML = materiasHorario.materias[j].dias[k-3];
 			}
 		}
@@ -1299,19 +1350,22 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 	}
 }
 function mostrarSeleccionMaterias(){
+	document.getElementById("asignaturasSeleccionadas").style.display = "";
 	document.getElementById("controlesHorarios").style.display = "";
 	document.getElementById("resultadoHorarios").style.display = "none";
 }
 function ocultarHorariosGenerados(){
 	var horariosGenerados = document.getElementsByName("horariosGenerados");
-	for(var i=0;i<horariosGenerados.length;i++)	horariosGenerados[i].style.display = "none";
+	for (var i=0;i<horariosGenerados.length;i++)	horariosGenerados[i].style.display = "none";
 }
 function mostrarHorarioGenerado(numero){
-	if(numero<=totalHorarios){
+	if (numero<=totalHorarios){
 		ocultarHorariosGenerados();
 		document.getElementById("horarioGenerado"+numero).style.display = "";
 		document.getElementById("resultadoHorarios").style.display = "";
+		document.getElementById("asignaturasSeleccionadas").style.display = "none";
 		document.getElementById("controlesHorarios").style.display = "none";
+		document.getElementById("exportar").style.display = "none";
 	}
 }
 function buscarArregloOrdenado(arreglo, buscar){
@@ -1323,37 +1377,37 @@ function buscarArregloOrdenado(arreglo, buscar){
 	var encontrado = false;
 	var pos=-1;
 	while(k!=0){
-		if(buscar!=arreglo[n]){					
+		if (buscar!=arreglo[n]){					
 			k = parseInt((n-i)/2);
-			if(buscar > arreglo[n]){
-				if(k!=1){
+			if (buscar > arreglo[n]){
+				if (k!=1){
 					i = n;
 					n += k ;
 				} else{
-					for(n++;n<l;n++){
-						if(buscar==arreglo[n]){
+					for (n++;n<l;n++){
+						if (buscar==arreglo[n]){
 							encontrado = true;
 							pos = n;
 							break;
 						}
 					}
-					if(!encontrado){
+					if (!encontrado){
 						break;
 					}
 				}
 			} else{
-				if(k!=1){
+				if (k!=1){
 					n -= k;
 					l = n;
 				} else{
-					for(n--;n>=i;n--){
-						if(buscar==arreglo[n]){
+					for (n--;n>=i;n--){
+						if (buscar==arreglo[n]){
 							encontrado = true;
 							pos = n;
 							break;
 						}
 					}
-					if(!encontrado){
+					if (!encontrado){
 						break;
 					}
 				}
@@ -1366,15 +1420,18 @@ function buscarArregloOrdenado(arreglo, buscar){
 	}
 	return pos;
 }
-function mostrarHorario(){
-	if(atajoHorarios) document.getElementById("asignaturas").style.display = "";
+function mostrarHorario (){
+	if (atajoHorarios) document.getElementById("asignaturas").style.display = "";
 	//this.removeEventListener("click",mostrarHorario,true);
 	//this.addEventListener("click",ocultarHorario,true);
 }
-function ocultarHorario(){
+function ocultarHorario (){
 	document.getElementById("asignaturas").style.display = "none";
 	//this.removeEventListener("click",ocultarHorario,true);
 	//this.addEventListener("click",mostrarHorario,true);
+}
+function ocultarInfo (){
+	document.getElementById("informacion").style.display = "none";
 }
 var materiasHorario = {materias:[]};
 function agregarMateria(){
@@ -1383,20 +1440,20 @@ function agregarMateria(){
 	var grupo 		= tabla.rows[this.numero].cells[0].innerHTML;
 	var nombre 		= tabla.rows[this.numero].cells[1].innerHTML;
 	var profesor 	= tabla.rows[this.numero].cells[2].innerHTML;
-	if(destinoConexion!=""){
+	if (destinoConexion!=""){
 		nombre 		= tabla.rows[this.numero].cells[1].firstChild.innerHTML;
 		profesor 	= tabla.rows[this.numero].cells[2].firstChild.innerHTML;
 	}
 	var i;
-	for(i=this.numero-1;i>0;i--){
-		// if(grupo!=tabla.rows[i].cells[0].innerHTML || nombre!=tabla.rows[i].cells[1].innerHTML){
-		if(grupo!=tabla.rows[i].cells[0].innerHTML){
+	for (i=this.numero-1;i>0;i--){
+		// if (grupo!=tabla.rows[i].cells[0].innerHTML || nombre!=tabla.rows[i].cells[1].innerHTML){
+		if (grupo!=tabla.rows[i].cells[0].innerHTML){
 			break;
 		}
 	}
 	i++;
 	
-	if(this.checked!=false){ //agregar
+	if (this.checked!=false){ //agregar
 		// var grupo=this.parentNode.parentNode.cells[0].innerHTML;
 		// var nombre=this.parentNode.parentNode.cells[1].innerHTML;
 		var dias = ["&nbsp;","&nbsp;","&nbsp;","&nbsp;","&nbsp;"]; //dias de la semana
@@ -1409,22 +1466,22 @@ function agregarMateria(){
 		var n;
 		//encontrar primera posicion de aparicion		
 		// do{
-		for(;i<tabla.rows.length && grupo==tabla.rows[i].cells[0].innerHTML;i++){
-			if((destinoConexion!="" && nombre==tabla.rows[i].cells[1].firstChild.innerHTML) || nombre==tabla.rows[i].cells[1].innerHTML){
+		for (;i<tabla.rows.length && grupo==tabla.rows[i].cells[0].innerHTML;i++){
+			if ((destinoConexion!="" && nombre==tabla.rows[i].cells[1].firstChild.innerHTML) || nombre==tabla.rows[i].cells[1].innerHTML){
 				tabla.rows[i].cells[10].firstChild.checked=true;
 				var cambioDia = 0;
-				for(var j=5;j<10;j++){
-					if(tabla.rows[i].cells[j].innerHTML!="&nbsp;"){
+				for (var j=5;j<10;j++){
+					if (tabla.rows[i].cells[j].innerHTML!="&nbsp;"){
 						horas = tabla.rows[i].cells[j].innerHTML;
 						horas = horas.replace("/\s+/g","");
 						horas = horas.replace(/:/g,".");
 						rango = new Array();
 						// alert(horas);
 						rango = horas.split("-");
-						for(n=0;n<2;n++){
+						for (n=0;n<2;n++){
 							rango[n] = 	parseFloat(rango[n]);
 							rango[n] += 0.2;
-							if(rango[n]%0.5!=0) rango[n]=parseInt(rango[n]);
+							if (rango[n]%0.5!=0) rango[n]=parseInt(rango[n]);
 							rango[n] -= 7;
 						}
 						rango[1] = ((rango[1]-rango[0])*2)-1;
@@ -1432,32 +1489,32 @@ function agregarMateria(){
 						rango[1] += rango[0];
 
 						var encontrarInicio = false;
-						for(n=0;n<horasSeguimiento.length;n++){
+						for (n=0;n<horasSeguimiento.length;n++){
 							// alert("buscando "+rango[0]);
-							if(rango[0]+cambioDia==horasSeguimiento[n]){
+							if (rango[0]+cambioDia==horasSeguimiento[n]){
 								encontrarInicio = true;
-								for(n++;n<horasSeguimiento.length;n++){
-									if(horasSeguimiento[n-1]+1!=horasSeguimiento[n]){
+								for (n++;n<horasSeguimiento.length;n++){
+									if (horasSeguimiento[n-1]+1!=horasSeguimiento[n]){
 										break;
 									}
 								}
-								if(horasSeguimiento[n-1]!=rango[1]){
-									if(horasSeguimiento[n-1]<rango[1]){
+								if (horasSeguimiento[n-1]!=rango[1]){
+									if (horasSeguimiento[n-1]<rango[1]){
 										// alert("ie");
-										for(n=horasSeguimiento[n-1]+1;n<=rango[1];n++) horasSeguimiento.push(n+cambioDia);
+										for (n=horasSeguimiento[n-1]+1;n<=rango[1];n++) horasSeguimiento.push(n+cambioDia);
 										//ordenar(horasSeguimiento);
 										//var diasRangos = dias[j-5].split(",");
 										//alert("#"+dias[j-5]+"#");
-										if(dias[j-5]!="&nbsp;") dias[j-5]+=","+tabla.rows[i].cells[j].innerHTML;
+										if (dias[j-5]!="&nbsp;") dias[j-5]+=","+tabla.rows[i].cells[j].innerHTML;
 										else dias[j-5]=tabla.rows[i].cells[j].innerHTML;
 									}
 								}
 							}
 						}
-						if(!encontrarInicio){
+						if (!encontrarInicio){
 							// alert("in");
-							for(n=rango[0];n<=rango[1];n++) horasSeguimiento.push(n+cambioDia);
-							if(dias[j-5]!="&nbsp;") dias[j-5]+=","+tabla.rows[i].cells[j].innerHTML;
+							for (n=rango[0];n<=rango[1];n++) horasSeguimiento.push(n+cambioDia);
+							if (dias[j-5]!="&nbsp;") dias[j-5]+=","+tabla.rows[i].cells[j].innerHTML;
 							else dias[j-5]=tabla.rows[i].cells[j].innerHTML;
 							// dias[j-5]=tabla.rows[i].cells[j].innerHTML;					
 						}
@@ -1479,14 +1536,14 @@ function agregarMateria(){
 		asignaturasTabla.insertRow(asignaturasTabla.rows.length);
 		var materiaH = asignaturasTabla.rows[asignaturasTabla.rows.length-1];
 		
-		for(var j=0;j<10;j++) materiaH.insertCell(j);
+		for (var j=0;j<10;j++) materiaH.insertCell(j);
 		materiaH.cells[0].innerHTML = asignaturaH.grupo;
 		materiaH.cells[1].innerHTML = asignaturaH.materia;
 		var quitarMateria = document.createElement("img");
 		quitarMateria.src = chrome.extension.getURL("/css/menos.png");
 		quitarMateria.addEventListener("click",removerMateria,true);
 		materiaH.cells[8].appendChild(quitarMateria);
-		var estadoMateria = document.createElement("input");
+		var estadoMateria 	= document.createElement("input");
 		estadoMateria.type 	= "checkbox";
 		estadoMateria.title = "Habilitar/Deshabilitar";
 		estadoMateria.name 	= "incluirMateria";
@@ -1494,9 +1551,9 @@ function agregarMateria(){
 		estadoMateria.addEventListener("change",cambiarEstadoSeleccion,true);
 		materiaH.cells[9].appendChild(estadoMateria);
 		// materiaH.cells[9].innerHTML="<input type='checkbox' title='Habilitar/Deshabilitar' name='incluirMateria' checked >";
-		if(destinoConexion!=""){
-			var enlaceDiccionario = document.createElement("a");
-			enlaceDiccionario.href = "#";
+		if (destinoConexion!=""){
+			var enlaceDiccionario 	= document.createElement("a");
+			enlaceDiccionario.href 	= "#";
 			enlaceDiccionario.setAttribute("style","color : #F90;");
 			enlaceDiccionario.innerHTML = asignaturaH.profe;
 			enlaceDiccionario.addEventListener("click",enlaceVerComentarios,false);
@@ -1505,21 +1562,22 @@ function agregarMateria(){
 			materiaH.cells[2].innerHTML = asignaturaH.profe;
 		}
 
-		for(var j=0;j<5;j++) materiaH.cells[3+j].innerHTML = dias[j];
+		for (var j=0;j<5;j++) materiaH.cells[3+j].innerHTML = dias[j];
 		
-		document.getElementById("controlesHorarios").style.display = "";
+		document.getElementById("totalSeleccion").innerHTML = parseInt(document.getElementById("totalSeleccion").innerHTML)+1;
+		document.getElementById("asignaturasSeleccionadas").style.display = "";
 		atajoHorarios = true;
 
 		guardarMateriasHorario();
 	}else { //quitar
-		for(;i<tabla.rows.length && grupo==tabla.rows[i].cells[0].innerHTML;i++){
-			if(nombre==tabla.rows[i].cells[1].innerHTML){
+		for (;i<tabla.rows.length && grupo==tabla.rows[i].cells[0].innerHTML;i++){
+			if (nombre==tabla.rows[i].cells[1].innerHTML){
 				tabla.rows[i].cells[10].firstChild.checked = false;
 			}
 		}
 		var asignaturasTabla = document.getElementById("tablaAsignaturas");
-		for(i=1;i<asignaturasTabla.rows.length;i++){
-			if(asignaturasTabla.rows[i].cells[0].innerHTML==grupo && asignaturasTabla.rows[i].cells[1].innerHTML == nombre){
+		for (i=1;i<asignaturasTabla.rows.length;i++){
+			if (asignaturasTabla.rows[i].cells[0].innerHTML==grupo && asignaturasTabla.rows[i].cells[1].innerHTML == nombre){
 				asignaturasTabla.deleteRow(i);
 				break;
 			}
@@ -1531,8 +1589,8 @@ function cambiarEstadoSeleccion(){
 	var grupo 	= this.parentNode.parentNode.cells[0].innerHTML;
 	var materia = this.parentNode.parentNode.cells[1].innerHTML;
 	var n = materiasHorario.materias.length;
-	for(var i=0;i<n;i++){
-		if(materiasHorario.materias[i].grupo==grupo && materiasHorario.materias[i].materia==materia){
+	for (var i=0;i<n;i++){
+		if (materiasHorario.materias[i].grupo==grupo && materiasHorario.materias[i].materia==materia){
 			materiasHorario.materias[i].estado = this.checked;
 			guardarMateriasHorario();
 			break;
@@ -1543,10 +1601,10 @@ function cambiarEstadoSeleccion(){
 function borrarMateriasHorario(){
 	var i;
 	var tabla = document.getElementById("regs");
-	for(i=1;i<tabla.rows.length;i++) tabla.rows[i].cells[10].firstChild.checked = false;
+	for (i=1;i<tabla.rows.length;i++) tabla.rows[i].cells[10].firstChild.checked = false;
 	tabla = document.getElementById("tablaAsignaturas");
-	for(i=tabla.rows.length-1;tabla.rows.length!=1;i--) tabla.deleteRow(i);
-	//document.getElementById("controlesHorarios").style.display="none";
+	for (i=tabla.rows.length-1;tabla.rows.length!=1;i--) tabla.deleteRow(i);
+	//document.getElementById("asignaturasSeleccionadas").style.display="none";
 	ocultarHorario();
 	atajoHorarios 	= false;
 	materiasHorario = {materias:[]};
@@ -1554,16 +1612,18 @@ function borrarMateriasHorario(){
 	localStorage.armadoOrdenado 	= "";
 	localStorage.resultados 		= "";
 	mostrarSeleccionMaterias();
+	document.getElementById("exportarSeleccion").value 			= "";
 	document.getElementById("resultadoHorarios").innerHTML 		= "";
 	document.getElementById("informacionHorarios").innerHTML 	= "";
+	document.getElementById("totalSeleccion").innerHTML 		= "0";
 }
 function ordenar(datos){
 	var limite = datos.length, k=parseInt(limite/2),i,j,temp;
 	while(k>0){
-		for(i=k;i<=limite-1;i++){
+		for (i=k;i<=limite-1;i++){
 			j = i;
 			while(j-k>=0){
-				if(datos[j]<datos[j-k]){
+				if (datos[j]<datos[j-k]){
 					temp 		= datos[j];
 					datos[j] 	= datos[j-k];
 					datos[j-k] 	= temp;
@@ -1576,26 +1636,27 @@ function ordenar(datos){
 	return datos;
 }
 function guardarMateriasHorario(){
-	if(materiasHorario.materias.length!=0){
+	if (materiasHorario.materias.length != 0){
 		localStorage.horarioMaterias = JSON.stringify(materiasHorario);
+		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 	}
 }
 var atajoHorarios=false;
 function cargarMateriasHorarioGuardadas(){
-	if(localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){
+	if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 	}	
 }
 function removerMateria(){
-	if(confirm("\u00BFEsta seguro?")){
+	if (confirm("\u00BFEsta seguro?")){
 		var grupo 	= this.parentNode.parentNode.cells[0].innerHTML;
 		var materia = this.parentNode.parentNode.cells[1].innerHTML;
 
 		this.parentNode.parentNode.parentNode.deleteRow(this.parentNode.parentNode.rowIndex);
 
 		var registros = document.getElementById("regs");
-		for(var i=1;i<registros.rows.length;i++){
-			if(registros.rows[i].cells[0].innerHTML==grupo && (registros.rows[i].cells[1].innerHTML==materia || (destinoConexion!="" && registros.rows[i].cells[1].firstChild.innerHTML==materia) )){
+		for (var i=1;i<registros.rows.length;i++){
+			if (registros.rows[i].cells[0].innerHTML==grupo && (registros.rows[i].cells[1].innerHTML==materia || (destinoConexion!="" && registros.rows[i].cells[1].firstChild.innerHTML==materia) )){
 				registros.rows[i].cells[10].firstChild.checked = false;
 			}
 		}
@@ -1604,26 +1665,31 @@ function removerMateria(){
 }
 function borrarMateriaHorario(grupo, nombre){
 	cargarMateriasHorarioGuardadas();
-	for(var i=0;i<materiasHorario.materias.length;i++){
-		if(materiasHorario.materias[i].grupo == grupo && materiasHorario.materias[i].materia == nombre){
-			if(i>parseInt(materiasHorario.materias.length/2)){
-				for(;i<((materiasHorario.materias.length)-1);i++){
-					materiasHorario.materias[i] = materiasHorario.materias[i+1];
-				}	
-				materiasHorario.materias.pop();
-			} else {
-				for(;i>0;i--){
-					materiasHorario.materias[i] = materiasHorario.materias[i-1];
+	if (materiasHorario.materias.length > 1){
+		for (var i=0; i < materiasHorario.materias.length; i++){
+			if (materiasHorario.materias[i].grupo == grupo && materiasHorario.materias[i].materia == nombre){
+				if (i>parseInt(materiasHorario.materias.length/2)){
+					for (;i<((materiasHorario.materias.length)-1);i++){
+						materiasHorario.materias[i] = materiasHorario.materias[i+1];
+					}	
+					materiasHorario.materias.pop();
+				} else {
+					for (;i>0;i--){
+						materiasHorario.materias[i] = materiasHorario.materias[i-1];
+					}
+					materiasHorario.materias.shift();
 				}
-				materiasHorario.materias.shift();
+				break;
 			}
-			break;
 		}
+		document.getElementById("totalSeleccion").innerHTML = parseInt(document.getElementById("totalSeleccion").innerHTML)-1;
+		guardarMateriasHorario();
+	} else {
+		borrarMateriasHorario();	
 	}
-	guardarMateriasHorario();
 }
 function cargarMateriasHorario(){
-	if(localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){
+	if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 		var tabla = document.getElementById("regs");
 		var asignaturasTabla = document.getElementById("tablaAsignaturas");
@@ -1633,19 +1699,19 @@ function cargarMateriasHorario(){
 		quitarMaterias.src = chrome.extension.getURL("/css/menos.png");
 		quitarMaterias.title = "Quitar";
 		
-		var estadoMaterias = document.createElement("input");
+		var estadoMaterias 		= document.createElement("input");
 		estadoMaterias.type 	= "checkbox";
-		estadoMaterias.title = "Habilitar/Deshabilitar";
+		estadoMaterias.title 	= "Habilitar/Deshabilitar";
 		estadoMaterias.name 	= "incluirMateria";
 		
 		var materiaSinEstado = false;
-		for(i=0;i<materiasHorario.materias.length;i++){
+		for (i=0;i<materiasHorario.materias.length;i++){
 			asignaturasTabla.insertRow(asignaturasTabla.rows.length);
 			materiaH = asignaturasTabla.rows[asignaturasTabla.rows.length-1];
-			for(var j=0;j<10;j++) materiaH.insertCell(j);
+			for (var j=0;j<10;j++) materiaH.insertCell(j);
 			materiaH.cells[0].innerHTML = materiasHorario.materias[i].grupo;
 			materiaH.cells[1].innerHTML = materiasHorario.materias[i].materia;
-			if(destinoConexion!=""){
+			if (destinoConexion!=""){
 				materiaH.cells[2].innerHTML = "<a href='#' name='diccionario' style='color:#F90;'>"+materiasHorario.materias[i].profe+"</a>";
 			} else {
 				materiaH.cells[2].innerHTML = materiasHorario.materias[i].profe;
@@ -1657,61 +1723,62 @@ function cargarMateriasHorario(){
 			var estadoMateria = estadoMaterias.cloneNode(true);
 			estadoMateria.addEventListener("change",cambiarEstadoSeleccion,true);
 
-			if(materiasHorario.materias[i].estado==undefined || materiasHorario.materias[i].estado!=false){
+			if (materiasHorario.materias[i].estado==undefined || materiasHorario.materias[i].estado!=false){
 				estadoMateria.checked 	= true;
-				if(materiasHorario.materias[i].estado==undefined){
+				if (materiasHorario.materias[i].estado==undefined){
 					materiasHorario.materias[i] = { materia : materiasHorario.materias[i].materia, profe: materiasHorario.materias[i].profe, grupo : materiasHorario.materias[i].grupo, horas : materiasHorario.materias[i].horas, dias : materiasHorario.materias[i].dias, estado : true };
 					materiaSinEstado = true;
 				}
 			}
 			materiaH.cells[9].appendChild(estadoMateria);
-			for(var j=0;j<5;j++) materiaH.cells[3+j].innerHTML = materiasHorario.materias[i].dias[j];
+			for (var j=0;j<5;j++) materiaH.cells[3+j].innerHTML = materiasHorario.materias[i].dias[j];
 			//var horas = materiasHorario.materias[i].horas;
 			// while(horas.length>0){	
 			// 	var gruposHoras = new Array();
-			// 	for(var j=0;j<5;j++){
+			// 	for (var j=0;j<5;j++){
 			// 		gruposHoras.push(new Array());
 			// 	}
-			// 	for(var j=0;j<horas.length;j++){
+			// 	for (var j=0;j<horas.length;j++){
 			// 		gruposHoras[parseInt(horas[j]/30)].push(horas[j]);
 			// 	}
 			// 	var rangos = new Array();
 			// 	var max;
 			// 	var min;
-			// 	for(var j=0;j<5;j++){
-			// 		if(gruposHoras[j].length>0){
+			// 	for (var j=0;j<5;j++){
+			// 		if (gruposHoras[j].length>0){
 			// 			max=gruposHoras[j][0];
 			// 			min=gruposHoras[j][0];
-			// 			for(var n=1; 1 && n<gruposHoras[j].length;n++){
-			// 				if(max<gruposHoras[j][n]) max=gruposHoras[j][n];
-			// 				if(min>gruposHoras[j][n]) max=gruposHoras[j][n];
+			// 			for (var n=1; 1 && n<gruposHoras[j].length;n++){
+			// 				if (max<gruposHoras[j][n]) max=gruposHoras[j][n];
+			// 				if (min>gruposHoras[j][n]) max=gruposHoras[j][n];
 			// 			}
 			// 		}
 			// 	}
 
 			// }
-			for(var j=1;j<tabla.rows.length;j++){
-				if( (materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML) && ( ( destinoConexion != "" && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].firstChild.innerHTML ) || (materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerHTML) )){
+			for (var j=1;j<tabla.rows.length;j++){
+				if ( (materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML) && ( ( destinoConexion != "" && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].firstChild.innerHTML ) || (materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerHTML) )){
 					tabla.rows[j].cells[10].firstChild.checked = true;
 				}				
 			}
 		}
-		if(materiaSinEstado){
+		if (materiaSinEstado){
 			guardarMateriasHorario();
 		}
-		if(i!=0){
-			document.getElementById("controlesHorarios").style.display = "";
+		if (i!=0){
+			document.getElementById("asignaturasSeleccionadas").style.display = "";
+			document.getElementById("totalSeleccion").innerHTML = i;
 			atajoHorarios = true;
 		}
 	}
 }
 function marcaOcupados(){
 	var id = "ctl00_mainCopy_GrvOcupabilidad";
-	if(document.getElementById("regs")!=null) id = "regs";
+	if (document.getElementById("regs")!=null) id = "regs";
 	var numRegistros = document.getElementById(id).rows.length;
-	for(var i=1;i<numRegistros;i++){
+	for (var i=1;i<numRegistros;i++){
 		var registros = document.getElementById(id).rows;
-		if(registros[i].cells[6].innerHTML<"1"){
+		if (registros[i].cells[6].innerHTML<"1"){
 			var registro = registros[i].cloneNode(true);
 			// registro.style="background-color: black; color: white;";
 			registro.setAttribute("style", "background-color: black; color: white;");
@@ -1725,7 +1792,7 @@ function marcaOcupados(){
 function retiraSabados(){
 	var tabla = document.getElementById("regs");
 	totalColumnas--;
-	for(var i=0;i<tabla.rows.length;i++){
+	for (var i=0;i<tabla.rows.length;i++){
 		tabla.rows[i].deleteCell(10);
 	}
 }
@@ -1754,9 +1821,9 @@ function tablaAtajos(){
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>Atajo</td><td style='padding:0px 10px 0px 10px;'>Secci&oacute;n</td></tr>";
 		var teclaAtajo 	= 48;
 		ultimoAtajo 	= respuesta.atajos.atajo.length;
-		for(var i=0; i<ultimoAtajo; i++){
-			if(respuesta.atajos.atajo[i].visible){
-				if(teclaAtajo>57 && teclaAtajo<66){
+		for (var i=0; i<ultimoAtajo; i++){
+			if (respuesta.atajos.atajo[i].visible){
+				if (teclaAtajo>57 && teclaAtajo<66){
 					teclaAtajo =  65;
 				}
 				contenidoAtajos += "<tr><td style='padding:0px 10px 0px 10px;'>"+String.fromCharCode(teclaAtajo)+"</td><td style='padding:0px 10px 0px 10px;'>"+respuesta.atajos.atajo[i].nombre+"</td></tr>";
@@ -1770,7 +1837,7 @@ function tablaAtajos(){
 function inicio(){
 	var pagina 	= /^https\:\/\/www[.]saes[.]\w+[.]ipn[.]mx$/;
 	var url 	= location.protocol+"//"+location.host;
-	if(url.match(pagina) && location.pathname.indexOf("/PDF/")!=0){
+	if (url.match(pagina) && location.pathname.indexOf("/PDF/")!=0){
 		valida(1);
 		creaFlujo();
 		tablaAtajos();

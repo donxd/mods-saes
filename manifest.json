@@ -10,14 +10,14 @@
       	"48": "/css/fu_48.png",
       	"128": "/css/fu_128.png"
     },
-	"permissions": [ "tabs", "*://*.ipn.mx/*", "http://dl.dropbox.com/u/57118204/*"],
+	"permissions": [ "tabs", "*://*.ipn.mx/*", "*://*.google.com/*"],
 	"homepage_url": "http://foroupiicsa.net/extension-saes/",
 	"options_page":"opciones.html",
     "background":{
     	"scripts": ["segundoPlano.js"],
     	"persistent": false
     },
-    "web_accessible_resources": ["css/menos.png"],
+    "web_accessible_resources": ["css/menos.png","css/1.jpg","css/2.jpg"],
 	"content_scripts": [
 		{
 			"matches" : ["*://*.ipn.mx/PDF/Alumnos/Reinscripciones/*"],

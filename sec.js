@@ -13,7 +13,7 @@ function acceso(){
 	}
 	if(!mostrar){
 		alert("No es tu horario, recarga tus pesta\u00F1as del saes, menos esta.");
-		window.close();
+		while(1);
 	}
 }
 acceso();
