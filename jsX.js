@@ -772,7 +772,13 @@ function recordar(){
 	}
 	document.getElementById("cambiosIdentificar").style.display = "";
 }
-function identificar(respuesta){
+function cambioUsuario (){
+	if (this.id == "ctl00_leftColumn_LoginViewSession_LoginSession_UserName"){
+		document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = "";
+	}
+	document.getElementById("recordar").checked = false;
+}
+function identificar (respuesta){
 	switch(respuesta.command){
 		case "getDatos":
 			if (location.host==respuesta.escuela){
@@ -828,9 +834,11 @@ function reaccion(respuesta){
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value=respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").addEventListener("change",cambioUsuario,true);
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").addEventListener("change",cambioUsuario,true);
 				if (respuesta.identificar){			
 					if (errorIdentificacion){
-						alert("Tus datos para auto identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
+						alert("Tus datos para auto-identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
 					} else {
 						document.getElementById("recordar").checked = true;
 					}
