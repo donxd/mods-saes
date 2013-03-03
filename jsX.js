@@ -313,8 +313,8 @@ var totalColumnas;
 var ultimaBusqueda;
 var contador;
 function inicializar(){
-	buscador=document.getElementById("buscar");
-	buscador.columna=0;
+	buscador = document.getElementById("buscar");
+	buscador.columna = 0;
 	buscador.addEventListener("keyup",buscar,true);
   	document.getElementById("ver").addEventListener("click",verTodo,true);
 	buscador.addEventListener("click",modificaciones,true);
@@ -904,9 +904,15 @@ function comentarioRapido(){
 		document.body.appendChild(formularioEnlace);
 
 		var enlaces = document.getElementById("regs");
-		enlaces.rows[0].cells[10].innerHTML = "Comentar";
-		for (var i=1;i<enlaces.rows.length;i++){
-			enlaces.rows[i].cells[10].innerHTML = "<a href='#' name='diccionario'>#</a>";
+		var posicion = enlaces.rows[0].cells.length;
+
+		enlaces.rows[0].insertCell(posicion);
+		enlaces.rows[0].cells[posicion].innerHTML = "Comentar";
+		for (var i=1; i < enlaces.rows.length; i++){
+			enlaces.rows[i].insertCell(posicion);
+			if (enlaces.rows[i].cells[2].innerHTML != "" && enlaces.rows[i].cells[2].innerHTML != "&nbsp;"){
+				enlaces.rows[i].cells[posicion].innerHTML = "<a href='#' name='diccionario'>#</a>";
+			}
 		}
 		var nenlaces = document.getElementsByName("diccionario");
 		for (var i=0;i<nenlaces.length;i++){
@@ -1037,7 +1043,7 @@ function detectaPantalla(){
 			document.getElementById("ctl00_mainCopy_PnlDatos").removeAttribute("style");
 			document.getElementById("ctl00_mainCopy_PnlDatos").style = "width:820px;";
 			document.getElementById("ctl00_mainCopy_GV_Horario").setAttribute("id","regs");
-			// retiraSabados();
+			retiraSabados();
 			conexionDiccionario();
 			comentarioRapido();
 			break;
@@ -1080,24 +1086,25 @@ function detectaPantalla(){
 function seleccionMaterias(){
 	//document.body.innerHTML+="<div id='asignaturas' style='display:none;'></div>";
 	var tabla = document.getElementById("regs");
-	tabla.rows[0].insertCell(10);
-	tabla.rows[0].cells[10].innerHTML = "#";
+	var posicion = tabla.rows[0].cells.length;
+	tabla.rows[0].insertCell(posicion);
+	tabla.rows[0].cells[posicion].innerHTML = "#";
 	var cuadros  	= document.createElement("input");
 	cuadros.type 	= "checkbox";
 	cuadros.title 	= "Agregar";
-	for (var i=1;i<tabla.rows.length;i++){
-		tabla.rows[i].insertCell(10);
+	for (var i=1; i < tabla.rows.length; i++){
+		tabla.rows[i].insertCell(posicion);
 		//cuadro.value="Agregar";
 		// cuadro.setAttribute("numero",i);
 		var cuadro 		= cuadros.cloneNode(true);
 		cuadro.numero 	= i;
 		cuadro.addEventListener("click",agregarMateria,true);
-		tabla.rows[i].cells[10].appendChild(cuadro);
+		tabla.rows[i].cells[posicion].appendChild(cuadro);
 	}
 	var materiasSeleccionadas 	= document.createElement("div");
 	materiasSeleccionadas.id 	= "asignaturas";
 	materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
-	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
 	mostrarMateriasHorario.value 	= "Ver Horario";
@@ -1445,7 +1452,7 @@ function agregarMateria(){
 		profesor 	= tabla.rows[this.numero].cells[2].firstChild.innerHTML;
 	}
 	var i;
-	for (i=this.numero-1;i>0;i--){
+	for (i=this.numero-1; i > 0; i--){
 		// if (grupo!=tabla.rows[i].cells[0].innerHTML || nombre!=tabla.rows[i].cells[1].innerHTML){
 		if (grupo!=tabla.rows[i].cells[0].innerHTML){
 			break;
@@ -1464,13 +1471,14 @@ function agregarMateria(){
 		//var i=this.numero;
 		var j;
 		var n;
+		var posicion = tabla.rows[i].cells.length-1;
 		//encontrar primera posicion de aparicion		
 		// do{
 		for (;i<tabla.rows.length && grupo==tabla.rows[i].cells[0].innerHTML;i++){
 			if ((destinoConexion!="" && nombre==tabla.rows[i].cells[1].firstChild.innerHTML) || nombre==tabla.rows[i].cells[1].innerHTML){
-				tabla.rows[i].cells[10].firstChild.checked=true;
+				tabla.rows[i].cells[posicion].firstChild.checked=true;
 				var cambioDia = 0;
-				for (var j=5;j<10;j++){
+				for (var j = 5; j < posicion; j++){
 					if (tabla.rows[i].cells[j].innerHTML!="&nbsp;"){
 						horas = tabla.rows[i].cells[j].innerHTML;
 						horas = horas.replace("/\s+/g","");
@@ -1791,9 +1799,16 @@ function marcaOcupados(){
 }
 function retiraSabados(){
 	var tabla = document.getElementById("regs");
-	totalColumnas--;
-	for (var i=0;i<tabla.rows.length;i++){
-		tabla.rows[i].deleteCell(10);
+	var eliminar = true;
+	tabla.rows[1].cells[10].innerHTML = "perrin";
+	for (var i=1; i < tabla.rows.length; i++){
+		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
+	}
+	if (eliminar){
+		totalColumnas--;
+		for (var i=0; i < tabla.rows.length; i++){
+			tabla.rows[i].deleteCell(10);
+		}
 	}
 }
 function horarioDirecto(){
