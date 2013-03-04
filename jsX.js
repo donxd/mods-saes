@@ -981,6 +981,37 @@ function tiempoHorarios2(){
 function tiempoHorarios1(){
 	setTimeout("expandirHorarios1()",500);
 }
+function informacionExtra(){
+	var informacion = { maestros : [] , materias : [] };
+	var registros = document.getElementById("regs");
+	var prof, mate, encontrado;
+	for (var i = 1; i < registros.rows.length; i++){
+		if (destinoConexion != ""){
+			mate = registros.rows[i].cells[1].firstChild.innerHTML;
+			prof = registros.rows[i].cells[2].firstChild.innerHTML;
+		} else {
+			mate = registros.rows[i].cells[1].innerHTML;
+			prof = registros.rows[i].cells[2].innerHTML;
+		}
+
+		encontrado = false;
+		for (var j = 0; !encontrado && j < informacion.materias.length; j++){
+			if (mate == informacion.materias[j]) encontrado = true;
+		}
+		if (!encontrado){
+			informacion.materias.push(mate);
+		}
+
+		encontrado = false;
+		for (var j = 0; !encontrado && j < informacion.maestros.length; j++){
+			if (prof == informacion.maestros[j]) encontrado = true;
+		}
+		if (!encontrado){
+			informacion.maestros.push(prof);
+		}
+	}
+	log("informacionExtra******\n"+JSON.stringify(informacion));
+}
 function detectaPantalla(){
 	switch(location.pathname){
 		case "/":
@@ -1026,6 +1057,7 @@ function detectaPantalla(){
 					cargarMateriasHorario();
 					verComentarios();
 					cargarHorariosGenerados();
+					informacionExtra();
 				}
 			}
 			break;
