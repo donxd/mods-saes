@@ -772,7 +772,13 @@ function recordar(){
 	}
 	document.getElementById("cambiosIdentificar").style.display = "";
 }
-function identificar(respuesta){
+function cambioUsuario (){
+	if (this.id == "ctl00_leftColumn_LoginViewSession_LoginSession_UserName"){
+		document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = "";
+	}
+	document.getElementById("recordar").checked = false;
+}
+function identificar (respuesta){
 	switch(respuesta.command){
 		case "getDatos":
 			if (location.host==respuesta.escuela){
@@ -828,9 +834,11 @@ function reaccion(respuesta){
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value=respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").addEventListener("change",cambioUsuario,true);
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").addEventListener("change",cambioUsuario,true);
 				if (respuesta.identificar){			
 					if (errorIdentificacion){
-						alert("Tus datos para auto identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
+						alert("Tus datos para auto-identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
 					} else {
 						document.getElementById("recordar").checked = true;
 					}
@@ -979,6 +987,37 @@ function tiempoHorarios2(){
 function tiempoHorarios1(){
 	setTimeout("expandirHorarios1()",500);
 }
+function informacionExtra(){
+	var informacion = { maestros : [] , materias : [] };
+	var registros = document.getElementById("regs");
+	var prof, mate, encontrado;
+	for (var i = 1; i < registros.rows.length; i++){
+		if (destinoConexion != ""){
+			mate = registros.rows[i].cells[1].firstChild.innerHTML;
+			prof = registros.rows[i].cells[2].firstChild.innerHTML;
+		} else {
+			mate = registros.rows[i].cells[1].innerHTML;
+			prof = registros.rows[i].cells[2].innerHTML;
+		}
+
+		encontrado = false;
+		for (var j = 0; !encontrado && j < informacion.materias.length; j++){
+			if (mate == informacion.materias[j]) encontrado = true;
+		}
+		if (!encontrado){
+			informacion.materias.push(mate);
+		}
+
+		encontrado = false;
+		for (var j = 0; !encontrado && j < informacion.maestros.length; j++){
+			if (prof == informacion.maestros[j]) encontrado = true;
+		}
+		if (!encontrado){
+			informacion.maestros.push(prof);
+		}
+	}
+	log("informacionExtra******\n"+JSON.stringify(informacion));
+}
 function detectaPantalla(){
 	switch(location.pathname){
 		case "/":
@@ -1024,6 +1063,7 @@ function detectaPantalla(){
 					cargarMateriasHorario();
 					verComentarios();
 					cargarHorariosGenerados();
+					informacionExtra();
 				}
 			}
 			break;
