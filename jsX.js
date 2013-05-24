@@ -1018,6 +1018,18 @@ function informacionExtra(){
 	}
 	log("informacionExtra******\n"+JSON.stringify(informacion));
 }
+function informacionPlanes(){
+	var registros = document.getElementById("ctl00_mainCopy_GridView1");
+	if (registros != null){
+		var informacion = { materias : [] };
+		var mate;
+		for (var i = 1; i < registros.rows.length; i++){
+			mate = registros.rows[i].cells[2].innerHTML;
+			informacion.materias.push(mate);
+		}
+	}
+	log("informacionPlanes******\n"+JSON.stringify(informacion));
+}
 function detectaPantalla(){
 	switch(location.pathname){
 		case "/":
@@ -1036,6 +1048,9 @@ function detectaPantalla(){
 			if (confirm("\u00BFDesea calificar a los maestros r\u00E1pidamente?")){
 				pedir();
 			}
+			break;
+		case "/Academica/mapa_curricular.aspx":
+			informacionPlanes();
 			break;
 		case "/Academica/Ocupabilidad_grupos.aspx":
 			var periodo = document.getElementsByName("ctl00$mainCopy$rblEsquema");
@@ -1842,7 +1857,7 @@ function retiraSabados(){
 	var eliminar = true;
 	// tabla.rows[1].cells[10].innerHTML = "perrin";
 	for (var i=1; i < tabla.rows.length; i++){
-		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
+		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != " " && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
 	}
 	if (eliminar){
 		totalColumnas--;
