@@ -1840,7 +1840,7 @@ function marcaOcupados(){
 function retiraSabados(){
 	var tabla = document.getElementById("regs");
 	var eliminar = true;
-	tabla.rows[1].cells[10].innerHTML = "perrin";
+	//tabla.rows[1].cells[10].innerHTML = "perrin";
 	for (var i=1; i < tabla.rows.length; i++){
 		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
 	}
