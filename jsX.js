@@ -88,27 +88,49 @@ function ajustarDisenio(){
 
 	document.getElementById("footer").style.display			= "table-row";
 }
-function pedir(){
+function pedir(tipo){
+	// tipo 
+	// 	1 maestro
+	// 	2 tutor
 	var opcion=prompt("Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)","");
 	switch(opcion){
-		case "1": 	califica(5,1,2,1);
+		case "1": 	califica(5,1,2,1,tipo);
 			break;
-		case "2": 	califica(5,5,2,2);
+		case "2": 	califica(5,5,2,2,tipo);
 			break;
-		case "3": 	califica(5,3,2,1);
+		case "3": 	califica(5,3,2,1,tipo);
 			break;
-		case "4": 	califica(3,1,2,1);
+		case "4": 	califica(3,1,2,1,tipo);
 			break;
-		case "5": 	califica(1,1,1,1);
+		case "5": 	califica(1,1,1,1,tipo);
 			break;
 	}
 }
-function califica(maximo, minimo, recomendar1, recomendar2){
-	var combos = document.getElementsByTagName("select");
-	for (var i=0;(i<combos.length)&&(i<19);i++){
-		combos[i].value=Math.floor(Math.random() * (maximo-minimo+1)) + minimo;
+function califica(maximo, minimo, recomendar1, recomendar2, tipo){
+	// tipo 
+	// 	1 maestro
+	// 	2 tutor
+	switch (tipo){
+		case 1:
+			var combos = document.getElementsByTagName("select");
+			for (var i = 0; ( i < combos.length ) && ( i < 19 ); i++){
+				combos[i].value = Math.floor( Math.random() * ( maximo - minimo + 1 ) ) + minimo;
+			}
+			combos[i].value = Math.floor( Math.random() * (recomendar1 - recomendar2 + 1 ) ) + recomendar2;
+			break;
+		case 2:
+			var preguntas = document.getElementById("ctl00_mainCopy_GV_Preguntas");
+			var valores = preguntas.getElementsByTagName("input");
+			for (var i = 0; i < valores.length; i++){
+				// log(valores[i].getAttribute("id"));
+				valores[i].value = Math.floor( Math.random() * ( maximo - minimo + 1 ) ) + minimo;
+				var estrellas = valores[i].parentNode.children[1].children; 
+				var calificacion = valores[i].value;
+				// log("-> "+calificacion+"/"+estrellas.length);
+				for (var j = 0; j < calificacion && j < estrellas.length; j++) estrellas[j].className = "ratingItem smileypng";
+			}
+			break;
 	}
-	combos[i].value=Math.floor(Math.random() * (recomendar1-recomendar2+1)) + recomendar2;
 }
 function ajustaPeriodos(){
 	var numeroPeriodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table").length;
@@ -1034,7 +1056,7 @@ function detectaPantalla(){
 		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
 		case "/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx":
 			if (confirm("\u00BFDesea calificar a los maestros r\u00E1pidamente?")){
-				pedir();
+				pedir(1);
 			}
 			break;
 		case "/Academica/Ocupabilidad_grupos.aspx":
@@ -1121,6 +1143,19 @@ function detectaPantalla(){
 				ajustaPeriodos();
 			}
 			break;
+		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
+			var evaluacionTutores = document.getElementById("ctl00_mainCopy_Pnl_Evaluacion");
+			if ( evaluacionTutores ){
+				// log("-> evaluando");
+				document.getElementById("ctl00_mainCopy_Pnl_Cuestionario").setAttribute("style","");
+				setTimeout("calificaTutor()",1500);
+			}
+			break;
+	}
+}
+function calificaTutor(){
+	if (confirm("\u00BFDesea calificar al tutor r\u00E1pidamente?")){
+		pedir(2);
 	}
 }
 function seleccionMaterias(){
