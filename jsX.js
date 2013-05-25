@@ -119,16 +119,63 @@ function califica(maximo, minimo, recomendar1, recomendar2, tipo){
 			combos[i].value = Math.floor( Math.random() * (recomendar1 - recomendar2 + 1 ) ) + recomendar2;
 			break;
 		case 2:
+			// var numero;
+			// var validacionEstrellas = document.createElement("script");
+			// validacionEstrellas.setAttribute("type","text/javascript");
+			// validacionEstrellas.innerHTML = 'var callBackFrameUrl="/WebResource.axd?d=9o7IamVuuHzao6tllXFvu4XwREce-0AXucAY14qTG0_OY_yTPR7g6pJcD5uAHWVPyRlF9iywIHYRRxbDrNCQlai4S8A1&t=635042738786803908";\nWebForm_InitCallback();\nSys.Application.initialize();';
+			
+			// var validacionEstrellas2 = validacionEstrellas.cloneNode(true);
+
 			var preguntas = document.getElementById("ctl00_mainCopy_GV_Preguntas");
 			var valores = preguntas.getElementsByTagName("input");
 			for (var i = 0; i < valores.length; i++){
 				// log(valores[i].getAttribute("id"));
+				// numero = (i + 2) < 10 ? "0"+(i+2) : (i+2);
 				valores[i].value = Math.floor( Math.random() * ( maximo - minimo + 1 ) ) + minimo;
 				var estrellas = valores[i].parentNode.children[1].children; 
 				var calificacion = valores[i].value;
 				// log("-> "+calificacion+"/"+estrellas.length);
 				for (var j = 0; j < calificacion && j < estrellas.length; j++) estrellas[j].className = "ratingItem smileypng";
+				// valores[i].focus();
+				// valores[i].setAttribute("id","ctl00_mainCopy_GV_Preguntas_ctl"+numero+"_Rtn_Estrellas_RatingExtender2_ClientState");
+
+				// validacionEstrellas.innerHTML += 'Sys.Application.remove_init(function() {\n $create(AjaxControlToolkit.RatingBehavior, {\n "AutoPostBack":false,\n "CallbackID":"ctl00$mainCopy$GV_Preguntas$ctl'+numero+'$Rtn_Estrellas",\n "ClientStateFieldID":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender_ClientState",\n "EmptyStarCssClass":"emptypng",\n "FilledStarCssClass":"smileypng",\n "StarCssClass":"ratingItem",\n "WaitingStarCssClass":"donesmileypng",\n "id":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender"\n }, null, null, \n $get("ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas"));\n });';
+				// validacionEstrellas2.innerHTML += 'Sys.Application.add_init(function() {\n $create(AjaxControlToolkit.RatingBehavior, {\n "AutoPostBack":false,\n "CallbackID":"ctl00$mainCopy$GV_Preguntas$ctl'+numero+'$Rtn_Estrellas",\n "ClientStateFieldID":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender_ClientState",\n "EmptyStarCssClass":"emptypng",\n "FilledStarCssClass":"smileypng",\n "Rating":'+valores[i].value+',\n "StarCssClass":"ratingItem",\n "WaitingStarCssClass":"donesmileypng",\n "id":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender2"\n }, null, null, \n $get("ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas"));\n });';
 			}
+
+			
+			
+			// Sys.Application.remove_init(function() {\n
+			// 	$create(AjaxControlToolkit.RatingBehavior, {\n
+			// 		"AutoPostBack":false,\n
+			// 		"CallbackID":"ctl00$mainCopy$GV_Preguntas$ctl'+numero+'$Rtn_Estrellas",\n
+			// 		"ClientStateFieldID":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender_ClientState",\n
+			// 		"EmptyStarCssClass":"emptypng",\n
+			// 		"FilledStarCssClass":"smileypng",\n
+			// 		"StarCssClass":"ratingItem",\n
+			// 		"WaitingStarCssClass":"donesmileypng",\n
+			// 		"id":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender"\n
+			// 	}, null, null, \n
+			// 	$get("ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas"));\n
+			// });\n
+			// Sys.Application.add_init(function() {\n
+			// 	$create(AjaxControlToolkit.RatingBehavior, {\n
+			// 		"AutoPostBack":false,\n
+			// 		"CallbackID":"ctl00$mainCopy$GV_Preguntas$ctl'+numero+'$Rtn_Estrellas",\n
+			// 		"ClientStateFieldID":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender_ClientState",\n
+			// 		"EmptyStarCssClass":"emptypng",\n
+			// 		"FilledStarCssClass":"smileypng",\n
+			// 		"Rating":'+valores[i].value+',\n
+			// 		"StarCssClass":"ratingItem",\n
+			// 		"WaitingStarCssClass":"donesmileypng",\n
+			// 		"id":"ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas_RatingExtender2"\n
+			// 	}, null, null, \n
+			// 	$get("ctl00_mainCopy_GV_Preguntas_ctl'+numero+'_Rtn_Estrellas"));\n
+			// });
+			// document.forms[0].appendChild(validacionEstrellas);
+			// log("OK");
+			// document.forms[0].appendChild(validacionEstrellas2);
+			// log("OK");
 			break;
 	}
 }
@@ -1148,7 +1195,29 @@ function detectaPantalla(){
 			if ( evaluacionTutores ){
 				// log("-> evaluando");
 				document.getElementById("ctl00_mainCopy_Pnl_Cuestionario").setAttribute("style","");
-				setTimeout("calificaTutor()",1500);
+				// var formulario = document.forms[0];
+				// var scripts = formulario.getElementsByTagName("script");
+				// // while (scripts.length > 0 ){
+
+				// 	scripts[8].parentNode.removeChild(scripts[8]);
+				// 	// scripts[7].parentNode.removeChild(scripts[7]);
+				// 	// scripts[6].parentNode.removeChild(scripts[6]);
+				// 	// scripts[5].parentNode.removeChild(scripts[5]);
+				// 	// scripts[4].parentNode.removeChild(scripts[4]);
+				// 	// scripts[2].parentNode.removeChild(scripts[2]);
+				// 	// scripts[3].parentNode.removeChild(scripts[3]);
+				// 	// scripts[0].parentNode.removeChild(scripts[0]);
+				// // }
+				// // var scripts = formulario.getElementsByTagName("script");
+				// // for (var i = 0; i < scripts.length; i++){
+				// // 	log(scripts[8]);
+				// // }
+				
+
+				// var nuevoFormulario = formulario.cloneNode(true);
+				// // nuevoFormulario.setAttribute("onsubmit","alert('Fu'); return false;");
+				// document.getElementsByTagName("body")[0].replaceChild(nuevoFormulario,formulario);
+				// setTimeout("calificaTutor()",1500);
 			}
 			break;
 	}
