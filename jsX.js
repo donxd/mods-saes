@@ -3,90 +3,93 @@ function log(mensaje){
 }
 var indiceTabulador;
 function ajustarDisenio(){
-	document.getElementById("ctl00_subMenu").style.width="auto";
-	var disenio = document.createElement("style");
-	disenio.setAttribute("type","text/css");
-	disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border: none; display:inline-block;width:150px;}";
-	var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
-	for (var i=0;i<elementosMenu.length;i++){
-		if (elementosMenu[i].children.length==2){
-			elementosMenu[i].children[1].style.paddingLeft="20px";
-		}
-	}
-	var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("br");
-	while(espaciosImagenes.length!=0){
-		espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
-	}
-	
-	var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("img");
-	while(espaciosImagenes.length!=0){
-		espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
-	}
-
-
-	document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
-	var links = document.getElementsByTagName("a");
-	var tabAsignado;
-	for (var i=0;i<links.length;i++){
-		if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
-			//~ Academica/agenda_escolar.aspx
-			//~ Academica/horarios.aspx
-			//~ /Academica/Ocupabilidad_grupos.aspx
-			//~ Academica/calendario_ets.aspx
-			//if (links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
-
-			// if (links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
-			// 	links[i].tabIndex=indiceTabulador;
-			// 	links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-			// 	links[i+1].tabIndex=indiceTabulador+1;
-			// 	links[i+1].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+indiceTabulador+"</span>";
-			// 	links[i+2].tabIndex=indiceTabulador+3;
-			// 	links[i+2].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+2)+"</span>";
-
-			// 	var elementoLista = document.createElement("li");
-			// 	elementoLista.innerHTML="<a href='/Academica/Ocupabilidad_grupos.aspx' title='Muestra en n&uacute;mero de inscritos por materia.' tabIndex='"+(indiceTabulador+2)+"'>»Ocupabilidad de Horarios <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+1)+"</span></a>";
-			// 	links[i+1].parentNode.parentNode.insertBefore(elementoLista, links[i+1].parentNode.nextSibling);
-			// 	i=links.length;
-			// 	break;
-			// }
-			switch(links[i].getAttribute("href")){
-				// case "/default.aspx":
-				// case "/Alumnos/default.aspx":
-				// case "/Academica/default.aspx":
-				// case "/Ayuda/Ayuda.aspx":
-				// 	if (links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
-				// 		links[i].tabIndex=indiceTabulador;
-				// 		links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-				// 		indiceTabulador++;
-				// 		tabAsignado=true;
-				// 	}
-				// 	break;
-				case "/Alumnos/ETS/default.aspx":
-					links[i].setAttribute("href","#");
-					break;
-				case "/Reglamento/Default.aspx":
-					links[i].setAttribute("href","http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf");
-					links[i].setAttribute("target","_blank");
-					// links[i].tabIndex=indiceTabulador;
-					// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-					// indiceTabulador++;
-					// tabAsignado=true;
-					break;
+	var subMenu = document.getElementById("ctl00_subMenu");
+	if (subMenu){
+		subMenu.style.width="auto";
+		var disenio = document.createElement("style");
+		disenio.setAttribute("type","text/css");
+		disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border: none; display:inline-block;width:150px;}";
+		var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
+		for (var i=0;i<elementosMenu.length;i++){
+			if (elementosMenu[i].children.length==2){
+				elementosMenu[i].children[1].style.paddingLeft="20px";
 			}
-			// if (!tabAsignado){
-			// 	links[i].tabIndex=-1;
-			// }
 		}
+		var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("br");
+		while(espaciosImagenes.length!=0){
+			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
+		}
+		
+		var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("img");
+		while(espaciosImagenes.length!=0){
+			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
+		}
+
+
+		document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
+		var links = document.getElementsByTagName("a");
+		var tabAsignado;
+		for (var i=0;i<links.length;i++){
+			if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
+				//~ Academica/agenda_escolar.aspx
+				//~ Academica/horarios.aspx
+				//~ /Academica/Ocupabilidad_grupos.aspx
+				//~ Academica/calendario_ets.aspx
+				//if (links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+
+				// if (links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+				// 	links[i].tabIndex=indiceTabulador;
+				// 	links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+				// 	links[i+1].tabIndex=indiceTabulador+1;
+				// 	links[i+1].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+indiceTabulador+"</span>";
+				// 	links[i+2].tabIndex=indiceTabulador+3;
+				// 	links[i+2].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+2)+"</span>";
+
+				// 	var elementoLista = document.createElement("li");
+				// 	elementoLista.innerHTML="<a href='/Academica/Ocupabilidad_grupos.aspx' title='Muestra en n&uacute;mero de inscritos por materia.' tabIndex='"+(indiceTabulador+2)+"'>»Ocupabilidad de Horarios <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+1)+"</span></a>";
+				// 	links[i+1].parentNode.parentNode.insertBefore(elementoLista, links[i+1].parentNode.nextSibling);
+				// 	i=links.length;
+				// 	break;
+				// }
+				switch(links[i].getAttribute("href")){
+					// case "/default.aspx":
+					// case "/Alumnos/default.aspx":
+					// case "/Academica/default.aspx":
+					// case "/Ayuda/Ayuda.aspx":
+					// 	if (links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
+					// 		links[i].tabIndex=indiceTabulador;
+					// 		links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+					// 		indiceTabulador++;
+					// 		tabAsignado=true;
+					// 	}
+					// 	break;
+					case "/Alumnos/ETS/default.aspx":
+						links[i].setAttribute("href","#");
+						break;
+					case "/Reglamento/Default.aspx":
+						links[i].setAttribute("href","http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf");
+						links[i].setAttribute("target","_blank");
+						// links[i].tabIndex=indiceTabulador;
+						// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+						// indiceTabulador++;
+						// tabAsignado=true;
+						break;
+				}
+				// if (!tabAsignado){
+				// 	links[i].tabIndex=-1;
+				// }
+			}
+		}
+		document.getElementById("contentwrapper").style.display	= "table";
+
+		document.getElementById("floatwrapper").style.display	= "table-cell";
+		document.getElementById("floatwrapper").style.float		= "none";
+
+		document.getElementById("rightcolumn").style.display	= "table-cell";
+		document.getElementById("rightcolumn").style.float		= "none";
+
+		document.getElementById("footer").style.display			= "table-row";
 	}
-	document.getElementById("contentwrapper").style.display	= "table";
-
-	document.getElementById("floatwrapper").style.display	= "table-cell";
-	document.getElementById("floatwrapper").style.float		= "none";
-
-	document.getElementById("rightcolumn").style.display	= "table-cell";
-	document.getElementById("rightcolumn").style.float		= "none";
-
-	document.getElementById("footer").style.display			= "table-row";
 }
 function pedir(tipo){
 	// tipo 
@@ -181,17 +184,17 @@ function califica(maximo, minimo, recomendar1, recomendar2, tipo){
 }
 function ajustaPeriodos(){
 	var numeroPeriodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table").length;
-	if (numeroPeriodos>0){
-		for (var i=0;i<numeroPeriodos;i++){
+	if (numeroPeriodos > 0){
+		for (var i = 0; i < numeroPeriodos; i++){
 			var periodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
 			var periodosAnidados = periodos[i].getElementsByTagName("table");
 			var celda;
-			for (;periodosAnidados.length>0;){
-				if (periodosAnidados[0].parentNode.tagName=="CENTER"&&periodosAnidados[0].parentNode.children.length==2){
+			for (; periodosAnidados.length > 0 ;){
+				if (periodosAnidados[0].parentNode.tagName == "CENTER"&&periodosAnidados[0].parentNode.children.length==2){
 					celda = periodosAnidados[0].parentNode.parentNode;
 					var acomodar = periodosAnidados[0].parentNode.cloneNode(true);
 					periodosAnidados[0].parentNode.parentNode.removeChild(periodosAnidados[0].parentNode);
-				}else{
+				} else {
 					celda = periodosAnidados[0].parentNode;
 					var periodo 	= periodosAnidados[0].cloneNode(true);
 					var acomodar 	= document.createElement("center");
@@ -202,10 +205,10 @@ function ajustaPeriodos(){
 				}
 				document.getElementById("ctl00_mainCopy_Lbl_Kardex").appendChild(acomodar);	
 			}
-			while(celda.getElementsByTagName("br").length>0){
+			while (celda.getElementsByTagName("br").length > 0){
 				celda.getElementsByTagName("br")[0].parentNode.removeChild(celda.getElementsByTagName("br")[0]);
 			}
-			if (periodos[i].parentNode.tagName=="CENTER"&&periodos[i].parentNode.children.length<2){
+			if (periodos[i].parentNode.tagName == "CENTER" && periodos[i].parentNode.children.length < 2){
 				var espacio = document.createElement("br");
 				periodos[i].parentNode.appendChild(espacio);
 			}
@@ -1188,6 +1191,7 @@ function detectaPantalla(){
 				document.getElementById("floatwrapper").appendChild(parteDerecha);
 				
 				ajustaPeriodos();
+				informacionHistorico();
 			}
 			break;
 		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
@@ -1221,6 +1225,23 @@ function detectaPantalla(){
 			}
 			break;
 	}
+}
+function informacionHistorico(){
+	var historial = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
+	var salidaInformacionHistorico = "clave,materia,fecha,periodo,feval,calif\n";
+	for (var i = 0; i < historial.length; i++){
+		if (historial[i].rows[0].cells[0].getAttribute("colspan") == 6){
+			for (var j = 2; j < historial[i].rows.length; j++){
+				//log("->i:"+i+"\tj:"+j);
+				if (historial[i].rows[j].cells.length > 5) {
+					salidaInformacionHistorico += "'"+historial[i].rows[j].cells[0].innerHTML+"','"+historial[i].rows[j].cells[1].innerHTML+"','"+historial[i].rows[j].cells[2].innerHTML+"','"+historial[i].rows[j].cells[3].innerHTML+"','"+historial[i].rows[j].cells[4].innerHTML+"','"+historial[i].rows[j].cells[5].innerHTML+"'\n";
+				} else {
+					salidaInformacionHistorico += "'"+historial[i].rows[j].cells[0].innerHTML+"','"+historial[i].rows[j].cells[1].innerHTML+"','"+historial[i].rows[j].cells[2].innerHTML+"','"+historial[i].rows[j].cells[3].innerHTML+"','"+historial[i].rows[j].cells[4].innerHTML+"'\n";
+				}
+			}
+		}
+	}
+	log("->"+salidaInformacionHistorico);
 }
 function calificaTutor(){
 	if (confirm("\u00BFDesea calificar al tutor r\u00E1pidamente?")){
