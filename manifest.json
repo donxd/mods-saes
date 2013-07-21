@@ -11,13 +11,13 @@
       	"128": "/css/fu_128.png"
     },
 	"permissions": [ "tabs", "*://*.ipn.mx/*", "*://*.google.com/*"],
-	"homepage_url": "http://foroupiicsa.net/extension-saes/",
+	"homepage_url": "https://www.facebook.com/ComplementoSaesChrome",
 	"options_page":"opciones.html",
     "background":{
     	"scripts": ["segundoPlano.js"],
     	"persistent": false
     },
-    "web_accessible_resources": ["css/menos.png","css/1.jpg","css/2.jpg"],
+    "web_accessible_resources": ["css/menos.png","css/1.jpg","css/2.jpg","css/conf.png"],
 	"content_scripts": [
 		{
 			"matches" : ["*://*.ipn.mx/PDF/Alumnos/Reinscripciones/*"],

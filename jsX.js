@@ -25,71 +25,92 @@ function ajustarDisenio(){
 			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
 		}
 
-
 		document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
-		var links = document.getElementsByTagName("a");
-		var tabAsignado;
-		for (var i=0;i<links.length;i++){
-			if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
-				//~ Academica/agenda_escolar.aspx
-				//~ Academica/horarios.aspx
-				//~ /Academica/Ocupabilidad_grupos.aspx
-				//~ Academica/calendario_ets.aspx
-				//if (links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
-
-				// if (links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
-				// 	links[i].tabIndex=indiceTabulador;
-				// 	links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-				// 	links[i+1].tabIndex=indiceTabulador+1;
-				// 	links[i+1].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+indiceTabulador+"</span>";
-				// 	links[i+2].tabIndex=indiceTabulador+3;
-				// 	links[i+2].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+2)+"</span>";
-
-				// 	var elementoLista = document.createElement("li");
-				// 	elementoLista.innerHTML="<a href='/Academica/Ocupabilidad_grupos.aspx' title='Muestra en n&uacute;mero de inscritos por materia.' tabIndex='"+(indiceTabulador+2)+"'>»Ocupabilidad de Horarios <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+1)+"</span></a>";
-				// 	links[i+1].parentNode.parentNode.insertBefore(elementoLista, links[i+1].parentNode.nextSibling);
-				// 	i=links.length;
-				// 	break;
-				// }
-				switch(links[i].getAttribute("href")){
-					// case "/default.aspx":
-					// case "/Alumnos/default.aspx":
-					// case "/Academica/default.aspx":
-					// case "/Ayuda/Ayuda.aspx":
-					// 	if (links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
-					// 		links[i].tabIndex=indiceTabulador;
-					// 		links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-					// 		indiceTabulador++;
-					// 		tabAsignado=true;
-					// 	}
-					// 	break;
-					case "/Alumnos/ETS/default.aspx":
-						links[i].setAttribute("href","#");
-						break;
-					case "/Reglamento/Default.aspx":
-						links[i].setAttribute("href","http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf");
-						links[i].setAttribute("target","_blank");
-						// links[i].tabIndex=indiceTabulador;
-						// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
-						// indiceTabulador++;
-						// tabAsignado=true;
-						break;
-				}
-				// if (!tabAsignado){
-				// 	links[i].tabIndex=-1;
-				// }
-			}
-		}
-		document.getElementById("contentwrapper").style.display	= "table";
-
-		document.getElementById("floatwrapper").style.display	= "table-cell";
-		document.getElementById("floatwrapper").style.float		= "none";
-
-		document.getElementById("rightcolumn").style.display	= "table-cell";
-		document.getElementById("rightcolumn").style.float		= "none";
-
-		document.getElementById("footer").style.display			= "table-row";
 	}
+	var links = document.getElementsByTagName("a");
+	var tabAsignado;
+	for (var i=0;i<links.length;i++){
+		if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
+			//~ Academica/agenda_escolar.aspx
+			//~ Academica/horarios.aspx
+			//~ /Academica/Ocupabilidad_grupos.aspx
+			//~ Academica/calendario_ets.aspx
+			//if (links[i].getAttribute("href").indexOf("horarios.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+
+			// if (links[i].getAttribute("href").indexOf("agenda_escolar.aspx")!=-1&&links[i].parentNode.tagName=="LI"){
+			// 	links[i].tabIndex=indiceTabulador;
+			// 	links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+			// 	links[i+1].tabIndex=indiceTabulador+1;
+			// 	links[i+1].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+indiceTabulador+"</span>";
+			// 	links[i+2].tabIndex=indiceTabulador+3;
+			// 	links[i+2].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+2)+"</span>";
+
+			// 	var elementoLista = document.createElement("li");
+			// 	elementoLista.innerHTML="<a href='/Academica/Ocupabilidad_grupos.aspx' title='Muestra en n&uacute;mero de inscritos por materia.' tabIndex='"+(indiceTabulador+2)+"'>»Ocupabilidad de Horarios <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador+1)+"</span></a>";
+			// 	links[i+1].parentNode.parentNode.insertBefore(elementoLista, links[i+1].parentNode.nextSibling);
+			// 	i=links.length;
+			// 	break;
+			// }
+			switch(links[i].getAttribute("href")){
+				// case "/default.aspx":
+				// case "/Alumnos/default.aspx":
+				// case "/Academica/default.aspx":
+				// case "/Ayuda/Ayuda.aspx":
+				// 	if (links[i].parentNode.parentNode.getAttribute("id")!="ctl00_smPath"){
+				// 		links[i].tabIndex=indiceTabulador;
+				// 		links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+				// 		indiceTabulador++;
+				// 		tabAsignado=true;
+				// 	}
+				// 	break;
+				case "/Alumnos/ETS/default.aspx":
+					links[i].setAttribute("href","#");
+					break;
+				case "/Reglamento/Default.aspx":
+					links[i].setAttribute("href","http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf");
+					links[i].setAttribute("target","_blank");
+					// links[i].tabIndex=indiceTabulador;
+					// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
+					// indiceTabulador++;
+					// tabAsignado=true;
+					break;
+			}
+			// if (!tabAsignado){
+			// 	links[i].tabIndex=-1;
+			// }
+		}
+	}
+	document.getElementById("contentwrapper").style.display	= "table";
+
+	document.getElementById("floatwrapper").style.display	= "table-cell";
+	document.getElementById("floatwrapper").style.float		= "none";
+
+	document.getElementById("rightcolumn").style.display	= "table-cell";
+	document.getElementById("rightcolumn").style.float		= "none";
+
+	document.getElementById("footer").style.display			= "table-row";
+
+	var configuracion = document.createElement("div");
+	configuracion.setAttribute("style","position : fixed; top : 2px; left :"+(window.innerWidth-123)+"px; text-align : right; width : 120px;");
+	var imagenConfiguracion = document.createElement("img");
+	imagenConfiguracion.src = chrome.extension.getURL("/css/conf.png");
+	imagenConfiguracion.style.cursor = "pointer";
+	imagenConfiguracion.addEventListener("click",mostrarContacto,true);
+	var informacionContacto = document.createElement("div");
+	informacionContacto.innerHTML = "Comentarios, dudas, problemas y sugerencias a : <br/><a target='_blank' style='color : #AEE8F3; ' href='https://www.facebook.com/ComplementoSaesChrome'>Complemento SAES</a><br/><a href='#'  style='color : #AEE8F3;'>n0s3.xd@gmail.com</a>";
+	informacionContacto.setAttribute("style","display : none; color : #FFF; ");
+	informacionContacto.setAttribute("id","informacion_contacto");
+	configuracion.appendChild(imagenConfiguracion);
+	configuracion.appendChild(informacionContacto);
+	document.body.appendChild(configuracion);
+}
+function mostrarContacto (){
+	var informacion_contacto = document.getElementById("informacion_contacto");
+	if (informacion_contacto.style.display == "none"){
+		informacion_contacto.style.display = "";
+	} else {
+		informacion_contacto.style.display = "none";
+	}	
 }
 function pedir(tipo){
 	// tipo 
@@ -720,7 +741,7 @@ function procesaRespuesta() {
 }
 function generaAdvertenciaActualizacion(){
 	var mensaje = document.createElement("div");
-	mensaje.setAttribute("style"," background-color : #800000; width :"+window.window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
+	mensaje.setAttribute("style"," background-color : #800000; width :"+window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
 	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>&#161;Manten al d&iacute;a la extensi&oacute;n&#33;</a>";
 	document.body.appendChild(mensaje);
 	document.getElementById("actualizacionLink").addEventListener("click",actualizar,true);
@@ -1124,7 +1145,7 @@ function detectaPantalla(){
 			}
 			break;
 		case "/Academica/mapa_curricular.aspx":
-			informacionPlanes();
+			// informacionPlanes();
 			break;
 		case "/Academica/Ocupabilidad_grupos.aspx":
 			var periodo = document.getElementsByName("ctl00$mainCopy$rblEsquema");
@@ -1208,7 +1229,7 @@ function detectaPantalla(){
 				document.getElementById("floatwrapper").appendChild(parteDerecha);
 				
 				ajustaPeriodos();
-				informacionHistorico();
+				// informacionHistorico();
 			}
 			break;
 		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
@@ -1641,15 +1662,15 @@ function agregarMateria(){
 	// 	nombre 		= tabla.rows[this.numero].cells[1].firstChild.innerHTML;
 	// 	profesor 	= tabla.rows[this.numero].cells[2].firstChild.innerHTML;
 	// }
-	var i;
-	//indicar la posición más arriba que sea del mismo grupo para seleccionar la misma materia del mismo grupo
-	for (i = this.numero-1; i > 0; i--){
-		// if (grupo!=tabla.rows[i].cells[0].innerHTML || nombre!=tabla.rows[i].cells[1].innerHTML){
-		if (grupo != tabla.rows[i].cells[0].innerHTML){
-			break;
-		}
-	}
-	i++;
+	var i = 1;
+		// //indicar la posición más arriba que sea del mismo grupo para seleccionar la misma materia del mismo grupo
+		// for (i = this.numero-1; i > 0; i--){
+		// 	// if (grupo!=tabla.rows[i].cells[0].innerHTML || nombre!=tabla.rows[i].cells[1].innerHTML){
+		// 	if (grupo != tabla.rows[i].cells[0].innerHTML){
+		// 		break;
+		// 	}
+		// }
+		// i++;
 
 	// var celdasRelleno = 6; //celdas que no son parte del horario
 	// var numeroDias = tabla.rows[i].cells.length - celdasRelleno;
@@ -1665,9 +1686,10 @@ function agregarMateria(){
 
 		var posicion = tabla.rows[i].cells.length-1;
 		//encontrar los elementos de la misma materia y secuencia
-		for (;i < tabla.rows.length && grupo == tabla.rows[i].cells[0].innerHTML; i++){
+		// for (;i < tabla.rows.length && grupo == tabla.rows[i].cells[0].innerHTML; i++){
+		for (;i < tabla.rows.length; i++){
 			// if ((destinoConexion != "" && nombre == tabla.rows[i].cells[1].firstChild.innerHTML) || nombre == tabla.rows[i].cells[1].innerHTML){
-			if (nombre == tabla.rows[i].cells[1].innerText){
+			if (grupo == tabla.rows[i].cells[0].innerHTML && nombre == tabla.rows[i].cells[1].innerText){
 				tabla.rows[i].cells[posicion].firstChild.checked = true;
 				var cambioDia = 0;
 				for (j = celdaInicioHorario; j < posicion; j++){
@@ -1740,6 +1762,7 @@ function agregarMateria(){
 		materiaH.cells[1].innerHTML = asignaturaH.materia;
 		var quitarMateria = document.createElement("img");
 		quitarMateria.src = chrome.extension.getURL("/css/menos.png");
+		quitarMateria.style.cursor = "pointer";
 		quitarMateria.addEventListener("click",removerMateria,true);
 		materiaH.cells[cantidadCeldas-2].appendChild(quitarMateria);
 		var estadoMateria 	= document.createElement("input");
@@ -1773,25 +1796,7 @@ function agregarMateria(){
 		//respaldando selección
 		guardarMateriasHorario();
 	} else { //quitar
-
 		eliminaMateriaSeleccion(grupo, nombre, i, 0);
-
-		// //deseleccionando las materias del mismo grupo
-		// for (; i < tabla.rows.length && grupo == tabla.rows[i].cells[0].innerHTML; i++){
-		// 	if (nombre==tabla.rows[i].cells[1].innerHTML){
-		// 		tabla.rows[i].cells[10].firstChild.checked = false;
-		// 	}
-		// }
-		// //quitando de la lista de la selección
-		// var asignaturasTabla = document.getElementById("tablaAsignaturas");
-		// for (i = 1; i < asignaturasTabla.rows.length; i++){
-		// 	if (asignaturasTabla.rows[i].cells[0].innerHTML==grupo && asignaturasTabla.rows[i].cells[1].innerHTML == nombre){
-		// 		asignaturasTabla.deleteRow(i);
-		// 		break;
-		// 	}
-		// }
-		// //eliminar de la lista permanente
-		// borrarMateriaHorario(grupo, nombre);
 	}
 	if (numeroDias > 5) {
 		//verificacion para la visualización de la columna sábado
@@ -1825,7 +1830,6 @@ function cambiarEstadoSeleccion(){
 			break;
 		}
 	}
-	// alert("|"+grupo+"|"+materia+"|");
 }
 function borrarMateriasHorario(){
 	var i;
@@ -1866,7 +1870,7 @@ function ordenar(datos){
 	return datos;
 }
 function guardarMateriasHorario(){
-	log("totalGuardadoFinal :"+materiasHorario.materias.length);
+	// log("totalGuardadoFinal :"+materiasHorario.materias.length);
 	if (materiasHorario.materias.length != 0){
 		localStorage.horarioMaterias = JSON.stringify(materiasHorario);
 		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
@@ -1884,19 +1888,10 @@ function removerMateria(){
 		var materia = this.parentNode.parentNode.cells[1].innerHTML;
 
 		eliminaMateriaSeleccion(grupo, materia, this.parentNode.parentNode.rowIndex, 1);
-
-		//* this.parentNode.parentNode.parentNode.deleteRow(this.parentNode.parentNode.rowIndex);
-		// var registros = document.getElementById("regs");
-		// for (var i=1;i<registros.rows.length;i++){
-		// 	if (registros.rows[i].cells[0].innerHTML==grupo && (registros.rows[i].cells[1].innerHTML==materia || (destinoConexion!="" && registros.rows[i].cells[1].firstChild.innerHTML==materia) )){
-		// 		registros.rows[i].cells[10].firstChild.checked = false;
-		// 	}
-		// }
-		// borrarMateriaHorario(grupo, materia);
 	}
 }
 function eliminaMateriaSeleccion (grupo, materia, posicion, tipoAccion){
-	log("eliminaMateriaSeleccion\n"+grupo+", "+materia+", "+posicion+", "+tipoAccion);
+	// log("eliminaMateriaSeleccion\n"+grupo+", "+materia+", "+posicion+", "+tipoAccion);
 	var asignaturasTabla = document.getElementById("tablaAsignaturas");
 	var registros = document.getElementById("regs");
 	var i = posicion;
@@ -1978,6 +1973,7 @@ function cargarMateriasHorario(){
 		var quitarMaterias   = document.createElement("img");
 		quitarMaterias.src   = chrome.extension.getURL("/css/menos.png");
 		quitarMaterias.title = "Quitar";
+		quitarMaterias.style.cursor = "pointer";
 		
 		var estadoMaterias 		= document.createElement("input");
 		estadoMaterias.type 	= "checkbox";

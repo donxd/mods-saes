@@ -1,4 +1,4 @@
-Extensión cargada desde su versión 0.52
+Extensión cargada desde su versión 0.53
 ->Calificación de los Tutores - Congelado
 ->Correción para autoidentificación
 ->Correciones para los días sábado
