@@ -91,7 +91,7 @@ function ajustarDisenio(){
 	document.getElementById("footer").style.display			= "table-row";
 
 	var configuracion = document.createElement("div");
-	configuracion.setAttribute("style","position : fixed; top : 2px; left :"+(window.innerWidth-123)+"px; text-align : right; width : 120px;");
+	configuracion.setAttribute("style","position : fixed; top : 2px; left :"+(window.innerWidth-123)+"px; text-align : right; width : 120px; background-color : rgba(132, 132, 132, 0.9);");
 	var imagenConfiguracion = document.createElement("img");
 	imagenConfiguracion.src = chrome.extension.getURL("/css/conf.png");
 	imagenConfiguracion.style.cursor = "pointer";
@@ -432,11 +432,11 @@ function agregaBuscador(opc){
 	switch(opc){
 		case 1: //ocupabilidad
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
-			var boton = document.createElement("input");
-			boton.setAttribute("type","button");
-			boton.setAttribute("value","Recargar");
-			boton.addEventListener("click",actualizaOcupabilidad,true);
-			controlesBuscador.appendChild(boton);
+			// var boton = document.createElement("input");
+			// boton.setAttribute("type","button");
+			// boton.setAttribute("value","Recargar");
+			// boton.addEventListener("click",actualizaOcupabilidad,true);
+			// controlesBuscador.appendChild(boton);
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
@@ -448,10 +448,9 @@ function agregaBuscador(opc){
 }
 //##############<-buscador
 function actualizaOcupabilidad(){
-	alert("Inhabilitado por el momento.");
-	// valida(2);
+	valida(3);
 }
-var READY_STATE_COMPLETE=4;
+var READY_STATE_COMPLETE = 4;
 var peticion_http = null;
 function inicializa_xhr() {
 	if (window.XMLHttpRequest) {
@@ -461,55 +460,52 @@ function inicializa_xhr() {
 		return new ActiveXObject("Microsoft.XMLHTTP");
 	}
 }
+var tipoConsulta;
 function valida(opc) {
 	peticion_http = inicializa_xhr();
 	if (peticion_http) {
-		localStorage['tipoConsulta']=opc;
+		tipoConsulta = opc;
 		switch(opc){
-			case 1: //actualizacion
+			case 1 : //actualizacion
 				peticion_http.onreadystatechange = procesaRespuesta;
 				peticion_http.open("GET", chrome.i18n.getMessage("update"), true);
 				peticion_http.send("");
 				break;
-			case 2:
-				//javascript:alert(document.aspnetForm.elements.length);
+			case 2 :
 				var elementos 		= document.forms[0].elements;
-				var parametros 		= "";
-				var parametros2 	= "";
-				var agregar 		= "";
-				var ultimo 			="";
 				// var parm = "";
+				// var parm2 = "";
+				// var parametros2 	= "";
+				var parametros 		= "";
+				var agregar 		= "";
+				var ultimo 			= "";
 				for (var i=0;i<elementos.length;i++){
+					//quitando los del buscador
 					if (elementos[i].getAttribute("name")!=null&&elementos[i].getAttribute("name")!=ultimo){
-						// parm+=elementos[i].getAttribute("name")+"\t("+elementos[i].value.length+")\n";
+						// parm += elementos[i].getAttribute("name")+"\t("+elementos[i].value.length+")\n";
 						switch(elementos[i].getAttribute("name")){
-							case "__EVENTTARGET":
-							case "__EVENTARGUMENT":
-							case "__LASTFOCUS":
-							case "__VIEWSTATE":
-							case "__VIEWSTATEENCRYPTED":
-							case "__EVENTVALIDATION":
-							case "ctl00$mainCopy$rblEsquema":
-							case "ctl00$mainCopy$dpdPeriodoEscolarHist":
-							// case "ctl00$mainCopy$Chkespecialidad":
-							// case "ctl00$mainCopy$ChkSemestre":
-							// case "ctl00$mainCopy$Chkgrupo":
-							// case "ctl00$mainCopy$Chkmateria":
-							// case "ctl00$mainCopy$txtCarrera":
-							case "ctl00$mainCopy$dpdcarrera":
-							// case "ctl00$mainCopy$txtplan":
-							case "ctl00$mainCopy$dpdplan":
+							case "__EVENTTARGET" :
+							case "__EVENTARGUMENT" :
+							case "__LASTFOCUS" :
+							case "__VIEWSTATE" :
+							case "__VIEWSTATEENCRYPTED" :
+							case "__EVENTVALIDATION" :
+							case "ctl00$mainCopy$rblEsquema" :  				//periodo ocupa    				->ctl00$mainCopy$rblEsquema$0,ctl00$mainCopy$rblEsquema$1
+							case "ctl00$mainCopy$dpdPeriodoEscolarHist" :  		//lista historico periodos    	->ctl00$mainCopy$dpdPeriodoEscolarHist
+							case "ctl00$mainCopy$dpdcarrera" : 					//lista carreras
+							case "ctl00$mainCopy$dpdplan" : 					//lista Plan de Estudios
+							case "ctl00$mainCopy$txtCarrera" : 					//texto Carrera
+							case "ctl00$mainCopy$txtplan" : 					//texto Plan de Estudios
 
-							// // case "ctl00$mainCopy$rblEsquema":  					//periodo ocupa    				->ctl00$mainCopy$rblEsquema$0,ctl00$mainCopy$rblEsquema$1
-							// // 	case "ctl00$mainCopy$dpdPeriodoEscolarHist":  	//lista historico periodos    	->ctl00$mainCopy$dpdPeriodoEscolarHist
-							// case "ctl00_mainCopy_Chkespecialidad":  			//especialidad    				->ctl00$mainCopy$Chkespecialidad
-							// 	case "ctl00$mainCopy$dpdespecialidad":  		//lista especialidad    		->ctl00$mainCopy$dpdespecialidad
+							// case "ctl00$mainCopy$Chkespecialidad" : 			//especialidad					->ctl00_mainCopy_Chkespecialidad
 							// case "ctl00$mainCopy$ChkSemestre":  				//semestre    					->ctl00$mainCopy$ChkSemestre
-							// 	case "ctl00$mainCopy$dpdsemestre":  			//lista semestre    			->ctl00$mainCopy$dpdsemestre
-							// case "ctl00$mainCopy$Chkgrupo":  					//grupo    						->ctl00$mainCopy$Chkgrupo
-							// 	case "ctl00$mainCopy$dpdgrupo":  				//lista grupos    				->ctl00$mainCopy$dpdgrupo
-							// case "ctl00$mainCopy$Chkmateria":  					//materia    					->ctl00$mainCopy$Chkmateria
-							// 	case "ctl00$mainCopy$dpdmateria":  				//lista grupos    				->ctl00$mainCopy$dpdmateria
+							// case "ctl00$mainCopy$Chkgrupo":  				//grupo    						->ctl00$mainCopy$Chkgrupo
+							// case "ctl00$mainCopy$Chkmateria":  				//materia    					->ctl00$mainCopy$Chkmateria
+
+							// case "ctl00$mainCopy$dpdespecialidad":  			//lista especialidad    		->ctl00$mainCopy$dpdespecialidad
+							// case "ctl00$mainCopy$dpdsemestre":  				//lista semestre    			->ctl00$mainCopy$dpdsemestre
+							// case "ctl00$mainCopy$dpdgrupo":  				//lista grupos    				->ctl00$mainCopy$dpdgrupo
+							// case "ctl00$mainCopy$dpdmateria":  				//lista grupos    				->ctl00$mainCopy$dpdmateria
 							// 		break;
 
 							// // $-case "__EVENTTARGET":
@@ -527,8 +523,9 @@ function valida(opc) {
 							// case "ctl00$mainCopy$Filtro$lsNoPeriodos": // # periodo horarios
 							// case "ctl00$mainCopy$lsSecuencias":  //grupo
 								parametros += agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
+								// parm2 += "\n"+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
 								//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
-								parametros2 += agregar+elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
+								// parametros2 += elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
 								if (elementos[i].getAttribute("type")!="radio"){
 									ultimo = elementos[i].getAttribute("name");
 								} else {
@@ -538,128 +535,15 @@ function valida(opc) {
 								}
 								break;
 						}
-						if (i<1){
-							agregar="&";
-						}
-						if (false){
-							// var pasa=true;
-							switch(elementos[i].getAttribute("name")){
-								//~ case "ctl00$mainCopy$rblEsquema":
-								//~ case "ctl00$mainCopy$Chkespecialidad":
-								//~ case "ctl00$mainCopy$ChkSemestre":
-								//~ case "ctl00$mainCopy$Chkgrupo":
-								//~ case "ctl00$mainCopy$Chkmateria":
-								//~ case "ctl00$mainCopy$txtCarrera":
-								//~ case "ctl00$mainCopy$txtplan":
-								case "__EVENTTARGET":
-								case "__EVENTARGUMENT":
-								case "__LASTFOCUS":
-								case "__VIEWSTATE":
-								case "__VIEWSTATEENCRYPTED":
-								case "__EVENTVALIDATION":
-									// pasa=false;
-
-									//parametros2 +=elementos[i].getAttribute("name")+"\n";
-									//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
-									// parametros +=agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
-									// parametros2 +=agregar+elementos[i].getAttribute("name")+"\n";
-							// var pasa=true;
-							switch(elementos[i].getAttribute("name")){
-								//~ case "ctl00$mainCopy$rblEsquema":
-								//~ case "ctl00$mainCopy$Chkespecialidad":
-								//~ case "ctl00$mainCopy$ChkSemestre":
-								//~ case "ctl00$mainCopy$Chkgrupo":
-								//~ case "ctl00$mainCopy$Chkmateria":
-								//~ case "ctl00$mainCopy$txtCarrera":
-								//~ case "ctl00$mainCopy$txtplan":
-								case "__EVENTTARGET":
-								case "__EVENTARGUMENT":
-								case "__LASTFOCUS":
-								case "__VIEWSTATE":
-								case "__VIEWSTATEENCRYPTED":
-								case "__EVENTVALIDATION":
-									// pasa=false;
-
-									//parametros2 +=elementos[i].getAttribute("name")+"\n";
-									//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
-									// parametros +=agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
-									// parametros2 +=agregar+elementos[i].getAttribute("name")+"\n";
-									// ultimo=elementos[i].getAttribute("name");
-									// break;
-							// }
-							// if (pasa){
-							// 	switch(elementos[i].getAttribute("name")){
-								case "ctl00$mainCopy$rblEsquema":
-								case "ctl00$mainCopy$dpdcarrera":
-								case "ctl00$mainCopy$dpdplan":
-									parametros +=agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
-									//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
-									parametros2 +=agregar+elementos[i].getAttribute("name")+"\n";
-									ultimo=elementos[i].getAttribute("name");
-									break;
-								}
-							// }
-							if (i<1){
-								agregar="&";
-							}
-							
-							//parametros +=agregar+elementos[i].getAttribute("name")+"="+elementos[i].value;
-							
-							//~ __EVENTTARGET						
-							//~ __EVENTARGUMENT
-							//~ __LASTFOCUS
-							//~ __VIEWSTATE
-							//~ __VIEWSTATEENCRYPTED
-							//~ __EVENTVALIDATION
-							//~ ctl00$mainCopy$rblEsquema
-							//~ ctl00$mainCopy$Chkespecialidad
-							//~ ctl00$mainCopy$ChkSemestre
-							//~ ctl00$mainCopy$Chkgrupo
-							//~ ctl00$mainCopy$Chkmateria
-							//~ ctl00$mainCopy$txtCarrera
-							//~ ctl00$mainCopy$dpdcarrera
-							//~ ctl00$mainCopy$txtplan
-							//~ ctl00$mainCopy$dpdplan		// ultimo=elementos[i].getAttribute("name");
-									// break;
-							// }
-							// if (pasa){
-							// 	switch(elementos[i].getAttribute("name")){
-								case "ctl00$mainCopy$rblEsquema":
-								case "ctl00$mainCopy$dpdcarrera":
-								case "ctl00$mainCopy$dpdplan":
-									parametros +=agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
-									//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
-									parametros2 +=agregar+elementos[i].getAttribute("name")+"\n";
-									ultimo=elementos[i].getAttribute("name");
-									break;
-								}
-							// }
-							if (i<1){
-								agregar="&";
-							}
-							
-							//parametros +=agregar+elementos[i].getAttribute("name")+"="+elementos[i].value;
-							
-							//~ __EVENTTARGET						
-							//~ __EVENTARGUMENT
-							//~ __LASTFOCUS
-							//~ __VIEWSTATE
-							//~ __VIEWSTATEENCRYPTED
-							//~ __EVENTVALIDATION
-							//~ ctl00$mainCopy$rblEsquema
-							//~ ctl00$mainCopy$Chkespecialidad
-							//~ ctl00$mainCopy$ChkSemestre
-							//~ ctl00$mainCopy$Chkgrupo
-							//~ ctl00$mainCopy$Chkmateria
-							//~ ctl00$mainCopy$txtCarrera
-							//~ ctl00$mainCopy$dpdcarrera
-							//~ ctl00$mainCopy$txtplan
-							//~ ctl00$mainCopy$dpdplan
-						}
+						if (i<1) agregar="&";
 					}
 				}
 				// alert(parm);
-				alert(parametros2);
+				// alert(parametros2);
+				// log("parame\n"+parm);
+				// log("parametros2\n"+parametros2);
+				// log("paramet\n"+parm2);
+				// log("paramet\n"+parametros);
 				//if (confirm("Desea continuar?")){
 					peticion_http.onreadystatechange = procesaRespuesta;
 					peticion_http.open("POST", location.protocol+"//"+location.host+"/Academica/Ocupabilidad_grupos.aspx", true);
@@ -683,15 +567,59 @@ function valida(opc) {
 				//~ theForm.__EVENTTARGET.value = eventTarget;
 				//~ theForm.__EVENTARGUMENT.value = eventArgument;
 				break;
+			case 3 :
+				var elementos 		= document.forms[0].elements;
+				var parametros 		= "";
+				var parametros2 	= "";
+				var agregar 		= "";
+				var ultimo 			= "";
+				for (var i = 0; i < elementos.length; i++){
+					//quitando los del buscador
+					if (elementos[i].getAttribute("name") != null && elementos[i].getAttribute("name") != ultimo){
+						parametros2 += elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
+						switch(elementos[i].getAttribute("name")){
+							case "__EVENTTARGET" :
+							case "__EVENTARGUMENT" :
+							case "__LASTFOCUS" :
+							case "__VIEWSTATE" :
+							case "__VIEWSTATEENCRYPTED" :
+							case "__EVENTVALIDATION" :
+							case "ctl00$mainCopy$rblEsquema" :  				//periodo ocupa    				->ctl00$mainCopy$rblEsquema$0,ctl00$mainCopy$rblEsquema$1
+							case "ctl00$mainCopy$dpdPeriodoEscolarHist" :  		//lista historico periodos    	->ctl00$mainCopy$dpdPeriodoEscolarHist
+							case "ctl00$mainCopy$dpdcarrera" : 					//lista carreras
+							case "ctl00$mainCopy$dpdplan" : 					//lista Plan de Estudios
+							case "ctl00$mainCopy$txtCarrera" : 					//texto Carrera
+							case "ctl00$mainCopy$txtplan" : 					//texto Plan de Estudios
+								parametros += agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
+								if (elementos[i].getAttribute("type") != "radio"){
+									ultimo = elementos[i].getAttribute("name");
+								} else {
+									if (elementos[i].checked){
+										ultimo = elementos[i].getAttribute("name");
+									}
+								}
+								break;
+						}
+						if (i < 1) agregar = "&";
+					}
+				}
+				// log("parametros2\n"+parametros2);
+				peticion_http.onreadystatechange = procesaRespuesta;
+				peticion_http.open("POST", location.protocol+"//"+location.host+"/Academica/Ocupabilidad_grupos.aspx", true);
+				peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+				peticion_http.send(parametros);
+				break;
 		}
 	}
 }
 function procesaRespuesta() {
 	if (peticion_http.readyState == READY_STATE_COMPLETE) {
 		if (peticion_http.status == 200) {
-			var variable = localStorage['tipoConsulta'];
+			// var variable = localStorage['tipoConsulta'];
+			var variable = tipoConsulta;
+			// log("----> "+variable);
 			switch(variable){
-				case "1":
+				case 1:
 					var respuestaXML = peticion_http.responseXML;					
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
 					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
@@ -700,11 +628,12 @@ function procesaRespuesta() {
 						}	
 					});
 					break;
-				case "2":
+				case 2:
 					var respuesta = peticion_http.responseText;
 
 					var mensaje = document.createElement("div");
-					mensaje.setAttribute("style","width:"+window.window.innerWidth+"px;height:"+window.innerHeight+"px;position:fixed;top:50px;left:50px;");
+					// mensaje.setAttribute("style","width:"+window.window.innerWidth+"px;height:"+window.innerHeight+"px;position:fixed;top:50px;left:50px; overflow-y:yes;");
+					mensaje.setAttribute("style","position : fixed; top : 50px; left : 50px; background-color : gray; opacity : 0.95;");
 					// // mensaje.innerHTML="<textarea>"+respuesta+"</textarea>";
 
 
@@ -717,14 +646,18 @@ function procesaRespuesta() {
 					fin 		= respuesta.indexOf("</table>");
 					respuesta 	= respuesta.substring(0,fin);
 
-					mensaje.innerHTML="<table>"+respuesta+"</table>";
+					mensaje.innerHTML="<div style='height : 600px; overflow-y : auto;'><table>"+respuesta+"</table></div>";
 					document.body.appendChild(mensaje);
-					
-				 	var registros = document.getElementById("regs");
-				 	registros.innerHTML = respuesta;
-				 	marcaOcupados();
-				 	inicializaDatos();
-					if (buscador.value.length!=0) buscarTexto(buscador.value, 0);
+
+					if(false){
+						//-->final
+					 	var registros = document.getElementById("regs");
+					 	registros.innerHTML = respuesta;
+					 	marcaOcupados();
+					 	inicializaDatos();
+						if (buscador.value.length!=0) buscarTexto(buscador.value, 0);
+						//-->
+					}
 
 					// var datos = respuesta.getElementById("ctl00_mainCopy_GrvOcupabilidad");
 					// datos.setAttribute("id","regs");
@@ -734,8 +667,70 @@ function procesaRespuesta() {
 					
 					//~ //localStorage['resultados'] = respuesta;
 					break;
+				case 3:
+					// var respuesta = peticion_http.responseText;
+					// var mensaje = document.createElement("div");
+					// mensaje.setAttribute("style","position : fixed; top : 50px; left : 50px; background-color : gray; opacity : 0.95;");
+
+					// var inicio 	= respuesta.indexOf("ctl00_mainCopy_GrvOcupabilidad");
+					// respuesta 	= respuesta.substring(inicio);
+					// inicio 		= respuesta.indexOf(">");
+					// respuesta 	= respuesta.substring(inicio+1);
+					// var fin 	= respuesta.indexOf("leftcolumn");
+					// respuesta 	= respuesta.substring(0,fin);
+					// fin 		= respuesta.indexOf("</table>");
+					// respuesta 	= respuesta.substring(0,fin);
+
+					// mensaje.innerHTML="<div style='height : 600px; overflow-y : auto;'><table>"+respuesta+"</table></div>";
+					// document.body.appendChild(mensaje);
+
+					var respuesta = peticion_http.responseText;
+
+					var posicion = respuesta.indexOf('__VIEWSTATE" value');
+					var viewState, eventValidation;
+					if (posicion != -1){
+						posicion        += 20;
+						respuesta       = respuesta.substring(posicion);
+						posicion        = respuesta.indexOf('"');
+						viewState       = respuesta.substring(0,posicion);
+						respuesta       = respuesta.substring(posicion);
+						posicion        = respuesta.indexOf('__EVENTVALIDATION" value');
+						posicion        += 26;
+						respuesta       = respuesta.substring(posicion);
+						posicion        = respuesta.indexOf('"');
+						eventValidation = respuesta.substring(0,posicion);
+
+						// log("->\nv : "+viewState.length+"\ne : "+eventValidation.length);
+						// log("->\nv : "+viewState.length+"\n"+viewState+"\ne : "+eventValidation.length+"\n"+eventValidation);
+						document.getElementById("__VIEWSTATE").value = viewState;
+						document.getElementById("__EVENTVALIDATION").value = eventValidation;
+						valida(2);
+					}
+					// var elementos = respuesta.getElementsByTagName("input");
+
+					// for (var i = 0; i < elementos.length; i++) {
+					// 	switch (elementos[i].getAttribute("name")){
+					// 		case "__VIEWSTATE":
+					// 		case "__EVENTVALIDATION":
+					// 			document.getElementById(elementos[i].getAttribute("name")).value = elementos[i].getAttribute("value");
+					// 			break;
+					// 	}
+					// }
+					// valida(2);
+					break;
 			}
-			peticion_http = null;
+			// peticion_http = null;
+		} else {
+			if (peticion_http.status == 500) {
+				var respuesta = peticion_http.responseText;
+
+				var mensaje = document.createElement("div");
+				// mensaje.setAttribute("style","width:"+window.window.innerWidth+"px;height:"+window.innerHeight+"px;position:fixed;top:50px;left:50px; overflow-y:yes;");
+				mensaje.setAttribute("style","position : fixed; top : 50px; left : 50px; background-color : gray; opacity : 0.95;");	
+				mensaje.innerHTML = respuesta;
+
+				document.body.appendChild(mensaje);
+			}
 		}
 	}
 }
@@ -1074,7 +1069,28 @@ function expandirHorarios2(){
 	horarioNuevo.style.width 	= "";
 	horarioNuevo.style.overflow = "";
 	document.getElementById("ctl00_mainCopy_GV_Horario").style.width = "900px";
-	document.getElementById("ctl00_mainCopy_GV_Horario").style.width = "900px";
+	cuentaMateriasInscripcion();
+}
+function cuentaMateriasInscripcion (){
+	//obteniendo valor
+	var materiasPorInscribir = document.getElementById("ctl00_mainCopy_GV_Horario");
+	var numeroMaterias = materiasPorInscribir.rows.length - 1;
+	if (numeroMaterias == 1 && materiasPorInscribir.rows[1].cells[1].innerHTML == "&nbsp;"){
+		numeroMaterias = 0;
+	}
+	//mostrando
+	var contadorInscripcion = document.getElementById("contadorInscripcion");
+	if (contadorInscripcion == null) {
+		//insertando
+		contadorInscripcion = document.createElement("div");
+		contadorInscripcion.setAttribute("id","contadorInscripcion");
+		contadorInscripcion.style.float = "right";
+		contadorInscripcion.innerHTML = "<br/>"+numeroMaterias;
+		materiasPorInscribir.parentNode.appendChild(contadorInscripcion);
+	} else {
+		//actualizando
+		contadorInscripcion.innerHTML = "<br/>"+numeroMaterias;
+	}
 }
 function tiempoHorarios2(){
 	setTimeout("expandirHorarios2()",500);
@@ -1210,6 +1226,7 @@ function detectaPantalla(){
 			document.getElementById("ctl00_mainCopy_UpdatePanel1").addEventListener("DOMSubtreeModified",tiempoHorarios1,true);
 			expandirHorarios2();
 			expandirHorarios1();
+			cuentaMateriasInscripcion();
 
 			break;
 		case "/Alumnos/boleta/kardex.aspx":
