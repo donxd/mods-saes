@@ -440,9 +440,18 @@ function agregaBuscador(opc){
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
+			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div>"; 
 			break;
 	}
 	document.getElementById(tipo).parentNode.insertBefore(controlesBuscador, document.getElementById(tipo));
+	if (tipo == "ctl00_mainCopy_dbgHorarios"){
+		document.getElementById("expImp").addEventListener("click",expImp,true);
+		document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
+		document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
+		if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
+			document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
+		}
+	}
 	document.getElementById(tipo).setAttribute("id","regs");
 	inicializar();
 }
@@ -609,6 +618,11 @@ function valida(opc) {
 				peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 				peticion_http.send(parametros);
 				break;
+			case 4 :
+				peticion_http.onreadystatechange = procesaRespuesta;
+				peticion_http.open("GET", location.protocol+"//"+location.host+"/Alumnos/Reinscripciones/Reporte_Horario.aspx", true);
+				peticion_http.send("");
+				break;
 		}
 	}
 }
@@ -717,6 +731,9 @@ function procesaRespuesta() {
 					// 	}
 					// }
 					// valida(2);
+					break;
+				case 4:
+					log("->Hecho");
 					break;
 			}
 			// peticion_http = null;
@@ -853,12 +870,22 @@ function desActivaAtajos(){
 	}
 }
 function recordar(){
-	var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
-	var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
-	if (this.checked!=true){
-		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: false}, identificar);
+	if (this.checked){
+		if (!identificado){
+			var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
+			var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
+			if (boleta.length > 0 && pass.length > 0){
+				chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
+			} else {
+				alert("Ingrese su boleta y password");
+				this.checked = false;
+			}
+		}
 	} else {
-		chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
+		chrome.extension.sendMessage( { command : "setDatos", identificar: false}, identificar);
+		if(identificado){
+			document.getElementById("recordar").parentNode.style.display = "none";
+		}
 	}
 	document.getElementById("cambiosIdentificar").style.display = "";
 }
@@ -871,31 +898,42 @@ function cambioUsuario (){
 function identificar (respuesta){
 	switch(respuesta.command){
 		case "getDatos":
-			if (location.host==respuesta.escuela){
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
-				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
-				document.getElementById("__EVENTARGUMENT").value 	= "";
-				if (respuesta.identificar&&!identificado){	
-					// identificado = true;
-					document.forms[0].submit();
+			var recmen;
+			var identificar = document.createElement("span");
+			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
+			if (location.pathname == "/" && !identificado){
+				if (location.host==respuesta.escuela){
+					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
+					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
+					document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
+					document.getElementById("__EVENTARGUMENT").value 	= "";
+					if (respuesta.identificar){	
+						// identificado = true;
+						document.forms[0].submit();
+					}
+				} else {
+					document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
+				}
+				recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
+			} else {
+				if (respuesta.identificar){	
+					recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession");
+				} else {
+					identificar.innerHTML = "";
 				}
 			}
-			var identificar = document.createElement("span");
-			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
-
-			var recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
-			recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
-
-			document.getElementById("recordar").addEventListener("click",recordar,true);
+			if (identificar.innerHTML.length > 0){
+				recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
+				document.getElementById("recordar").addEventListener("click",recordar,true);
+			}
 			break;
 		case "setDatos":
 			var cambios = document.getElementById("cambiosIdentificar");
 			cambios.style.color = "green";
 			if (respuesta.identificar){
-				cambios.innerHTML = "Ok-guardado";
+				cambios.innerHTML = "Ok-Guardado";
 			} else {
-				cambios.innerHTML = "Ok-borrado";
+				cambios.innerHTML = "Ok-Borrado";
 			}
 			setTimeout(ocultarCambios,2000);
 			break;
@@ -918,8 +956,8 @@ function reaccion(respuesta){
 		recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
 		document.getElementById("recordar").addEventListener("click",recordar,true);
 
-		if (respuesta.command =="getDatos"){
-			if (location.host==respuesta.escuela){
+		if (respuesta.command == "getDatos"){
+			if (location.host == respuesta.escuela){
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value=respuesta.boleta;
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value=respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
@@ -935,6 +973,7 @@ function reaccion(respuesta){
 				}
 			}
 		}
+		document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
 	}
 }
 var destinoConexion="";
@@ -1143,15 +1182,18 @@ function informacionPlanes(){
 }
 function detectaPantalla(){
 	switch(location.pathname){
-		case "/":
-			chrome.extension.sendMessage( { command : "getDatos"}, identificar);
-			break;
-		case "/Default.aspx":
-			chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
-			break;
+		// case "/":
+		// 	chrome.extension.sendMessage( { command : "getDatos"}, identificar);
+		// 	break;
+		// case "/Default.aspx":
+		// 	chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
+		// 	break;
 		case "/alumnos/default.aspx":
 			var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
 			document.cookie="boleta="+boleta+";path=/";
+			break;
+		case "/Academica/Equivalencias.aspx":
+			document.querySelector("div#ctl00_mainCopy_UP").addEventListener("DOMSubtreeModified",ajustaEquivalencias,true);
 			break;
 		// case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
 		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
@@ -1281,6 +1323,13 @@ function detectaPantalla(){
 			break;
 	}
 }
+function ajustaEquivalencias (){
+	var equivalencias = document.querySelector("table#ctl00_mainCopy_GV_EquivalenciasA");
+	equivalencias.style.width = "auto";
+	var contenedor = document.querySelector("div#ctl00_mainCopy_PnlDatos");
+	contenedor.removeAttribute("style");
+	contenedor.parentNode.removeAttribute("style");
+}
 function informacionHistorico(){
 	var historial = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
 	var salidaInformacionHistorico = "clave,materia,fecha,periodo,feval,calif\n";
@@ -1324,7 +1373,9 @@ function seleccionMaterias(){
 	var materiasSeleccionadas 	= document.createElement("div");
 	materiasSeleccionadas.id 	= "asignaturas";
 	materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
-	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
+	
+	// materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id='informacionHorarios'></div>";
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
 	mostrarMateriasHorario.value 	= "Ver Horario";
@@ -1336,12 +1387,12 @@ function seleccionMaterias(){
 	tabla.parentNode.appendChild(materiasSeleccionadas);
 	document.getElementById("borrarMateriasHorario").addEventListener("click",borrarMateriasHorario,true);
 	document.getElementById("generarMateriasHorario").addEventListener("click",generarHorarios,true);
-	document.getElementById("expImp").addEventListener("click",expImp,true);
-	document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
-	document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
-	if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
-		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
-	}
+	// document.getElementById("expImp").addEventListener("click",expImp,true);
+	// document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
+	// document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
+	// if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
+	// 	document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
+	// }
 }
 function seleccionarContenido(){
 	this.select();
@@ -2103,6 +2154,7 @@ function retiraSabados(){
 	}
 }
 function horarioDirecto(){
+	valida(4);
 	var comprobante = document.getElementById("ctl00_mainCopy_BtnComprobante");
 	var boton = comprobante.cloneNode(true);
 	boton.setAttribute("type","button");
@@ -2140,6 +2192,13 @@ function tablaAtajos(){
 		seccionAtajos.firstChild.innerHTML = contenidoAtajos;
 	});
 }
+function agregaIdentificacion (){
+	if (location.pathname != "/Default.aspx"){
+		chrome.extension.sendMessage( { command : "getDatos"}, identificar);
+	} else {
+		chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
+	}
+}
 function inicio(){
 	var pagina 	= /^https\:\/\/www[.]saes[.]\w+[.]ipn[.]mx$/;
 	var url 	= location.protocol+"//"+location.host;
@@ -2149,6 +2208,7 @@ function inicio(){
 		tablaAtajos();
 		window.addEventListener("keyup",atajosEjecucion,true);
 		ajustarDisenio();
+		agregaIdentificacion();
 		detectaPantalla();
 	}
 }

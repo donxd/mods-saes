@@ -1,4 +1,4 @@
-var version = 0.54;
+var version = 0.55;
 function log(mensaje){
 	console.log (mensaje);
 }
@@ -27,10 +27,17 @@ chrome.extension.onMessage.addListener (
 				});
 				break;
 			case "setDatos":
-				localStorage.escuela 			= request.escuela;
-				localStorage.boleta 			= request.boleta;
-				localStorage.pass 				= request.pass;
-				localStorage.autoIdentificar	= request.identificar;
+				if (request.identificar) {
+					localStorage.escuela 			= request.escuela;
+					localStorage.boleta 			= request.boleta;
+					localStorage.pass 				= request.pass;
+					localStorage.autoIdentificar	= request.identificar;
+				} else {
+					localStorage.removeItem("escuela");
+					localStorage.removeItem("boleta");
+					localStorage.removeItem("pass");
+					localStorage.removeItem("autoIdentificar");
+				}
 				callback({
 					command 	: request.command,
 					identificar : request.identificar,
