@@ -456,9 +456,10 @@ function agregaBuscador(opc){
 	inicializar();
 }
 //##############<-buscador
-function actualizaOcupabilidad(){
-	valida(3);
-}
+
+// function actualizaOcupabilidad(){
+// 	valida(3);
+// }
 var READY_STATE_COMPLETE = 4;
 var peticion_http = null;
 function inicializa_xhr() {
@@ -844,20 +845,20 @@ function teclasAtajos(codigoTecla){
 		desActivaAtajos();
 	}
 }
-function quitaAtajos(){
-	var atajos = document.getElementsByName("atajo");
-	for (var i=0;i<atajos.length;i++){
-		atajos[i].style.display = "none";
-	}
-	document.getElementById("mensajeAtajos").style.display = "none";
-}
-function muestraAtajos(){
-	var atajos = document.getElementsByName("atajo");
-	for (var i=0;i<atajos.length;i++){
-		atajos[i].style.display = "";
-	}
-	document.getElementById("mensajeAtajos").style.display = "";
-}
+// function quitaAtajos(){
+// 	var atajos = document.getElementsByName("atajo");
+// 	for (var i=0;i<atajos.length;i++){
+// 		atajos[i].style.display = "none";
+// 	}
+// 	document.getElementById("mensajeAtajos").style.display = "none";
+// }
+// function muestraAtajos(){
+// 	var atajos = document.getElementsByName("atajo");
+// 	for (var i=0;i<atajos.length;i++){
+// 		atajos[i].style.display = "";
+// 	}
+// 	document.getElementById("mensajeAtajos").style.display = "";
+// }
 function desActivaAtajos(){
 	if (atajos){
 		atajos = false;
@@ -1468,15 +1469,18 @@ function generarHorarios (){
 		// alert("Numero de materias "+gruposOrdenados.materias.length);
 		// log("-> Generando horarios....1.2");
 		if (gruposOrdenados.materias.length!=0){
+			// Inicializando las combinaciones
 			// log("-> Generando horarios....1.2.1");
 			for (var i=0;i<gruposOrdenados.materias[0].grupos.length;i++){
 				var combinacion = {secuencia:[i], horas:gruposOrdenados.materias[0].grupos[i].horas};
 				horariosPosiblesAnteriores.combinacion.push(combinacion);
 			}
+			// Recorriendo los combinaciones anteriores
 			// alert(JSON.stringify(horariosPosiblesAnteriores));
 			for (var i=1;combinacionesDisponibles && i < gruposOrdenados.materias.length;i++){
 				//alert(i);
 				var horariosPosibles = {combinacion:[]};
+				//Combinando a partir de las combinaciones anteriores
 				// alert("->"+horariosPosiblesAnteriores.combinacion.length);
 				for (var j=0;j<horariosPosiblesAnteriores.combinacion.length;j++){
 					//alert("->"+j);
@@ -1561,7 +1565,7 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 
 	totalHorarios 				= parseInt(nResultados);
 	var seleccionHorarios 		= document.createElement("table");
-	seleccionHorarios.innerHTML = "<tr><td>Hay "+nResultados+" resultados:</td><td><input id='seleccionHorarios' type='number' min='0' max='"+nResultados+"' value='0' size='4'/></td><td>Puedes usar las flechas &uArr; &dArr;</td></tr>";
+	seleccionHorarios.innerHTML = "<tr><td>Hay "+nResultados+" resultado(s):</td><td><input id='seleccionHorarios' type='number' min='0' max='"+nResultados+"' value='0' size='4'/></td><td>Puedes usar las flechas &uArr; &dArr;</td></tr>";
 	seleccionHorarios.setAttribute("style","margin:0px auto;");
 	informacion.innerHTML = "";
 	informacion.appendChild(seleccionHorarios);
@@ -1777,34 +1781,42 @@ function agregarMateria(){
 							rango[n] -= horaDeInicioHorario;
 						}
 							// log("R1\nrango[0] : "+rango[0]+"\nrango[1] : "+rango[1]);
-						rango[1] = ((rango[1]-rango[0])*2)-1;
-						rango[0] *= 2;
-						rango[1] += rango[0];
+						rango[1] = ((rango[1]-rango[0])*2)-1+(rango[0]*2)+cambioDia;
+						rango[0] = (rango[0]*2)+cambioDia;
 							// log("R2\nrango[0] : "+rango[0]+"\nrango[1] : "+rango[1]);
 
 						var encontrarInicio = false;
 
 						//se buscan intersecciones entre los rangos de los bloques
 						for (n = 0 ;n < horasSeguimiento.length; n++){
-							if ((rango[0]+cambioDia) == horasSeguimiento[n]){
+							if (rango[0] == horasSeguimiento[n]){
+								// log("->CB-A : "+horasSeguimiento[n]);
 								encontrarInicio = true;
+								//busca los elementos continuos de la secuencia de los bloques
 								for (n++; n < horasSeguimiento.length; n++){
+									log("-"+(horasSeguimiento[n-1]+1)+"!="+horasSeguimiento[n]+"?");
 									if ((horasSeguimiento[n-1]+1) != horasSeguimiento[n]){
 										break;
 									}
 								}
-								if (horasSeguimiento[n-1]!=rango[1]){
-									if (horasSeguimiento[n-1]<rango[1]){
-										for (n=horasSeguimiento[n-1]+1;n<=rango[1];n++) horasSeguimiento.push(n+cambioDia);
-										if (dias[j-celdaInicioHorario]!="&nbsp;") dias[j-celdaInicioHorario]+=","+tabla.rows[i].cells[j].innerHTML;
+								// log("+"+horasSeguimiento[n-1]+"!="+rango[1]+"?");
+								if (horasSeguimiento[n-1] != rango[1]){
+									if (horasSeguimiento[n-1] < rango[1]){
+										// log("n = "+(horasSeguimiento[n-1]+1));
+										for (n=horasSeguimiento[n-1]+1;n<=rango[1];n++) horasSeguimiento.push(n);
+										if (dias[j-celdaInicioHorario]!="&nbsp;"){
+											// log("agregando la celda");
+											dias[j-celdaInicioHorario]+=","+tabla.rows[i].cells[j].innerHTML;
+										}
 										else dias[j-celdaInicioHorario]=tabla.rows[i].cells[j].innerHTML;
 									}
 								}
 							}
 						}
 						if (!encontrarInicio){
+							// log("->CB-N");
 							//guardando los rangos originales y bloques	
-							for (n = rango[0]; n <= rango[1]; n++) horasSeguimiento.push(n+cambioDia);
+							for (n = rango[0]; n <= rango[1]; n++) horasSeguimiento.push(n);
 							if (dias[j-celdaInicioHorario] != "&nbsp;") dias[j-celdaInicioHorario] += ","+tabla.rows[i].cells[j].innerHTML;
 							else dias[j-celdaInicioHorario] = tabla.rows[i].cells[j].innerHTML;
 						}
