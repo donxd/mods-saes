@@ -1,5 +1,5 @@
 // var segundoPlano = chrome.extension.getBackgroundPage();
-function guarda(){
+function guarda (){
 	// localStorage["boleta"]=document.getElementById("boleta").value;
 	// localStorage["pass"]=document.getElementById("pass").value;
 	// localStorage["autoIdentificar"]="true";
@@ -13,10 +13,10 @@ function guarda(){
 		setTimeout(desvanecer,2000);
 	});
 }
-function desvanecer(){
+function desvanecer (){
 	document.getElementById("ok").setAttribute("style","display:none;");
 }
-function limpiar(){
+function limpiar (){
 	// localStorage["boleta"]="";
 	// localStorage["pass"]="";
 	// localStorage["autoIdentificar"]="false";
@@ -24,9 +24,9 @@ function limpiar(){
 		document.getElementById("borrar").setAttribute("style","display:none;");
 	});
 }
-function cargaDatos(){
+function cargaDatos (){
 	chrome.extension.sendMessage( { command : "getDatos"}, function(respuesta){
-		if(respuesta.identificar != false){
+		if (respuesta.identificar != false){
 			document.getElementById("boleta").value = respuesta.boleta;
 			document.getElementById("pass").value  	= respuesta.pass;
 			document.getElementById("esc").value 	= respuesta.escuela.substring(9,respuesta.escuela.lastIndexOf(".ipn"));
@@ -57,12 +57,12 @@ function cargaDatos(){
 // 	}
 // 	respuesta.atajos
 // });
-function guardar(){
+function guardar (){
 	guarda();
 	return false;
 }
-window.onload = function(){
+window.onload = function (){
 	cargaDatos();
 	document.getElementById("identificacion").addEventListener("submit",guardar,true);
 	document.getElementById("identificacion").addEventListener("reset",limpiar,true);
-}
+};

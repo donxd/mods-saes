@@ -1,10 +1,10 @@
 {
 	"update":{
-		"description": "url update",
-		"message": "https://clients2.google.com/service/update2/crx?x=id%3Dokaihfccgfhcjfineancjmhbooocebhn%26uc"
+		"description" : "url update",
+		"message" : "https://clients2.google.com/service/update2/crx?x=id%3Dokaihfccgfhcjfineancjmhbooocebhn%26uc"
 	},
-	"description":{
-		"description": "information for extension",
-		"message": "Modificaciones para al SAES del IPN - México"
+	"description" : {
+		"description" : "information for extension",
+		"message" : "Modificaciones para al SAES del IPN - México"
 	}
 }

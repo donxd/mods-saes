@@ -1,36 +1,36 @@
-function log(mensaje){
+function log (mensaje){
 	console.log (mensaje);
 }
 var indiceTabulador;
-function ajustarDisenio(){
+function ajustarDisenio (){
 	var subMenu = document.getElementById("ctl00_subMenu");
 	if (subMenu){
-		subMenu.style.width="auto";
+		subMenu.style.width = "auto";
 		var disenio = document.createElement("style");
 		disenio.setAttribute("type","text/css");
 		disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border: none; display:inline-block;width:150px;}";
 		var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
-		for (var i=0;i<elementosMenu.length;i++){
-			if (elementosMenu[i].children.length==2){
+		for (var i = 0; i < elementosMenu.length; i++){
+			if (elementosMenu[i].children.length == 2){
 				elementosMenu[i].children[1].style.paddingLeft="20px";
 			}
 		}
-		var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("br");
-		while(espaciosImagenes.length!=0){
+		var espaciosImagenes = document.getElementById("ctl00_subMenu").getElementsByTagName("br");
+		while(espaciosImagenes.length != 0){
 			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
 		}
 		
-		var espaciosImagenes=document.getElementById("ctl00_subMenu").getElementsByTagName("img");
-		while(espaciosImagenes.length!=0){
+		var espaciosImagenes = document.getElementById("ctl00_subMenu").getElementsByTagName("img");
+		while(espaciosImagenes.length != 0){
 			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
 		}
 
 		document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
 	}
 	var links = document.getElementsByTagName("a");
-	var tabAsignado;
-	for (var i=0;i<links.length;i++){
-		if (links[i].getAttribute("href")!=null&&links[i].getAttribute("href").length>0){
+
+	for (var i = 0; i < links.length; i++){
+		if (links[i].getAttribute("href") != null && links[i].getAttribute("href").length > 0){
 			//~ Academica/agenda_escolar.aspx
 			//~ Academica/horarios.aspx
 			//~ /Academica/Ocupabilidad_grupos.aspx
@@ -51,7 +51,7 @@ function ajustarDisenio(){
 			// 	i=links.length;
 			// 	break;
 			// }
-			switch(links[i].getAttribute("href")){
+			switch (links[i].getAttribute("href")){
 				// case "/default.aspx":
 				// case "/Alumnos/default.aspx":
 				// case "/Academica/default.aspx":
@@ -112,12 +112,12 @@ function mostrarContacto (){
 		informacion_contacto.style.display = "none";
 	}	
 }
-function pedir(tipo){
+function pedir (tipo){
 	// tipo 
 	// 	1 maestro
 	// 	2 tutor
-	var opcion=prompt("Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)","");
-	switch(opcion){
+	var opcion = prompt("Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)","");
+	switch (opcion){
 		case "1": 	califica(5,1,2,1,tipo);
 			break;
 		case "2": 	califica(5,5,2,2,tipo);
@@ -130,7 +130,7 @@ function pedir(tipo){
 			break;
 	}
 }
-function califica(maximo, minimo, recomendar1, recomendar2, tipo){
+function califica (maximo, minimo, recomendar1, recomendar2, tipo){
 	// tipo 
 	// 	1 maestro
 	// 	2 tutor
@@ -203,22 +203,23 @@ function califica(maximo, minimo, recomendar1, recomendar2, tipo){
 			break;
 	}
 }
-function ajustaPeriodos(){
+function ajustaPeriodos (){
 	var numeroPeriodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table").length;
 	if (numeroPeriodos > 0){
 		for (var i = 0; i < numeroPeriodos; i++){
 			var periodos = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
 			var periodosAnidados = periodos[i].getElementsByTagName("table");
 			var celda;
+			var acomodar;
 			for (; periodosAnidados.length > 0 ;){
-				if (periodosAnidados[0].parentNode.tagName == "CENTER"&&periodosAnidados[0].parentNode.children.length==2){
+				if (periodosAnidados[0].parentNode.tagName == "CENTER" && periodosAnidados[0].parentNode.children.length == 2){
 					celda = periodosAnidados[0].parentNode.parentNode;
-					var acomodar = periodosAnidados[0].parentNode.cloneNode(true);
+					acomodar = periodosAnidados[0].parentNode.cloneNode(true);
 					periodosAnidados[0].parentNode.parentNode.removeChild(periodosAnidados[0].parentNode);
 				} else {
 					celda = periodosAnidados[0].parentNode;
 					var periodo 	= periodosAnidados[0].cloneNode(true);
-					var acomodar 	= document.createElement("center");
+					acomodar 	= document.createElement("center");
 					var espacio 	= document.createElement("br");
 					acomodar.appendChild(periodo);
 					acomodar.appendChild(espacio);
@@ -237,13 +238,13 @@ function ajustaPeriodos(){
 	}
 }
 //##############<-buscador
-function modificaciones(){
-	if (this.value.length<1){
+function modificaciones (){
+	if (this.value.length < 1){
     	verTodo();
 	}
 }
 var estadoSeleccion = true;
-function seleccion(){
+function seleccion (){
 	if (estadoSeleccion){
 		// if (this.firstChild.localName!=null){
 		// 	buscador.value=this.firstChild.innerHTML;	
@@ -251,61 +252,61 @@ function seleccion(){
 		//   	buscador.value=this.innerHTML;
 		//   	//alert(this.parentNode.numero);
 		// }	
-		buscador.value=this.innerText;	
+		buscador.value = this.innerText;	
 		buscarTexto(this.innerText,this.cellIndex);
 	}
 }
-function enumerarRegistros(datos,inicio){
+function enumerarRegistros (datos,inicio){
   	var visibles = new Array();
-	var numero=inicio;
-	for (var i=inicio;i<=datos.length-1;i++,numero++){
+	var numero = inicio;
+	for (var i = inicio; i <= datos.length-1; i++, numero++){
 		datos[i].setAttribute("class","visible");
-		datos[i].numero=numero;
+		datos[i].numero = numero;
 		visibles.push(numero);
-		for (var j=0;j<totalColumnas;j++){
+		for (var j = 0; j < totalColumnas; j++){
       		datos[i].cells[j].addEventListener("click",seleccion,false);
 		}
 	}
   	document.body.datosVisibles.push(visibles);
   	contar();
 }
-function verOcultar(datos,inicio,opc){
-	var tipo="oculto";
-	if (opc!=0){
-		tipo="visible";
+function verOcultar (datos,inicio,opc){
+	var tipo = "oculto";
+	if (opc != 0){
+		tipo = "visible";
 	}	
-	var numeroRegistros=datos.length;
-	for (var i=inicio;i<numeroRegistros;i++){
+	var numeroRegistros = datos.length;
+	for (var i = inicio; i < numeroRegistros; i++){
 		datos[i].setAttribute("class",tipo);
 	}
 	contar();
 }
-function contar(){
-	document.getElementById("contador").innerHTML=document.body.datosVisibles[document.body.datosVisibles.length-1].length+" de "+totalRegistros;
+function contar (){
+	document.getElementById("contador").innerHTML = document.body.datosVisibles[document.body.datosVisibles.length-1].length+" de "+totalRegistros;
 }	
-function verTodo(){
-	buscador.value="";
+function verTodo (){
+	buscador.value = "";
   	verOcultar(document.getElementById("regs").rows,1,1);//ver
   	//document.body.datosVisibles = new Array();
-  	while(document.body.datosVisibles.length>1)document.body.datosVisibles.pop();
+  	while(document.body.datosVisibles.length > 1) document.body.datosVisibles.pop();
   	//document.body.datosOcultos = new Array();
   	contar();
-  	ultimaBusqueda="";
+  	ultimaBusqueda = "";
 }
-function buscarDentro(palabra, fragmento){
-  	var encontrado=false;
-  	if (palabra.length>=fragmento.length){
-    	var i=palabra.indexOf(fragmento.charAt(0));
-    	var limite=palabra.lastIndexOf(fragmento.charAt(fragmento.length-1));
-    	if (i!=-1&&limite!=-1){
-      		if (fragmento.length<2){
-        		encontrado=true;
-          	}else{
-            	while(i<limite){
-	              	if ((i+fragmento.length-1)<palabra.length){
-	                	if (palabra.charAt(i+fragmento.length-1)==fragmento.charAt(fragmento.length-1)){
-	                  		if (palabra.substring(i,i+fragmento.length)==fragmento){
-	                    		encontrado=true;
+function buscarDentro (palabra, fragmento){
+  	var encontrado = false;
+  	if (palabra.length >= fragmento.length){
+    	var i = palabra.indexOf(fragmento.charAt(0));
+    	var limite = palabra.lastIndexOf(fragmento.charAt(fragmento.length-1));
+    	if (i != -1 && limite != -1){
+      		if (fragmento.length < 2){
+        		encontrado = true;
+          	} else {
+            	while (i < limite){
+	              	if ((i+fragmento.length-1) < palabra.length){
+	                	if (palabra.charAt(i+fragmento.length-1) == fragmento.charAt(fragmento.length-1)){
+	                  		if (palabra.substring(i,i+fragmento.length) == fragmento){
+	                    		encontrado = true;
 	                    		//i=limite;
 	                    		break;
 	                  		}
@@ -318,51 +319,49 @@ function buscarDentro(palabra, fragmento){
  	}
   	return encontrado;
 }
-function buscarTexto(textoBuscado,columna){
+function buscarTexto (textoBuscado,columna){
 	var limite 		= totalColumnas;
-	var inicio 		= 0; //columnas j->limite
 	var ocultos 	= new Array();
 	var visibles 	= new Array();
 	var encontrado;
-	if (columna!=0){
-		limite=columna+1;
-		inicio=columna;
+	if (columna != 0){
+		limite = columna+1;
    	}
-   	var registrosVisibles=document.body.datosVisibles[document.body.datosVisibles.length-1];
-	var registros=document.getElementById("regs").rows;
+   	var registrosVisibles = document.body.datosVisibles[document.body.datosVisibles.length-1];
+	var registros = document.getElementById("regs").rows;
 	//alert("l "+visibles.length);
-	for (var i=0;i<registrosVisibles.length;i++){
-		encontrado=false;
-		for (var j=columna;j<limite;j++){
+	for (var i = 0; i < registrosVisibles.length; i++){
+		encontrado = false;
+		for (var j = columna; j < limite; j++){
           	// if (buscarDentro(registros[registrosVisibles[i]].cells[j].innerHTML.toUpperCase(),textoBuscado.toUpperCase())){
           	if (buscarDentro(registros[registrosVisibles[i]].cells[j].innerText.toUpperCase(),textoBuscado.toUpperCase())){
             	//registros[registrosVisibles[i]].cells[j].style.backgroundColor="blue";
-            	encontrado=true;
-            	j=limite;	
+            	encontrado = true;
+            	j = limite;	
             	visibles.push(registros[registrosVisibles[i]].numero);
           	}
         }
-        if (!encontrado)ocultos.push(registros[registrosVisibles[i]].numero);
+        if (!encontrado) ocultos.push(registros[registrosVisibles[i]].numero);
     }
-    for (var j=0;j<ocultos.length;j++){
+    for (var j = 0; j < ocultos.length; j++){
     	registros[ocultos[j]].setAttribute("class","oculto");
     }
     document.body.datosVisibles.push(visibles);
     //document.body.datosOcultos.push(ocultos);
     contar();
 }	
-function buscar(lanzador){
+function buscar (lanzador){
 	var evento = lanzador || window.event;
 	var codigoTecla = evento.charCode || evento.keyCode;
 	var textoBuscado = document.getElementById("buscar").value;
-	switch(codigoTecla){
+	switch (codigoTecla){
 		case 8:	/*del*/		case 46: //supr
-			ultimaBusqueda=textoBuscado;
-			if (textoBuscado.length>0){
+			ultimaBusqueda = textoBuscado;
+			if (textoBuscado.length > 0){
 	            var registros = document.getElementById("regs").rows;
 	            document.body.datosVisibles.pop();
 	            var visibles = document.body.datosVisibles[document.body.datosVisibles.length-1];
-	            for (var i=0;i<visibles.length;i++){
+	            for (var i = 0; i < visibles.length; i++){
 	             	registros[visibles[i]].setAttribute("class","visible");
 	            }
 	            contar();
@@ -371,7 +370,7 @@ function buscar(lanzador){
 			} else verTodo();
 			break;
 		case 13: //enter
-			if (textoBuscado.length>0){
+			if (textoBuscado.length > 0){
 				buscarTexto(textoBuscado, this.columna);
 				//alert("buscarEnter");//buscarTexto
 			}
@@ -394,9 +393,9 @@ function buscar(lanzador){
 		//~ case 93: //menu*
 			//~ break;
 		default:
-			if (ultimaBusqueda!=textoBuscado){
-				ultimaBusqueda=textoBuscado;
-				if (textoBuscado.length>0){
+			if (ultimaBusqueda != textoBuscado){
+				ultimaBusqueda = textoBuscado;
+				if (textoBuscado.length > 0){
 					buscarTexto(textoBuscado, this.columna);
 				}
 			}
@@ -407,7 +406,7 @@ var totalRegistros;
 var totalColumnas;
 var ultimaBusqueda;
 var contador;
-function inicializar(){
+function inicializar (){
 	buscador = document.getElementById("buscar");
 	buscador.columna = 0;
 	buscador.addEventListener("keyup",buscar,true);
@@ -415,7 +414,7 @@ function inicializar(){
 	buscador.addEventListener("click",modificaciones,true);
 	inicializaDatos();
 }
-function inicializaDatos(){
+function inicializaDatos (){
 	document.body.datosVisibles = new Array();
   	//document.body.datosOcultos = new Array();
   	var registros  	= document.getElementById("regs").rows;
@@ -425,11 +424,11 @@ function inicializaDatos(){
   	contador = document.getElementById("contador");
   	buscador.focus();
 }
-function agregaBuscador(opc){
+function agregaBuscador (opc){
 	var controlesBuscador = document.createElement("div");
 	controlesBuscador.innerHTML = '<input type="search" placeholder="Buscar..." id="buscar"/><input type="button" id="ver" value="Ver todo"><span id="contador"></span>';
 	var tipo;
-	switch(opc){
+	switch (opc){
 		case 1: //ocupabilidad
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
 			// var boton = document.createElement("input");
@@ -448,7 +447,7 @@ function agregaBuscador(opc){
 		document.getElementById("expImp").addEventListener("click",expImp,true);
 		document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
 		document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
-		if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
+		if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){ 
 			document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 		}
 	}
@@ -462,20 +461,20 @@ function agregaBuscador(opc){
 // }
 var READY_STATE_COMPLETE = 4;
 var peticion_http = null;
-function inicializa_xhr() {
-	if (window.XMLHttpRequest) {
+function inicializa_xhr (){
+	if (window.XMLHttpRequest){
 		return new XMLHttpRequest();
 	}
-	else if (window.ActiveXObject) {
+	else if (window.ActiveXObject){
 		return new ActiveXObject("Microsoft.XMLHTTP");
 	}
 }
 var tipoConsulta;
-function valida(opc) {
+function valida (opc){
 	peticion_http = inicializa_xhr();
 	if (peticion_http) {
 		tipoConsulta = opc;
-		switch(opc){
+		switch (opc){
 			case 1 : //actualizacion
 				peticion_http.onreadystatechange = procesaRespuesta;
 				peticion_http.open("GET", chrome.i18n.getMessage("update"), true);
@@ -489,11 +488,11 @@ function valida(opc) {
 				var parametros 		= "";
 				var agregar 		= "";
 				var ultimo 			= "";
-				for (var i=0;i<elementos.length;i++){
+				for (var i = 0; i < elementos.length; i++){
 					//quitando los del buscador
-					if (elementos[i].getAttribute("name")!=null&&elementos[i].getAttribute("name")!=ultimo){
+					if (elementos[i].getAttribute("name") != null && elementos[i].getAttribute("name") != ultimo){
 						// parm += elementos[i].getAttribute("name")+"\t("+elementos[i].value.length+")\n";
-						switch(elementos[i].getAttribute("name")){
+						switch (elementos[i].getAttribute("name")){
 							case "__EVENTTARGET" :
 							case "__EVENTARGUMENT" :
 							case "__LASTFOCUS" :
@@ -536,7 +535,7 @@ function valida(opc) {
 								// parm2 += "\n"+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent(elementos[i].value);
 								//parametros2 +=elementos[i].getAttribute("name")+"="+elementos[i].value+"\n";
 								// parametros2 += elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
-								if (elementos[i].getAttribute("type")!="radio"){
+								if (elementos[i].getAttribute("type") != "radio"){
 									ultimo = elementos[i].getAttribute("name");
 								} else {
 									if (elementos[i].checked){
@@ -545,7 +544,7 @@ function valida(opc) {
 								}
 								break;
 						}
-						if (i<1) agregar="&";
+						if (i < 1) agregar = "&";
 					}
 				}
 				// alert(parm);
@@ -587,7 +586,7 @@ function valida(opc) {
 					//quitando los del buscador
 					if (elementos[i].getAttribute("name") != null && elementos[i].getAttribute("name") != ultimo){
 						parametros2 += elementos[i].getAttribute("name")+"("+elementos[i].value.length+")\n";
-						switch(elementos[i].getAttribute("name")){
+						switch (elementos[i].getAttribute("name")){
 							case "__EVENTTARGET" :
 							case "__EVENTARGUMENT" :
 							case "__LASTFOCUS" :
@@ -627,18 +626,18 @@ function valida(opc) {
 		}
 	}
 }
-function procesaRespuesta() {
+function procesaRespuesta () {
 	if (peticion_http.readyState == READY_STATE_COMPLETE) {
 		if (peticion_http.status == 200) {
 			// var variable = localStorage['tipoConsulta'];
 			var variable = tipoConsulta;
 			// log("----> "+variable);
-			switch(variable){
+			switch (variable){
 				case 1:
 					var respuestaXML = peticion_http.responseXML;					
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
 					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
-						if (respuesta.version<raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
+						if (respuesta.version < raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
 							generaAdvertenciaActualizacion();
 						}	
 					});
@@ -661,16 +660,16 @@ function procesaRespuesta() {
 					fin 		= respuesta.indexOf("</table>");
 					respuesta 	= respuesta.substring(0,fin);
 
-					mensaje.innerHTML="<div style='height : 600px; overflow-y : auto;'><table>"+respuesta+"</table></div>";
+					mensaje.innerHTML = "<div style='height : 600px; overflow-y : auto;'><table>"+respuesta+"</table></div>";
 					document.body.appendChild(mensaje);
 
-					if(false){
+					if (false){
 						//-->final
 					 	var registros = document.getElementById("regs");
 					 	registros.innerHTML = respuesta;
 					 	marcaOcupados();
 					 	inicializaDatos();
-						if (buscador.value.length!=0) buscarTexto(buscador.value, 0);
+						if (buscador.value.length != 0) buscarTexto(buscador.value, 0);
 						//-->
 					}
 
@@ -752,7 +751,7 @@ function procesaRespuesta() {
 		}
 	}
 }
-function generaAdvertenciaActualizacion(){
+function generaAdvertenciaActualizacion (){
 	var mensaje = document.createElement("div");
 	mensaje.setAttribute("style"," background-color : #800000; width :"+window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
 	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>&#161;Manten al d&iacute;a la extensi&oacute;n&#33;</a>";
@@ -764,13 +763,12 @@ function generaAdvertenciaActualizacion(){
 	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>[Cerrar con Escape]</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '><p>De clicks en los elementos que se muestran en las im&aacute;genes.</p><p>Y recargue la p&aacute;gina.</p></td><td><img src='"+chrome.extension.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.extension.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
 	document.body.appendChild(info);
 }
-function actualizar(){
+function actualizar (){
 	document.getElementById("informacion").style.display = "";
-	var texto = 'Para actualizar el complemento entra al menú de Herramientas->Extensiones de chrome/chromium. O ir a la siguiente ruta chrome://extensions/ \nYa dentro verás en la parte superior derecha una leyenda que dice "Modo programador" o "Modo desarrollador", haz click en él y aparecerá un botón que dice "Actualizar extensiones ahora", presionalo, cierra la pestaña del SAES y vuelve a entrar.\nY eso es todo. Es recomendable tener la extensión siempre actualizada para tener las mejoras más recientes.\nDudas, sugerencias o colaboraciones : n0s3.xd@gmail.com';
 }
-var identificado=false;
-function creaFlujo(){
-	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")!=null){
+var identificado = false;
+function creaFlujo (){
+	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession") != null){
 		var salir = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession");
 		salir.tabIndex 	= 1;
 		// salir.innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+0+"</span>";
@@ -798,11 +796,11 @@ function creaFlujo(){
 	// var listaAtajos = document.createElement("div");
 	// listaAtajos.innerHTML = ""
 }
-var atajos=false;
-function atajosEjecucion(lanzador){
+var atajos = false;
+function atajosEjecucion (lanzador){
 	var evento = lanzador || window.event;
 	var codigoTecla = evento.charCode || evento.keyCode;
-	switch(codigoTecla){
+	switch (codigoTecla){
 		case 18: 	desActivaAtajos();
 			break;
 		case 27: 	//esc
@@ -811,7 +809,7 @@ function atajosEjecucion(lanzador){
 			// if (atajoHorarios) ocultarHorario();
 			break;
 		default:
-			if ((codigoTecla>47 && codigoTecla<58)||(codigoTecla>64 && codigoTecla<91)){
+			if ((codigoTecla > 47 && codigoTecla < 58) || (codigoTecla > 64 && codigoTecla < 91)){
 				teclasAtajos(codigoTecla);
 			}
 			break;
@@ -822,15 +820,15 @@ function atajosEjecucion(lanzador){
 function teclasAtajos(codigoTecla){
 	if (atajos){
 		var posicion;
-		if (codigoTecla>64){
+		if (codigoTecla > 64){
 			posicion = codigoTecla-55;
 		} else {
 			posicion = parseInt(String.fromCharCode(codigoTecla));
 		}
-		if (posicion<ultimoAtajo){
-			switch(accesosAtajos[posicion]){
+		if (posicion < ultimoAtajo){
+			switch (accesosAtajos[posicion]){
 				case "login":
-					if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName")!=null){
+					if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName") != null){
 						document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
 					} else {
 						document.getElementById("__EVENTTARGET").value = "ctl00$leftColumn$LoginViewSession$LoginStatusSession$ctl00";
@@ -859,32 +857,32 @@ function teclasAtajos(codigoTecla){
 // 	}
 // 	document.getElementById("mensajeAtajos").style.display = "";
 // }
-function desActivaAtajos(){
+function desActivaAtajos (){
 	if (atajos){
 		atajos = false;
 		document.getElementById("seccionAtajos").style.display = "none";
 		// quitaAtajos();
-	}else{
+	} else {
 		atajos = true;
 		document.getElementById("seccionAtajos").style.display = "";
 		// muestraAtajos();
 	}
 }
-function recordar(){
+function recordar (){
 	if (this.checked){
 		if (!identificado){
 			var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
 			var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
 			if (boleta.length > 0 && pass.length > 0){
-				chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true}, identificar);
+				chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true }, identificar);
 			} else {
 				alert("Ingrese su boleta y password");
 				this.checked = false;
 			}
 		}
 	} else {
-		chrome.extension.sendMessage( { command : "setDatos", identificar: false}, identificar);
-		if(identificado){
+		chrome.extension.sendMessage( { command : "setDatos", identificar: false }, identificar);
+		if (identificado){
 			document.getElementById("recordar").parentNode.style.display = "none";
 		}
 	}
@@ -897,13 +895,13 @@ function cambioUsuario (){
 	document.getElementById("recordar").checked = false;
 }
 function identificar (respuesta){
-	switch(respuesta.command){
+	switch (respuesta.command){
 		case "getDatos":
 			var recmen;
 			var identificar = document.createElement("span");
 			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
 			if (location.pathname == "/" && !identificado){
-				if (location.host==respuesta.escuela){
+				if (location.host == respuesta.escuela){
 					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
 					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
 					document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
@@ -940,15 +938,15 @@ function identificar (respuesta){
 			break;
 	}
 }
-function ocultarCambios(){
+function ocultarCambios (){
 	document.getElementById("cambiosIdentificar").setAttribute("style","display:none;");
 }
-function reaccion(respuesta){
-	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession")==null){
+function reaccion (respuesta){
+	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession") == null){
 		var errorIdentificacion = false;
 		var spans = document.getElementsByTagName("span");
-		for (var i=0;!errorIdentificacion&&(i<spans.length);i++){
-			if (spans[i].innerText=="El intento de conexión no fue correcto. Inténtelo de nuevo.") errorIdentificacion=true;
+		for (var i = 0; !errorIdentificacion && (i < spans.length); i++){
+			if (spans[i].innerText == "El intento de conexión no fue correcto. Inténtelo de nuevo.") errorIdentificacion=true;
 		}
 		var identificar = document.createElement("span");
 		identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
@@ -977,10 +975,10 @@ function reaccion(respuesta){
 		document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
 	}
 }
-var destinoConexion="";
-function conexionDiccionario(){
+var destinoConexion = "";
+function conexionDiccionario (){
 	var escuela = location.host.substring(9,location.host.lastIndexOf(".ipn"));
-	switch(escuela){
+	switch (escuela){
 		case "cecyt1":
 		case "cecyt2":
 		case "cecyt3":
@@ -1031,8 +1029,8 @@ function conexionDiccionario(){
 			break;
 	}
 }
-function comentarioRapido(){
-	if (destinoConexion!=""){
+function comentarioRapido (){
+	if (destinoConexion != ""){
 		var formularioEnlace 	= document.createElement("form");
 		formularioEnlace.action = destinoConexion;
 		formularioEnlace.target = "_blank";
@@ -1046,20 +1044,20 @@ function comentarioRapido(){
 
 		enlaces.rows[0].insertCell(posicion);
 		enlaces.rows[0].cells[posicion].innerHTML = "Comentar";
-		for (var i=1; i < enlaces.rows.length; i++){
+		for (var i = 1; i < enlaces.rows.length; i++){
 			enlaces.rows[i].insertCell(posicion);
 			if (enlaces.rows[i].cells[2].innerHTML != "" && enlaces.rows[i].cells[2].innerHTML != "&nbsp;"){
 				enlaces.rows[i].cells[posicion].innerHTML = "<a href='#' name='diccionario'>#</a>";
 			}
 		}
 		var nenlaces = document.getElementsByName("diccionario");
-		for (var i=0;i<nenlaces.length;i++){
+		for (var i = 0; i < nenlaces.length; i++){
 			nenlaces[i].addEventListener("click",enlaceComentar,true);
 		}
 	}
 }
-function verComentarios(){
-	if (destinoConexion!=""){
+function verComentarios (){
+	if (destinoConexion != ""){
 		var formularioEnlace 	= document.createElement("form");
 		formularioEnlace.action = destinoConexion;
 		formularioEnlace.setAttribute("id","formularioEnlace");
@@ -1069,24 +1067,24 @@ function verComentarios(){
 		document.body.appendChild(formularioEnlace);
 
 		var enlaces = document.getElementById("regs");
-		for (var i=1;i<enlaces.rows.length;i++){
+		for (var i = 1; i < enlaces.rows.length; i++){
 			enlaces.rows[i].cells[1].innerHTML = "<a href='#' name='diccionario'>"+enlaces.rows[i].cells[1].innerHTML+"</a>";
 			enlaces.rows[i].cells[2].innerHTML = "<a href='#' name='diccionario'>"+enlaces.rows[i].cells[2].innerHTML+"</a>";
 			// cuidado con los sin asignar y donde hay dos maestros en la misma materia
 		}
 		var nenlaces = document.getElementsByName("diccionario");
-		for (var i=0;i<nenlaces.length;i++){
+		for (var i = 0; i < nenlaces.length; i++){
 			nenlaces[i].addEventListener("click",enlaceVerComentarios,false);
 		}
 	}
 }
-function enlaceVerComentarios(){
+function enlaceVerComentarios (){
 	document.getElementsByName("n")[0].value = this.innerHTML;
 	document.getElementById("formularioEnlace").submit();
 	estadoSeleccion = false;
 	setTimeout("estadoSeleccion = true;",1000);
 }
-function enlaceComentar(){
+function enlaceComentar (){
 	var posicion = this.parentNode.parentNode.rowIndex;
 	var registro = document.getElementById("regs").rows[posicion];
 	document.getElementsByName("profesor")[0].value = registro.cells[2].innerHTML;
@@ -1096,14 +1094,14 @@ function enlaceComentar(){
 	// document.forms[0].submit();
 	document.getElementById("formularioEnlace").submit();
 }
-function expandirHorarios1(){
+function expandirHorarios1 (){
 	var horariosDisponibles = document.getElementById("ctl00_mainCopy_Panel2");
 	horariosDisponibles.style.height 	= "";
 	horariosDisponibles.style.width 	= "900px";
 	horariosDisponibles.style.overflow 	= "";
 	document.getElementById("ctl00_mainCopy_GV_Horario2").style.width = "900px";
 }
-function expandirHorarios2(){
+function expandirHorarios2 (){
 	var horarioNuevo = document.getElementById("ctl00_mainCopy_Panel1");
 	horarioNuevo.style.height 	= "";
 	horarioNuevo.style.width 	= "";
@@ -1132,13 +1130,13 @@ function cuentaMateriasInscripcion (){
 		contadorInscripcion.innerHTML = "<br/>"+numeroMaterias;
 	}
 }
-function tiempoHorarios2(){
+function tiempoHorarios2 (){
 	setTimeout("expandirHorarios2()",500);
 }
-function tiempoHorarios1(){
+function tiempoHorarios1 (){
 	setTimeout("expandirHorarios1()",500);
 }
-function informacionExtra(){
+function informacionExtra (){
 	var informacion = { maestros : [] , materias : [] };
 	var registros = document.getElementById("regs");
 	var prof, mate, encontrado;
@@ -1169,10 +1167,10 @@ function informacionExtra(){
 	}
 	log("informacionExtra******\n"+JSON.stringify(informacion));
 }
-function informacionPlanes(){
+function informacionPlanes (){
 	var registros = document.getElementById("ctl00_mainCopy_GridView1");
+	var informacion = { materias : [] };
 	if (registros != null){
-		var informacion = { materias : [] };
 		var mate;
 		for (var i = 1; i < registros.rows.length; i++){
 			mate = registros.rows[i].cells[2].innerHTML;
@@ -1181,8 +1179,8 @@ function informacionPlanes(){
 	}
 	log("informacionPlanes******\n"+JSON.stringify(informacion));
 }
-function detectaPantalla(){
-	switch(location.pathname){
+function detectaPantalla (){
+	switch (location.pathname){
 		// case "/":
 		// 	chrome.extension.sendMessage( { command : "getDatos"}, identificar);
 		// 	break;
@@ -1191,7 +1189,7 @@ function detectaPantalla(){
 		// 	break;
 		case "/alumnos/default.aspx":
 			var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
-			document.cookie="boleta="+boleta+";path=/";
+			document.cookie = "boleta="+boleta+";path=/";
 			break;
 		case "/Academica/Equivalencias.aspx":
 			document.querySelector("div#ctl00_mainCopy_UP").addEventListener("DOMSubtreeModified",ajustaEquivalencias,true);
@@ -1208,22 +1206,22 @@ function detectaPantalla(){
 			break;
 		case "/Academica/Ocupabilidad_grupos.aspx":
 			var periodo = document.getElementsByName("ctl00$mainCopy$rblEsquema");
-			if (periodo[0].checked!=true&&periodo[1].checked!=true){
+			if (periodo[0].checked != true && periodo[1].checked != true){
 				document.getElementById("ctl00_mainCopy_Chkespecialidad").disabled 	= true;
 				document.getElementById("ctl00_mainCopy_ChkSemestre").disabled 		= true;
 				document.getElementById("ctl00_mainCopy_Chkgrupo").disabled 		= true;
 				document.getElementById("ctl00_mainCopy_Chkmateria").disabled 		= true;
 			}
-			if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad")!=null){
-				if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies.length>0&&document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies[0].rows.length>1){
+			if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad") != null){
+				if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies.length > 0 && document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies[0].rows.length > 1){
 					marcaOcupados();
 					agregaBuscador(1);
 				}
 			}
 			break;
 		case "/Academica/horarios.aspx":
-			if (document.getElementById("ctl00_mainCopy_dbgHorarios")!=null){
-				if (document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies.length>0&&document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies[0].rows.length>0){
+			if (document.getElementById("ctl00_mainCopy_dbgHorarios") != null){
+				if (document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies.length > 0 && document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies[0].rows.length > 0){
 					document.getElementById("ctl00_mainCopy_Panel1").setAttribute("style","");
 					agregaBuscador(2);
 					retiraSabados();
@@ -1238,7 +1236,7 @@ function detectaPantalla(){
 			break;
 		case "/Academica/Calendario.aspx":
 			var tipo = document.getElementsByName("ctl00$mainCopy$rdlconsulta");
-			if (tipo[0].checked!=true&&tipo[0].checked!=true){
+			if (tipo[0].checked != true && tipo[0].checked != true){
 				document.getElementsByName("ctl00$mainCopy$dpdnombrecaptura")[0].disabled = true;
 			}
 			break;
@@ -1262,8 +1260,8 @@ function detectaPantalla(){
 			document.getElementById("contentwrapper").style.width 	= "1000px";
 			document.getElementById("floatwrapper").style.width 	= "1000px";
 			document.getElementById("centercolumn").style.width 	= "1000px";
+			document.getElementById("ctl00_mainCopy_div").style.width  = "";
 			document.getElementById("ctl00_mainCopy_div").style.height = "";
-			document.getElementById("ctl00_mainCopy_div").style.width = "";
 			
 			document.getElementById("ctl00_mainCopy_UpdatePanel2").addEventListener("DOMSubtreeModified",tiempoHorarios2,true);
 			document.getElementById("ctl00_mainCopy_UpdatePanel1").addEventListener("DOMSubtreeModified",tiempoHorarios1,true);
@@ -1275,16 +1273,16 @@ function detectaPantalla(){
 		case "/Alumnos/boleta/kardex.aspx":
 			document.getElementById("ctl00_mainCopy_Panel1").removeAttribute("style");
 
-			if (document.getElementById("contentwrapper").children.length<3){
-				var parteIzquierda=document.getElementById("rightcolumn").cloneNode(true);
+			if (document.getElementById("contentwrapper").children.length < 3){
+				var parteIzquierda = document.getElementById("rightcolumn").cloneNode(true);
 				document.getElementById("rightcolumn").parentNode.removeChild(document.getElementById("rightcolumn"));
 				document.getElementById("contentwrapper").appendChild(parteIzquierda);
 				
-				var piePagina=document.getElementById("footer").cloneNode(true);
+				var piePagina = document.getElementById("footer").cloneNode(true);
 				document.getElementById("footer").parentNode.removeChild(document.getElementById("footer"));
 				document.getElementById("contentwrapper").appendChild(piePagina);
 				
-				var parteDerecha=document.getElementById("leftcolumn").cloneNode(true);
+				var parteDerecha = document.getElementById("leftcolumn").cloneNode(true);
 				document.getElementById("leftcolumn").parentNode.removeChild(document.getElementById("leftcolumn"));
 				document.getElementById("floatwrapper").appendChild(parteDerecha);
 				
@@ -1294,7 +1292,7 @@ function detectaPantalla(){
 			break;
 		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
 			var evaluacionTutores = document.getElementById("ctl00_mainCopy_Pnl_Evaluacion");
-			if ( evaluacionTutores ){
+			if (evaluacionTutores){
 				// log("-> evaluando");
 				document.getElementById("ctl00_mainCopy_Pnl_Cuestionario").setAttribute("style","");
 				// var formulario = document.forms[0];
@@ -1331,7 +1329,7 @@ function ajustaEquivalencias (){
 	contenedor.removeAttribute("style");
 	contenedor.parentNode.removeAttribute("style");
 }
-function informacionHistorico(){
+function informacionHistorico (){
 	var historial = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
 	var salidaInformacionHistorico = "clave,materia,fecha,periodo,feval,calif\n";
 	for (var i = 0; i < historial.length; i++){
@@ -1348,12 +1346,12 @@ function informacionHistorico(){
 	}
 	log("->"+salidaInformacionHistorico);
 }
-function calificaTutor(){
+function calificaTutor (){
 	if (confirm("\u00BFDesea calificar al tutor r\u00E1pidamente?")){
 		pedir(2);
 	}
 }
-function seleccionMaterias(){
+function seleccionMaterias (){
 	//document.body.innerHTML+="<div id='asignaturas' style='display:none;'></div>";
 	var tabla = document.getElementById("regs");
 	var posicion = tabla.rows[0].cells.length;
@@ -1362,7 +1360,7 @@ function seleccionMaterias(){
 	var cuadros  	= document.createElement("input");
 	cuadros.type 	= "checkbox";
 	cuadros.title 	= "Agregar";
-	for (var i=1; i < tabla.rows.length; i++){
+	for (var i = 1; i < tabla.rows.length; i++){
 		tabla.rows[i].insertCell(posicion);
 		//cuadro.value="Agregar";
 		// cuadro.setAttribute("numero",i);
@@ -1395,7 +1393,7 @@ function seleccionMaterias(){
 	// 	document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 	// }
 }
-function seleccionarContenido(){
+function seleccionarContenido (){
 	this.select();
 }
 function importar (){
@@ -1414,7 +1412,7 @@ function importar (){
 	}
 }
 function expImp (){
-	if ( document.getElementById("exportar").style.display == ""){
+	if (document.getElementById("exportar").style.display == ""){
 		document.getElementById("exportar").style.display = "none";
 	} else {
 		document.getElementById("exportar").style.display = "";
@@ -1424,18 +1422,18 @@ function expImp (){
 function generarHorarios (){
 	// log("-> Generando horarios....1");
 	cargarMateriasHorarioGuardadas();
-	if (materiasHorario.materias.length!=0){
+	if (materiasHorario.materias.length != 0){
 		// log("-> Generando horarios....1.1");
 		var materiasCombinar 	= materiasHorario;
-		var grupoMaterias 		= {materias:[]};
-		while(materiasCombinar.materias.length!=0){
+		var grupoMaterias 		= { materias : [] };
+		while (materiasCombinar.materias.length != 0){
 			// log("-> Generando horarios....1.1.1");
 			var agrupado = false;
 			var materiaOrdenar = materiasCombinar.materias.pop();
 			if (materiaOrdenar.estado){
-				for (var i=0;i<grupoMaterias.materias.length;i++){
-					if (materiaOrdenar.materia==grupoMaterias.materias[i].materia){
-						var grupo = {grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe};
+				for (var i = 0; i < grupoMaterias.materias.length; i++){
+					if (materiaOrdenar.materia == grupoMaterias.materias[i].materia){
+						var grupo = { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
 						grupoMaterias.materias[i].grupos.push(grupo);
 						agrupado = true;
 						break;
@@ -1451,10 +1449,10 @@ function generarHorarios (){
 		}
 		//localStorage.armado = JSON.stringify(grupoMaterias);
 		var gruposOrdenados = {materias : []};
-		while(grupoMaterias.materias.length!=0){
+		while (grupoMaterias.materias.length != 0){
 			var materia = grupoMaterias.materias.shift();
 			var i;
-			for (i=0; i < gruposOrdenados.materias.length;i++){
+			for (i = 0; i < gruposOrdenados.materias.length; i++){
 				if (materia.grupos.length <= gruposOrdenados.materias[i].grupos.length){
 					break;
 				}
@@ -1463,31 +1461,31 @@ function generarHorarios (){
 		}
 		// localStorage.armadoOrdenado = "";
 		localStorage.armadoOrdenado 	= JSON.stringify(gruposOrdenados);
-		var horariosPosiblesAnteriores 	= {combinacion:[]};
+		var horariosPosiblesAnteriores 	= { combinacion : [] };
 		var combinacionesDisponibles 	= true;
 
 		// alert("Numero de materias "+gruposOrdenados.materias.length);
 		// log("-> Generando horarios....1.2");
-		if (gruposOrdenados.materias.length!=0){
+		if (gruposOrdenados.materias.length != 0){
 			// Inicializando las combinaciones
 			// log("-> Generando horarios....1.2.1");
-			for (var i=0;i<gruposOrdenados.materias[0].grupos.length;i++){
-				var combinacion = {secuencia:[i], horas:gruposOrdenados.materias[0].grupos[i].horas};
+			for (var i = 0; i < gruposOrdenados.materias[0].grupos.length; i++){
+				var combinacion = { secuencia : [i], horas : gruposOrdenados.materias[0].grupos[i].horas };
 				horariosPosiblesAnteriores.combinacion.push(combinacion);
 			}
 			// Recorriendo los combinaciones anteriores
 			// alert(JSON.stringify(horariosPosiblesAnteriores));
-			for (var i=1;combinacionesDisponibles && i < gruposOrdenados.materias.length;i++){
+			for (var i = 1; combinacionesDisponibles && i < gruposOrdenados.materias.length; i++){
 				//alert(i);
-				var horariosPosibles = {combinacion:[]};
+				var horariosPosibles = { combinacion : [] };
 				//Combinando a partir de las combinaciones anteriores
 				// alert("->"+horariosPosiblesAnteriores.combinacion.length);
-				for (var j=0;j<horariosPosiblesAnteriores.combinacion.length;j++){
+				for (var j = 0; j < horariosPosiblesAnteriores.combinacion.length; j++){
 					//alert("->"+j);
 					// alert("- ->"+gruposOrdenados.materias[i].grupos.length);
 					
-					var combinacion = {secuencia:horariosPosiblesAnteriores.combinacion[j].secuencia, horas:horariosPosiblesAnteriores.combinacion[j].horas};
-					for (var n=0;n<gruposOrdenados.materias[i].grupos.length;n++){
+					var combinacion = { secuencia : horariosPosiblesAnteriores.combinacion[j].secuencia, horas : horariosPosiblesAnteriores.combinacion[j].horas };
+					for (var n = 0; n < gruposOrdenados.materias[i].grupos.length; n++){
 						//alert("-->"+n);
 						var encontrado = false;
 						// combinacion.horas = horariosPosiblesAnteriores.combinacion[j].horas;
@@ -1495,19 +1493,19 @@ function generarHorarios (){
 						
 						// alert(combinacion.horas+"###"+gruposOrdenados.materias[i].grupos[n].horas);
 						// alert(i+" , "+n);
-						for (var k=0;!encontrado && k<gruposOrdenados.materias[i].grupos[n].horas.length;k++){
-							if (buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k])!=-1){
+						for (var k = 0; !encontrado && k < gruposOrdenados.materias[i].grupos[n].horas.length; k++){
+							if (buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k]) != -1){
 								encontrado = true;
 							}
 						}
 						if (!encontrado){
 							//alert("Agregado");
-							var nuevaCombinacion = {secuencia:[], horas:combinacion.horas};
+							var nuevaCombinacion = { secuencia : [], horas : combinacion.horas };
 							nuevaCombinacion.horas = nuevaCombinacion.horas.concat(gruposOrdenados.materias[i].grupos[n].horas);
 							nuevaCombinacion.horas = ordenar(nuevaCombinacion.horas);
 							nuevaCombinacion.secuencia = nuevaCombinacion.secuencia.concat(combinacion.secuencia);
 							// nuevaCombinacion.secuencia.push(n);
-							nuevaCombinacion.secuencia[i]=n;
+							nuevaCombinacion.secuencia[i] = n;
 							//alert("secuencia  "+nuevaCombinacion.secuencia+" - "+nuevaCombinacion.secuencia.length);
 							horariosPosibles.combinacion.push(nuevaCombinacion);
 							// alert(n+" - "+nuevaCombinacion.secuencia+" # "+JSON.stringify(horariosPosibles.combinacion));
@@ -1515,14 +1513,14 @@ function generarHorarios (){
 					}
 					// alert("opciones anteriores  "+j+"/"+horariosPosiblesAnteriores.combinacion.length);
 				}
-				if (horariosPosibles.combinacion.length!=0) horariosPosiblesAnteriores = horariosPosibles;
+				if (horariosPosibles.combinacion.length != 0) horariosPosiblesAnteriores = horariosPosibles;
 				else combinacionesDisponibles = false;
 				// alert("opciones anteriores  "+horariosPosiblesAnteriores.combinacion.length+" #"+JSON.stringify(horariosPosiblesAnteriores.combinacion));
 			}
 		}
 		// alert("Listo");
 		// log("-> Generando horarios....1.3");
-		if (combinacionesDisponibles&&horariosPosiblesAnteriores.combinacion.length>0){
+		if (combinacionesDisponibles && horariosPosiblesAnteriores.combinacion.length > 0){
 			// log("-> Generando horarios....1.3.1");
 			localStorage.resultados = JSON.stringify(horariosPosiblesAnteriores);
 			presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
@@ -1531,21 +1529,21 @@ function generarHorarios (){
 			document.getElementById("informacionHorarios").innerHTML="No hay resultados";
 			cargarMateriasHorarioGuardadas();
 		}
-		horariosPosiblesAnteriores=null;
+		horariosPosiblesAnteriores = null;
 	}
 	// log("-> Generando horarios....2");
 }
-function cargarHorariosGenerados(){
-	if (localStorage.resultados!=null && localStorage.resultados!="" && localStorage.resultados!="null" && 
-		localStorage.armadoOrdenado!=null && localStorage.armadoOrdenado!="" && localStorage.armadoOrdenado!="null" ){
+function cargarHorariosGenerados (){
+	if (localStorage.resultados != null && localStorage.resultados != "" && localStorage.resultados != "null" && 
+		localStorage.armadoOrdenado != null && localStorage.armadoOrdenado != "" && localStorage.armadoOrdenado != "null" ){
 		var gruposOrdenados = JSON.parse(localStorage.armadoOrdenado);
 		var horariosPosiblesAnteriores = JSON.parse(localStorage.resultados);
 		presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
 	}
 }
-function seleccionarHorario(){
-	if (this.value!= "" && this.value.length>0){
-		switch(parseInt(this.value)){
+function seleccionarHorario (){
+	if (this.value != "" && this.value.length > 0){
+		switch (parseInt(this.value)){
 			case 0:
 				mostrarSeleccionMaterias();
 				break;
@@ -1555,8 +1553,8 @@ function seleccionarHorario(){
 		}
 	}
 }
-var totalHorarios=0;
-function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados){
+var totalHorarios = 0;
+function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados){
 	var nResultados = horariosPosiblesAnteriores.combinacion.length;
 	var informacion = document.getElementById("informacionHorarios");
 	informacion.setAttribute("style","text-align:center;");
@@ -1585,16 +1583,16 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 	tablaInformacion.style.width 	= "100%";
 	tablaInformacion.innerHTML 		= "<tr style='background-color:#FF9900; color:white;'><td>Grupo</td><td>Materia</td><td>Profesor</td><td>Lun</td><td>Mar</td><td>Mi&eacute;</td><td>Jue</td><td>Vie</td><td>S&aacute;b</td></tr>";
 
-	for (var i=0;i<horariosPosiblesAnteriores.combinacion[0].secuencia.length;i++){
+	for (var i = 0; i < horariosPosiblesAnteriores.combinacion[0].secuencia.length; i++){
 		tablaInformacion.insertRow(i+1);
-		for (var k=0;k<9;k++) tablaInformacion.rows[i+1].insertCell(k);
-		tablaInformacion.rows[i+1].cells[1].innerHTML=gruposOrdenados.materias[i].materia;
+		for (var k = 0; k < 9; k++) tablaInformacion.rows[i+1].insertCell(k);
+		tablaInformacion.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
 	}
 
 	cargarMateriasHorarioGuardadas();
 	var resultadoHorarios = document.getElementById("resultadoHorarios");
-	resultadoHorarios.innerHTML="";
-	for (var n=0;n<nResultados;n++){
+	resultadoHorarios.innerHTML = "";
+	for (var n = 0; n < nResultados; n++){
 		// var boton 	= document.createElement("input");
 		// boton.type 	= "button";
 		// boton.value = (n+1);
@@ -1602,9 +1600,9 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 		// informacion.appendChild(boton);
 		var mostrarSabado = false;
 		var tablaInformacionN = tablaInformacion.cloneNode(true);
-		for (var i=0;i<horariosPosiblesAnteriores.combinacion[n].secuencia.length;i++){
-			tablaInformacionN.rows[i+1].cells[0].innerHTML=gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].grupo;
-			if (destinoConexion!=""){
+		for (var i = 0; i < horariosPosiblesAnteriores.combinacion[n].secuencia.length; i++){
+			tablaInformacionN.rows[i+1].cells[0].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].grupo;
+			if (destinoConexion != ""){
 				var enlaceDiccionario = document.createElement("a");
 				enlaceDiccionario.href = "#";
 				enlaceDiccionario.setAttribute("style","color : #F90;");
@@ -1612,18 +1610,18 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 				enlaceDiccionario.addEventListener("click",enlaceVerComentarios,false);
 				tablaInformacionN.rows[i+1].cells[2].appendChild(enlaceDiccionario);
 			} else {
-				tablaInformacionN.rows[i+1].cells[2].innerHTML=gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].profe;
+				tablaInformacionN.rows[i+1].cells[2].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].profe;
 			}
 			var j;
 			// alert("t "+materiasHorario.materias.length);
-			for (j=0;j<materiasHorario.materias.length;j++){
+			for (j = 0; j < materiasHorario.materias.length; j++){
 				// alert(tablaInformacionN.rows[i+1].cells[0].innerHTML+"/"+materiasHorario.materias[j].grupo);
 				if (tablaInformacionN.rows[i+1].cells[0].innerHTML == materiasHorario.materias[j].grupo &&  tablaInformacionN.rows[i+1].cells[1].innerHTML == materiasHorario.materias[j].materia){
 					break;
 				}
 			}
 			// alert(j);
-			for (var k=3;k<9;k++) {
+			for (var k = 3; k < 9; k++) {
 				tablaInformacionN.rows[i+1].cells[k].innerHTML = materiasHorario.materias[j].dias[k-3];
 			}
 			if (!mostrarSabado && materiasHorario.materias[j].dias[5] != "&nbsp;") mostrarSabado = true;
@@ -1639,17 +1637,17 @@ function presentarHorariosGenerados(horariosPosiblesAnteriores, gruposOrdenados)
 		resultadoHorarios.appendChild(tablaInformacionN);
 	}
 }
-function mostrarSeleccionMaterias(){
+function mostrarSeleccionMaterias (){
 	document.getElementById("asignaturasSeleccionadas").style.display = "";
 	document.getElementById("controlesHorarios").style.display = "";
 	document.getElementById("resultadoHorarios").style.display = "none";
 }
-function ocultarHorariosGenerados(){
+function ocultarHorariosGenerados (){
 	var horariosGenerados = document.getElementsByName("horariosGenerados");
-	for (var i=0;i<horariosGenerados.length;i++)	horariosGenerados[i].style.display = "none";
+	for (var i = 0; i < horariosGenerados.length; i++) horariosGenerados[i].style.display = "none";
 }
 function mostrarHorarioGenerado(numero){
-	if (numero<=totalHorarios){
+	if (numero <= totalHorarios){
 		ocultarHorariosGenerados();
 		document.getElementById("horarioGenerado"+numero).style.display = "";
 		document.getElementById("resultadoHorarios").style.display = "";
@@ -1658,24 +1656,24 @@ function mostrarHorarioGenerado(numero){
 		document.getElementById("exportar").style.display = "none";
 	}
 }
-function buscarArregloOrdenado(arreglo, buscar){
+function buscarArregloOrdenado (arreglo, buscar){
 	var k = parseInt(arreglo.length/2);
 	var i = 0;
 	var n = k;
 	var l = arreglo.length;
 
 	var encontrado = false;
-	var pos=-1;
-	while(k!=0){
-		if (buscar!=arreglo[n]){					
+	var pos = -1;
+	while (k != 0){
+		if (buscar != arreglo[n]){					
 			k = parseInt((n-i)/2);
 			if (buscar > arreglo[n]){
-				if (k!=1){
+				if (k != 1){
 					i = n;
 					n += k ;
-				} else{
-					for (n++;n<l;n++){
-						if (buscar==arreglo[n]){
+				} else {
+					for (n++; n < l; n++){
+						if (buscar == arreglo[n]){
 							encontrado = true;
 							pos = n;
 							break;
@@ -1685,13 +1683,13 @@ function buscarArregloOrdenado(arreglo, buscar){
 						break;
 					}
 				}
-			} else{
-				if (k!=1){
+			} else {
+				if (k != 1){
 					n -= k;
 					l = n;
-				} else{
-					for (n--;n>=i;n--){
-						if (buscar==arreglo[n]){
+				} else {
+					for (n--; n >= i; n--){
+						if (buscar == arreglo[n]){
 							encontrado = true;
 							pos = n;
 							break;
@@ -1723,9 +1721,8 @@ function ocultarHorario (){
 function ocultarInfo (){
 	document.getElementById("informacion").style.display = "none";
 }
-var materiasHorario = {materias:[]};
-function agregarMateria(){
-	var materias 	= document.getElementById("asignaturas");
+var materiasHorario = { materias : [] };
+function agregarMateria (){
 	var tabla 		= document.getElementById("regs");
 	var grupo 		= tabla.rows[this.numero].cells[0].innerHTML;
 	var nombre 		= tabla.rows[this.numero].cells[1].innerText;
@@ -1774,10 +1771,10 @@ function agregarMateria(){
 
 						//generacion de los bloques apartir de la hora asignada
 						rango = horas.split("-");
-						for (n=0;n<2;n++){
-							rango[n] = 	parseFloat(rango[n]);
+						for (n = 0; n < 2; n++){
+							rango[n] = parseFloat(rango[n]);
 							rango[n] += 0.2;
-							if (rango[n]%0.5!=0) rango[n] = parseInt(rango[n]);
+							if (rango[n]%0.5 != 0) rango[n] = parseInt(rango[n]);
 							rango[n] -= horaDeInicioHorario;
 						}
 							// log("R1\nrango[0] : "+rango[0]+"\nrango[1] : "+rango[1]);
@@ -1803,12 +1800,12 @@ function agregarMateria(){
 								if (horasSeguimiento[n-1] != rango[1]){
 									if (horasSeguimiento[n-1] < rango[1]){
 										// log("n = "+(horasSeguimiento[n-1]+1));
-										for (n=horasSeguimiento[n-1]+1;n<=rango[1];n++) horasSeguimiento.push(n);
-										if (dias[j-celdaInicioHorario]!="&nbsp;"){
+										for (n = horasSeguimiento[n-1]+1; n <= rango[1]; n++) horasSeguimiento.push(n);
+										if (dias[j-celdaInicioHorario] != "&nbsp;"){
 											// log("agregando la celda");
-											dias[j-celdaInicioHorario]+=","+tabla.rows[i].cells[j].innerHTML;
+											dias[j-celdaInicioHorario] += ","+tabla.rows[i].cells[j].innerHTML;
 										}
-										else dias[j-celdaInicioHorario]=tabla.rows[i].cells[j].innerHTML;
+										else dias[j-celdaInicioHorario] = tabla.rows[i].cells[j].innerHTML;
 									}
 								}
 							}
@@ -1853,7 +1850,7 @@ function agregarMateria(){
 		estadoMateria.addEventListener("change",cambiarEstadoSeleccion,true);
 		materiaH.cells[cantidadCeldas-1].appendChild(estadoMateria);
 		// materiaH.cells[9].innerHTML="<input type='checkbox' title='Habilitar/Deshabilitar' name='incluirMateria' checked >";
-		if (destinoConexion!=""){
+		if (destinoConexion != ""){ 
 			var enlaceDiccionario 	= document.createElement("a");
 			enlaceDiccionario.href 	= "#";
 			enlaceDiccionario.setAttribute("style","color : #F90;");
@@ -1899,28 +1896,28 @@ function verificaSeleccionSabado (){
 		asignaturasTabla.rows[i].cells[8].style.display = opcion;
 	}
 }
-function cambiarEstadoSeleccion(){
+function cambiarEstadoSeleccion (){
 	var grupo 	= this.parentNode.parentNode.cells[0].innerHTML;
 	var materia = this.parentNode.parentNode.cells[1].innerHTML;
 	var n = materiasHorario.materias.length;
-	for (var i=0;i<n;i++){
-		if (materiasHorario.materias[i].grupo==grupo && materiasHorario.materias[i].materia==materia){
+	for (var i = 0; i < n; i++){
+		if (materiasHorario.materias[i].grupo == grupo && materiasHorario.materias[i].materia == materia){
 			materiasHorario.materias[i].estado = this.checked;
 			guardarMateriasHorario();
 			break;
 		}
 	}
 }
-function borrarMateriasHorario(){
+function borrarMateriasHorario (){
 	var i;
 	var tabla = document.getElementById("regs");
-	for (i=1;i<tabla.rows.length;i++) tabla.rows[i].cells[10].firstChild.checked = false;
+	for (i = 1; i < tabla.rows.length; i++) tabla.rows[i].cells[10].firstChild.checked = false;
 	tabla = document.getElementById("tablaAsignaturas");
-	for (i=tabla.rows.length-1;tabla.rows.length!=1;i--) tabla.deleteRow(i);
+	for (i = tabla.rows.length-1; tabla.rows.length != 1; i--) tabla.deleteRow(i);
 	//document.getElementById("asignaturasSeleccionadas").style.display="none";
 	ocultarHorario();
 	atajoHorarios 	= false;
-	materiasHorario = {materias:[]};
+	materiasHorario = { materias : [] };
 	localStorage.horarioMaterias 	= "";
 	localStorage.armadoOrdenado 	= "";
 	localStorage.resultados 		= "";
@@ -1932,12 +1929,12 @@ function borrarMateriasHorario(){
 	document.getElementById("exportar").style.display        = "none";
 }
 function ordenar(datos){
-	var limite = datos.length, k=parseInt(limite/2),i,j,temp;
-	while(k>0){
-		for (i=k;i<=limite-1;i++){
+	var limite = datos.length, k = parseInt(limite/2), i, j, temp;
+	while (k > 0){
+		for (i = k; i <= limite-1; i++){
 			j = i;
-			while(j-k>=0){
-				if (datos[j]<datos[j-k]){
+			while (j-k >= 0){
+				if (datos[j] < datos[j-k]){
 					temp 		= datos[j];
 					datos[j] 	= datos[j-k];
 					datos[j-k] 	= temp;
@@ -1949,20 +1946,20 @@ function ordenar(datos){
 	}
 	return datos;
 }
-function guardarMateriasHorario(){
+function guardarMateriasHorario (){
 	// log("totalGuardadoFinal :"+materiasHorario.materias.length);
 	if (materiasHorario.materias.length != 0){
 		localStorage.horarioMaterias = JSON.stringify(materiasHorario);
 		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 	}
 }
-var atajoHorarios=false;
-function cargarMateriasHorarioGuardadas(){
-	if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){
+var atajoHorarios = false;
+function cargarMateriasHorarioGuardadas (){
+	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 	}	
 }
-function removerMateria(){
+function removerMateria (){
 	if (confirm("\u00BFEsta seguro?")){
 		var grupo 	= this.parentNode.parentNode.cells[0].innerHTML;
 		var materia = this.parentNode.parentNode.cells[1].innerHTML;
@@ -2014,19 +2011,19 @@ function eliminaMateriaSeleccion (grupo, materia, posicion, tipoAccion){
 function actualizaTotalSeleccion (opcion){
 	document.getElementById("totalSeleccion").innerHTML = parseInt(document.getElementById("totalSeleccion").innerHTML)+opcion;	
 }
-function borrarMateriaHorario(grupo, nombre){
+function borrarMateriaHorario (grupo, nombre){
 	cargarMateriasHorarioGuardadas();
 	// log("totalGuardado :"+materiasHorario.materias.length);
 	if (materiasHorario.materias.length > 1){
-		for (var i=0; i < materiasHorario.materias.length; i++){
+		for (var i = 0; i < materiasHorario.materias.length; i++){
 			if (materiasHorario.materias[i].grupo == grupo && materiasHorario.materias[i].materia == nombre){
-				if (i>parseInt(materiasHorario.materias.length/2)){
-					for (;i<((materiasHorario.materias.length)-1);i++){
+				if (i > parseInt(materiasHorario.materias.length/2)){
+					for (; i < ((materiasHorario.materias.length)-1); i++){
 						materiasHorario.materias[i] = materiasHorario.materias[i+1];
 					}	
 					materiasHorario.materias.pop();
 				} else {
-					for (;i>0;i--){
+					for (; i > 0; i--){
 						materiasHorario.materias[i] = materiasHorario.materias[i-1];
 					}
 					materiasHorario.materias.shift();
@@ -2039,7 +2036,7 @@ function borrarMateriaHorario(grupo, nombre){
 		borrarMateriasHorario();	
 	}
 }
-function cargarMateriasHorario(){
+function cargarMateriasHorario (){
 	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 		var tabla = document.getElementById("regs");
@@ -2115,7 +2112,7 @@ function cargarMateriasHorario(){
 			//buscando las materias de la seleccion en los registros
 			for (var j = 1; j < tabla.rows.length; j++){
 				// if ( (materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML) && ( ( destinoConexion != "" && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].firstChild.innerHTML ) || (materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerHTML) )){
-				if ( materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerText ){
+				if (materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerText ){
 					tabla.rows[j].cells[posicionCheck].firstChild.checked = true;
 				}				
 			}
@@ -2125,20 +2122,20 @@ function cargarMateriasHorario(){
 		}
 		if (i != 0){
 			document.getElementById("asignaturasSeleccionadas").style.display = "";
-			actualizaTotalSeleccion(i)
+			actualizaTotalSeleccion(i);
 			// document.getElementById("totalSeleccion").innerHTML = i;
 			atajoHorarios = true;
 			verificaSeleccionSabado();
 		}
 	}
 }
-function marcaOcupados(){
+function marcaOcupados (){
 	var id = "ctl00_mainCopy_GrvOcupabilidad";
-	if (document.getElementById("regs")!=null) id = "regs";
+	if (document.getElementById("regs") != null) id = "regs";
 	var numRegistros = document.getElementById(id).rows.length;
-	for (var i=1;i<numRegistros;i++){
+	for (var i = 1; i < numRegistros; i++){
 		var registros = document.getElementById(id).rows;
-		if (registros[i].cells[6].innerHTML<"1"){
+		if (registros[i].cells[6].innerHTML < "1"){
 			var registro = registros[i].cloneNode(true);
 			// registro.style="background-color: black; color: white;";
 			registro.setAttribute("style", "background-color: black; color: white;");
@@ -2150,22 +2147,22 @@ function marcaOcupados(){
 	}
 }
 var sabadoActivo = false;
-function retiraSabados(){
+function retiraSabados (){
 	var tabla = document.getElementById("regs");
 	var eliminar = true;
-	for (var i=1; i < tabla.rows.length; i++){
+	for (var i = 1; i < tabla.rows.length; i++){
 		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != " " && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
 	}
 	if (eliminar){
 		totalColumnas--;
-		for (var i=0; i < tabla.rows.length; i++){
+		for (var i = 0; i < tabla.rows.length; i++){
 			tabla.rows[i].deleteCell(10);
 		}
 	} else {
 		sabadoActivo = true;
 	}
 }
-function horarioDirecto(){
+function horarioDirecto (){
 	valida(4);
 	var comprobante = document.getElementById("ctl00_mainCopy_BtnComprobante");
 	var boton = comprobante.cloneNode(true);
@@ -2179,7 +2176,7 @@ function horarioDirecto(){
 }
 var accesosAtajos = new Array();
 var ultimoAtajo;
-function tablaAtajos(){
+function tablaAtajos (){
 	var seccionAtajos = document.createElement("div");
 	seccionAtajos.setAttribute("id","seccionAtajos");
 	seccionAtajos.setAttribute("style","display:none; position: fixed; background-color: maroon; color: white; top: 10%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; width:290px; margin: 0px 0px 0px -145px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000;");
@@ -2191,9 +2188,9 @@ function tablaAtajos(){
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>Atajo</td><td style='padding:0px 10px 0px 10px;'>Secci&oacute;n</td></tr>";
 		var teclaAtajo 	= 48;
 		ultimoAtajo 	= respuesta.atajos.atajo.length;
-		for (var i=0; i<ultimoAtajo; i++){
+		for (var i = 0; i < ultimoAtajo; i++){
 			if (respuesta.atajos.atajo[i].visible){
-				if (teclaAtajo>57 && teclaAtajo<66){
+				if (teclaAtajo > 57 && teclaAtajo < 66){
 					teclaAtajo =  65;
 				}
 				contenidoAtajos += "<tr><td style='padding:0px 10px 0px 10px;'>"+String.fromCharCode(teclaAtajo)+"</td><td style='padding:0px 10px 0px 10px;'>"+respuesta.atajos.atajo[i].nombre+"</td></tr>";
@@ -2214,7 +2211,7 @@ function agregaIdentificacion (){
 function inicio(){
 	var pagina 	= /^https\:\/\/www[.]saes[.]\w+[.]ipn[.]mx$/;
 	var url 	= location.protocol+"//"+location.host;
-	if (url.match(pagina) && location.pathname.indexOf("/PDF/")!=0){
+	if (url.match(pagina) && location.pathname.indexOf("/PDF/") != 0){
 		valida(1);
 		creaFlujo();
 		tablaAtajos();

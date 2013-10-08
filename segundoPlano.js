@@ -1,11 +1,11 @@
-var version = 0.55;
-function log(mensaje){
+var version = 0.56;
+function log (mensaje){
 	console.log (mensaje);
 }
 chrome.runtime.onInstalled.addListener(function() {
 	log("-> Instalado");
 });
-chrome.extension.onMessage.addListener (
+chrome.extension.onMessage.addListener(
 	function (request, sender, callback) {
 		switch (request.command){
 			case "getVersion":
@@ -27,7 +27,7 @@ chrome.extension.onMessage.addListener (
 				});
 				break;
 			case "setDatos":
-				if (request.identificar) {
+				if (request.identificar){
 					localStorage.escuela 			= request.escuela;
 					localStorage.boleta 			= request.boleta;
 					localStorage.pass 				= request.pass;
@@ -46,7 +46,7 @@ chrome.extension.onMessage.addListener (
 				break;
 			case "getAtajos":
 			 	var opcionesAtajos;
-				if(localStorage.atajos!=null && localStorage.atajos!=""){
+				if (localStorage.atajos != null && localStorage.atajos != ""){
 					opcionesAtajos = JSON.parse(localStorage.atajos);
 				} else {
 					opcionesAtajos = { atajo : [
