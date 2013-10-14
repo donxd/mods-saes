@@ -899,7 +899,7 @@ function identificar (respuesta){
 		case "getDatos":
 			var recmen;
 			var identificar = document.createElement("span");
-			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
+			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar && location.host == respuesta.escuela)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
 			if (location.pathname == "/" && !identificado){
 				if (location.host == respuesta.escuela){
 					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
