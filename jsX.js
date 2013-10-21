@@ -67,7 +67,7 @@ function ajustarDisenio (){
 					links[i].setAttribute("href","#");
 					break;
 				case "/Reglamento/Default.aspx":
-					links[i].setAttribute("href","http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf");
+					links[i].setAttribute("href",chrome.i18n.getMessage("bylaw"));
 					links[i].setAttribute("target","_blank");
 					// links[i].tabIndex=indiceTabulador;
 					// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
@@ -97,7 +97,7 @@ function ajustarDisenio (){
 	imagenConfiguracion.style.cursor = "pointer";
 	imagenConfiguracion.addEventListener("click",mostrarContacto,true);
 	var informacionContacto = document.createElement("div");
-	informacionContacto.innerHTML = "Comentarios, dudas, problemas y sugerencias a : <br/><a target='_blank' style='color : #AEE8F3; ' href='https://www.facebook.com/ComplementoSaesChrome'>Complemento SAES</a><br/><a href='#'  style='color : #AEE8F3;'>n0s3.xd@gmail.com</a>";
+	informacionContacto.innerHTML = chrome.i18n.getMessage("contact")+" : <br/><a target='_blank' style='color : #AEE8F3; ' href='"+chrome.i18n.getMessage("url_facebook")+"'>Complemento SAES</a><br/><a href='#' style='color : #AEE8F3;'>"+chrome.i18n.getMessage("email")+"</a>";
 	informacionContacto.setAttribute("style","display : none; color : #FFF; ");
 	informacionContacto.setAttribute("id","informacion_contacto");
 	configuracion.appendChild(imagenConfiguracion);
@@ -116,7 +116,7 @@ function pedir (tipo){
 	// tipo 
 	// 	1 maestro
 	// 	2 tutor
-	var opcion = prompt("Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)","");
+	var opcion = prompt(chrome.i18n.getMessage("options_score"),"");
 	switch (opcion){
 		case "1": 	califica(5,1,2,1,tipo);
 			break;
@@ -282,7 +282,7 @@ function verOcultar (datos,inicio,opc){
 	contar();
 }
 function contar (){
-	document.getElementById("contador").innerHTML = document.body.datosVisibles[document.body.datosVisibles.length-1].length+" de "+totalRegistros;
+	document.getElementById("contador").innerHTML = document.body.datosVisibles[document.body.datosVisibles.length-1].length+" / "+totalRegistros;
 }	
 function verTodo (){
 	buscador.value = "";
@@ -426,7 +426,7 @@ function inicializaDatos (){
 }
 function agregaBuscador (opc){
 	var controlesBuscador = document.createElement("div");
-	controlesBuscador.innerHTML = '<input type="search" placeholder="Buscar..." id="buscar"/><input type="button" id="ver" value="Ver todo"><span id="contador"></span>';
+	controlesBuscador.innerHTML = '<input type="search" placeholder="'+chrome.i18n.getMessage("search_input")+'" id="buscar"/><input type="button" id="ver" value="'+chrome.i18n.getMessage("show_all_button")+'"><span id="contador"></span>';
 	var tipo;
 	switch (opc){
 		case 1: //ocupabilidad
@@ -439,7 +439,7 @@ function agregaBuscador (opc){
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
-			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div>"; 
+			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = '"+chrome.i18n.getMessage("exp_imp_button")+"'> <div id = 'exportar' style = 'display : none;'>"+chrome.i18n.getMessage("instructions_exp_imp")+"<input id = 'exportarSeleccion' type = 'text' size = '5'/></div>"; 
 			break;
 	}
 	document.getElementById(tipo).parentNode.insertBefore(controlesBuscador, document.getElementById(tipo));
@@ -754,13 +754,13 @@ function procesaRespuesta () {
 function generaAdvertenciaActualizacion (){
 	var mensaje = document.createElement("div");
 	mensaje.setAttribute("style"," background-color : #800000; width :"+window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
-	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>&#161;Manten al d&iacute;a la extensi&oacute;n&#33;</a>";
+	mensaje.innerHTML = "<a id='actualizacionLink' style='color:white;'>"+chrome.i18n.getMessage("update_message")+"</a>";
 	document.body.appendChild(mensaje);
 	document.getElementById("actualizacionLink").addEventListener("click",actualizar,true);
 	var info 	= document.createElement("div");
 	info.id 	= "informacion";
 	info.setAttribute("style"," display : none; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; -moz-box-shadow : 0 0 5px 5px #888; -webkit-box-shadow : 0 0 21px 5px#000; box-shadow : 0 0 20px 5px #000; width : 1050px; ");
-	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>[Cerrar con Escape]</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '><p>De clicks en los elementos que se muestran en las im&aacute;genes.</p><p>Y recargue la p&aacute;gina.</p></td><td><img src='"+chrome.extension.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.extension.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
+	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>"+chrome.i18n.getMessage("close_div")+"</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '>"+chrome.i18n.getMessage("update_instructions")+"</td><td><img src='"+chrome.extension.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.extension.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
 	document.body.appendChild(info);
 }
 function actualizar (){
@@ -876,7 +876,7 @@ function recordar (){
 			if (boleta.length > 0 && pass.length > 0){
 				chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true }, identificar);
 			} else {
-				alert("Ingrese su boleta y password");
+				alert(chrome.i18n.getMessage("error_data_login"));
 				this.checked = false;
 			}
 		}
@@ -899,7 +899,7 @@ function identificar (respuesta){
 		case "getDatos":
 			var recmen;
 			var identificar = document.createElement("span");
-			identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar && location.host == respuesta.escuela)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
+			identificar.innerHTML = chrome.i18n.getMessage("autologin")+" <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar && location.host == respuesta.escuela)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
 			if (location.pathname == "/" && !identificado){
 				if (location.host == respuesta.escuela){
 					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
@@ -915,7 +915,8 @@ function identificar (respuesta){
 				}
 				recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
 			} else {
-				if (respuesta.identificar){	
+				var boleta = document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
+				if (boleta == respuesta.boleta && respuesta.identificar && location.host == respuesta.escuela){	
 					recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession");
 				} else {
 					identificar.innerHTML = "";
@@ -930,9 +931,9 @@ function identificar (respuesta){
 			var cambios = document.getElementById("cambiosIdentificar");
 			cambios.style.color = "green";
 			if (respuesta.identificar){
-				cambios.innerHTML = "Ok-Guardado";
+				cambios.innerHTML = chrome.i18n.getMessage("data_save");
 			} else {
-				cambios.innerHTML = "Ok-Borrado";
+				cambios.innerHTML = chrome.i18n.getMessage("data_delete");
 			}
 			setTimeout(ocultarCambios,2000);
 			break;
@@ -946,10 +947,10 @@ function reaccion (respuesta){
 		var errorIdentificacion = false;
 		var spans = document.getElementsByTagName("span");
 		for (var i = 0; !errorIdentificacion && (i < spans.length); i++){
-			if (spans[i].innerText == "El intento de conexión no fue correcto. Inténtelo de nuevo.") errorIdentificacion=true;
+			if (spans[i].innerText == chrome.i18n.getMessage("data_save")) errorIdentificacion = true;
 		}
 		var identificar = document.createElement("span");
-		identificar.innerHTML = "Autoidentificar <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
+		identificar.innerHTML = chrome.i18n.getMessage("autologin")+" <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
 
 		var recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
 		recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
@@ -957,15 +958,15 @@ function reaccion (respuesta){
 
 		if (respuesta.command == "getDatos"){
 			if (location.host == respuesta.escuela){
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value=respuesta.boleta;
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value=respuesta.pass;
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
+				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").addEventListener("change",cambioUsuario,true);
 				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").addEventListener("change",cambioUsuario,true);
 				if (respuesta.identificar){			
 					if (errorIdentificacion){
-						alert("Tus datos para auto-identificarte estan mal, reviselos en las opciones de la extension, evita bloquear tu cuenta.");
+						alert(chrome.i18n.getMessage("message_error_login"));
 					} else {
 						document.getElementById("recordar").checked = true;
 					}
@@ -1025,7 +1026,7 @@ function conexionDiccionario (){
 			destinoConexion = "http://foroupiicsa.net/web/";
 			break;
 		default:
-			alert("No hay diccionario para tu escuela.");
+			alert(chrome.i18n.getMessage("campus_not_found"));
 			break;
 	}
 }
@@ -1043,7 +1044,7 @@ function comentarioRapido (){
 		var posicion = enlaces.rows[0].cells.length;
 
 		enlaces.rows[0].insertCell(posicion);
-		enlaces.rows[0].cells[posicion].innerHTML = "Comentar";
+		enlaces.rows[0].cells[posicion].innerHTML = chrome.i18n.getMessage("comment");
 		for (var i = 1; i < enlaces.rows.length; i++){
 			enlaces.rows[i].insertCell(posicion);
 			if (enlaces.rows[i].cells[2].innerHTML != "" && enlaces.rows[i].cells[2].innerHTML != "&nbsp;"){
@@ -1197,7 +1198,7 @@ function detectaPantalla (){
 		// case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
 		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
 		case "/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx":
-			if (confirm("\u00BFDesea calificar a los maestros r\u00E1pidamente?")){
+			if (confirm(chrome.i18n.getMessage("question_score_teacher"))){
 				pedir(1);
 			}
 			break;
@@ -1347,7 +1348,7 @@ function informacionHistorico (){
 	log("->"+salidaInformacionHistorico);
 }
 function calificaTutor (){
-	if (confirm("\u00BFDesea calificar al tutor r\u00E1pidamente?")){
+	if (confirm(chrome.i18n.getMessage("question_score_tutor"))){
 		pedir(2);
 	}
 }
@@ -1359,7 +1360,7 @@ function seleccionMaterias (){
 	tabla.rows[0].cells[posicion].innerHTML = "#";
 	var cuadros  	= document.createElement("input");
 	cuadros.type 	= "checkbox";
-	cuadros.title 	= "Agregar";
+	cuadros.title 	= chrome.i18n.getMessage("add_subject");
 	for (var i = 1; i < tabla.rows.length; i++){
 		tabla.rows[i].insertCell(posicion);
 		//cuadro.value="Agregar";
@@ -1374,10 +1375,10 @@ function seleccionMaterias (){
 	materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
 	
 	// materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
-	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id='informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td style=' display : none; '>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id='informacionHorarios'></div>";
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
-	mostrarMateriasHorario.value 	= "Ver Horario";
+	mostrarMateriasHorario.value 	= chrome.i18n.getMessage("show_schedule");
 	mostrarMateriasHorario.setAttribute("id","mostrarMateriasHorario");
 	mostrarMateriasHorario.addEventListener("click",mostrarHorario,true);
 
@@ -1401,11 +1402,11 @@ function importar (){
 		try {
 			materiasHorario = JSON.parse(this.value);
 			guardarMateriasHorario();
-			alert("Se va a recargar la p\u00E1gina.");
+			alert(chrome.i18n.getMessage("reload_page"));
 			// location.reload();
 			document.forms[0].submit();
 		} catch (msj){
-			alert("Ha ingresado datos erroneos.");
+			alert(chrome.i18n.getMessage("error_imp"));
 			this.value = localStorage.horarioMaterias;
 		}
 		
@@ -1526,7 +1527,7 @@ function generarHorarios (){
 			presentarHorariosGenerados(horariosPosiblesAnteriores,gruposOrdenados);
 		} else {
 			// log("-> Generando horarios....1.3.2");
-			document.getElementById("informacionHorarios").innerHTML="No hay resultados";
+			document.getElementById("informacionHorarios").innerHTML = chrome.i18n.getMessage("no_results");
 			cargarMateriasHorarioGuardadas();
 		}
 		horariosPosiblesAnteriores = null;
@@ -1563,7 +1564,7 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 
 	totalHorarios 				= parseInt(nResultados);
 	var seleccionHorarios 		= document.createElement("table");
-	seleccionHorarios.innerHTML = "<tr><td>Hay "+nResultados+" resultado(s):</td><td><input id='seleccionHorarios' type='number' min='0' max='"+nResultados+"' value='0' size='4'/></td><td>Puedes usar las flechas &uArr; &dArr;</td></tr>";
+	seleccionHorarios.innerHTML = "<tr><td>"+chrome.i18n.getMessage("results_1")+nResultados+chrome.i18n.getMessage("results_2")+":</td><td><input id='seleccionHorarios' type='number' min='0' max='"+nResultados+"' value='0' size='4'/></td><td>"+chrome.i18n.getMessage("results_3")+"</td></tr>";
 	seleccionHorarios.setAttribute("style","margin:0px auto;");
 	informacion.innerHTML = "";
 	informacion.appendChild(seleccionHorarios);
@@ -1581,7 +1582,7 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 	var tablaInformacion 			= document.createElement("table");
 	tablaInformacion.style.display 	= "none";
 	tablaInformacion.style.width 	= "100%";
-	tablaInformacion.innerHTML 		= "<tr style='background-color:#FF9900; color:white;'><td>Grupo</td><td>Materia</td><td>Profesor</td><td>Lun</td><td>Mar</td><td>Mi&eacute;</td><td>Jue</td><td>Vie</td><td>S&aacute;b</td></tr>";
+	tablaInformacion.innerHTML 		= "<tr style='background-color:#FF9900; color:white;'><td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td>"+chrome.i18n.getMessage("saturday")+"</td> </tr>";
 
 	for (var i = 0; i < horariosPosiblesAnteriores.combinacion[0].secuencia.length; i++){
 		tablaInformacion.insertRow(i+1);
@@ -1844,7 +1845,7 @@ function agregarMateria (){
 		materiaH.cells[cantidadCeldas-2].appendChild(quitarMateria);
 		var estadoMateria 	= document.createElement("input");
 		estadoMateria.type 	= "checkbox";
-		estadoMateria.title = "Habilitar/Deshabilitar";
+		estadoMateria.title = chrome.i18n.getMessage("enable_disable");
 		estadoMateria.name 	= "incluirMateria";
 		estadoMateria.checked 	= true;
 		estadoMateria.addEventListener("change",cambiarEstadoSeleccion,true);
@@ -1960,7 +1961,7 @@ function cargarMateriasHorarioGuardadas (){
 	}	
 }
 function removerMateria (){
-	if (confirm("\u00BFEsta seguro?")){
+	if (confirm(chrome.i18n.getMessage("confirm_delete"))){
 		var grupo 	= this.parentNode.parentNode.cells[0].innerHTML;
 		var materia = this.parentNode.parentNode.cells[1].innerHTML;
 
@@ -2049,12 +2050,12 @@ function cargarMateriasHorario (){
 
 		var quitarMaterias   = document.createElement("img");
 		quitarMaterias.src   = chrome.extension.getURL("/css/menos.png");
-		quitarMaterias.title = "Quitar";
+		quitarMaterias.title = chrome.i18n.getMessage("delete_subject");
 		quitarMaterias.style.cursor = "pointer";
 		
 		var estadoMaterias 		= document.createElement("input");
 		estadoMaterias.type 	= "checkbox";
-		estadoMaterias.title 	= "Habilitar/Deshabilitar";
+		estadoMaterias.title 	= chrome.i18n.getMessage("enable_disable");
 		estadoMaterias.name 	= "incluirMateria";
 		
 		var materiaSinEstado = false;
@@ -2185,7 +2186,7 @@ function tablaAtajos (){
 	chrome.extension.sendMessage( { command : "getAtajos" }, function(respuesta){
 		var seccionAtajos 		= document.getElementById("seccionAtajos");
 		seccionAtajos.innerHTML = "<table style='border-collapse: collapse; width:100%;'></table>";
-		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>Atajo</td><td style='padding:0px 10px 0px 10px;'>Secci&oacute;n</td></tr>";
+		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("shortcut")+"</td><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("section")+"</td></tr>";
 		var teclaAtajo 	= 48;
 		ultimoAtajo 	= respuesta.atajos.atajo.length;
 		for (var i = 0; i < ultimoAtajo; i++){

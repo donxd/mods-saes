@@ -12,7 +12,7 @@ function acceso (){
 		}
 	}
 	if (!mostrar){
-		alert("No es tu horario, recarga tus pesta\u00F1as del saes, menos esta.");
+		alert(chrome.i18n.getMessage("bad_schedule"));
 		while(1);
 	}
 }

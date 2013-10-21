@@ -1,4 +1,4 @@
-Extensión cargada desde su versión 0.55
+Extensión cargada desde su versión 0.57
 
 <-corregir el filtrado de los registros
 	soporte para borrado y reemplazo de patron de busqueda

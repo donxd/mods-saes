@@ -1,10 +1,204 @@
 {
-	"update":{
-		"description" : "url update",
+	"update" : {
+		"description" : "Dirección del xml de la extensión",
 		"message" : "https://clients2.google.com/service/update2/crx?x=id%3Dokaihfccgfhcjfineancjmhbooocebhn%26uc"
 	},
 	"description" : {
-		"description" : "information for extension",
+		"description" : "Descripción de la extensión",
 		"message" : "Modificaciones para al SAES del IPN - México"
+	},
+	"contact" : {
+		"description" : "Información de contacto y soporte",
+		"message" : "Comentarios, dudas, problemas y sugerencias a"
+	},
+	"url_facebook" : {
+		"description" : "Página del proyecto en facebook",
+		"message" : "https://www.facebook.com/ComplementoSaesChrome"
+	},
+	"email" : {
+		"description" : "Correo soporte",
+		"message" : "n0s3.xd@gmail.com"
+	},
+	"options_score" : {
+		"description" : "Opciones de calificación para los profesores",
+		"message" : "Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)"
+	},
+	"bylaw" : {
+		"description" : "Dirección del reglamento en PDF",
+		"message" : "http://www.contenido.ccs.ipn.mx/G-866-2011-E.pdf"
+	},
+	"search_input" : {
+		"description" : "Cuadro de busqueda",
+		"message" : "Buscar..."
+	},
+	"show_all_button" : {
+		"description" : "Mostrar todos los registros",
+		"message" : "Ver todo"
+	},
+	"exp_imp_button" : {
+		"description" : "Exportar/Importar",
+		"message" : "Exportar/Importar"
+	},
+	"instructions_exp_imp" : {
+		"description" : "Instrucciones para Exportar e Importar",
+		"message" : "Copia el texto y guardalo en un archivo, o pega y da enter."
+	},
+	"update_message" : {
+		"description" : "Mensaje para actualizar la extensión",
+		// "message" : "&#161;Manten al d&iacute;a la extensi&oacute;n&#33;"
+		"message" : "¡Ten al día la extensión!"
+	},
+	"close_div" : {
+		"description" : "Ocultar los controles",
+		"message" : "[Cerrar con Escape]"
+	},
+	"update_instructions" : {
+		"description" : "Instrucciones de actualización",
+		"message" : "<p>De clicks en los elementos que se muestran en las imágenes.</p><p>Y recargue la página.</p>"
+	},
+	"error_data_login" : {
+		"description" : "Errores al guardar los datos autologin",
+		"message" : "Ingrese su boleta y password"
+	},
+	"autologin" : {
+		"description" : "Autoidentificar",
+		"message" : "Autoidentificar"
+	},
+	"data_save" : {
+		"description" : "Datos guardados",
+		"message" : "Ok-Guardado"
+	},
+	"data_delete" : {
+		"description" : "Datos borrados",
+		"message" : "Ok-Borrado"
+	},
+	"error_login" : {
+		"description" : "Datos incorrectos",
+		"message" : "El intento de conexión no fue correcto. Inténtelo de nuevo."
+	},
+	"message_error_login" : {
+		"description" : "Mensaje para datos incorrectos",
+		"message" : "Tus datos para auto-identificarte están mal, revisalos, evita bloquear tu cuenta."
+	},
+	"campus_not_found" : {
+		"description" : "Plantel no encontrado",
+		"message" : "No hay diccionario para tu escuela."
+	},
+	"comment" : {
+		"description" : "Comentar",
+		"message" : "Comentar"
+	},
+	"question_score_teacher" : {
+		"description" : "Pregunta para la calificación de profesores",
+		// "message" : "\u00BFDesea calificar al profesor r\u00E1pidamente?"
+		"message" : "¿Desea calificar al profesor rápidamente?"
+	},
+	"question_score_tutor" : {
+		"description" : "Pregunta para la calificación de tutores",
+		// "message" : "\u00BFDesea calificar al tutor r\u00E1pidamente?"
+		"message" : "¿Desea calificar al tutor rápidamente?"
+	},
+	"add_subject" : {
+		"description" : "Agregar materia",
+		"message" : "Agregar"
+	},
+	"group" : {
+		"description" : "Grupo",
+		"message" : "Grupo"
+	},
+	"subject" : {
+		"description" : "Materia",
+		"message" : "Materia"
+	},
+	"teacher" : {
+		"description" : "Profesor",
+		"message" : "Profesor"
+	},
+	"monday" : {
+		"description" : "Lunes",
+		"message" : "Lun"
+	},
+	"tuesday" : {
+		"description" : "Martes",
+		"message" : "Mar"
+	},
+	"wednesday" : {
+		"description" : "Miércoles",
+		"message" : "Mié"
+	},
+	"thursday" : {
+		"description" : "Jueves",
+		"message" : "Jue"
+	},
+	"friday" : {
+		"description" : "Viernes",
+		"message" : "Vie"
+	},
+	"saturday" : {
+		"description" : "Sábado",
+		"message" : "Sáb"
+	},
+	"delete_subject" : {
+		"description" : "Borrar materia",
+		"message" : "Quitar"
+	},
+	"include_subject" : {
+		"description" : "Incluir materia",
+		"message" : "Incluir"
+	},
+	"delete_all_button" : {
+		"description" : "Incluir materia",
+		"message" : "Borrar Todo"
+	},
+	"generate_button" : {
+		"description" : "Generar horarios",
+		"message" : "Generar"
+	},
+	"show_schedule" : {
+		"description" : "Ver Horario",
+		"message" : "Ver Horario"
+	},
+	"reload_page" : {
+		"description" : "Recargar la página",
+		// "message" : "Se va a recargar la p\u00E1gina."
+		"message" : "Se va a recargar la página."
+	},
+	"no_results" : {
+		"description" : "Sin resultados de horarios ",
+		"message" : "No hay resultados"
+	},
+	"results_1" : {
+		"description" : "Mensaje de resultados - 1 ",
+		"message" : "Hay "
+	},
+	"results_2" : {
+		"description" : "Mensaje de resultados - 2 ",
+		"message" : " resultado(s)"
+	},
+	"results_3" : {
+		"description" : "Mensaje de resultados - 3 ",
+		"message" : "Puedes usar las flechas ⇑ ⇓"
+	},
+	"enable_disable" : {
+		"description" : "Habilidar/Deshabilitar para el arma horarios",
+		"message" : "Habilitar/Deshabilitar"
+	},
+	"confirm_delete" : {
+		"description" : "Confirmar borrado",
+		// "message" : "\u00BFEsta seguro?"
+		"message" : "¿Está seguro?"
+	},
+	"shortcut" : {
+		"description" : "Atajo",
+		"message" : "Atajo"
+	},
+	"section" : {
+		"description" : "Sección",
+		// "message" : "Secci&oacute;n"
+		"message" : "Sección"
+	},
+	"bad_schedule" : {
+		"description" : "Horario incorrecto",
+		"message" : "No es tu horario, recarga tus pestañas del saes, menos esta."
 	}
 }
