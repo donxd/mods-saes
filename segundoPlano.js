@@ -78,6 +78,21 @@ chrome.extension.onMessage.addListener(
 				opcionesAtajos = JSON.parse(localStorage.atajos);
 				opcionesAtajos.atajos[request.posicion].visible = request.visible;
 				break;
+			case "setEvaluacionProfesores":
+				localStorage.calificacion = JSON.stringify(request.calificacion);
+				localStorage.profesores = JSON.stringify(request.profesores);
+				callback({});
+				break;
+			case "getEvaluacionProfesores":
+				if (!(localStorage.calificacion != null && localStorage.calificacion != "")){
+					localStorage.calificacion = "";
+					localStorage.profesores = "[]";
+				}
+				callback({
+					calificacion : JSON.parse(localStorage.calificacion),
+					profesores : JSON.parse(localStorage.profesores)
+				});
+				break;		
 			default:
 				callback({});
 				break;

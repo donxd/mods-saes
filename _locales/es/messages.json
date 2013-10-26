@@ -20,8 +20,28 @@
 		"message" : "n0s3.xd@gmail.com"
 	},
 	"options_score" : {
-		"description" : "Opciones de calificación para los profesores",
+		"description" : "Opciones de evaluación para los profesores",
 		"message" : "Modo random (1), todo bien (2), medio bien(3), medio mal(4), todo mal (5)"
+	},
+	"options_score_all" : {
+		"description" : "Opciones de evaluación para los profesores",
+		"message" : "[\"1 - Random\", \"2 - Todo Bien\", \"3 - Medio Bien\", \"4 - Medio Mal\", \"5 - Todo Mal\"]"
+	},
+	"text_options_score_all" : {
+		"description" : "Indicaciones",
+		"message" : "Evaluación de los profesores:    "
+	},
+	"apply_autoevaluation" : {
+		"description" : "Aplicar",
+		"message" : "Aplicar"
+	},
+	"cancel_autoevaluation" : {
+		"description" : "Cancelar",
+		"message" : "Cancelar"
+	},
+	"text_nothing_selected_score" : {
+		"description" : "No seleccionó ningún profesor",
+		"message" : "No hay profesores seleccionados."
 	},
 	"bylaw" : {
 		"description" : "Dirección del reglamento en PDF",
@@ -91,12 +111,12 @@
 	"question_score_teacher" : {
 		"description" : "Pregunta para la calificación de profesores",
 		// "message" : "\u00BFDesea calificar al profesor r\u00E1pidamente?"
-		"message" : "¿Desea calificar al profesor rápidamente?"
+		"message" : "¿Desea evaluar al profesor rápidamente?"
 	},
 	"question_score_tutor" : {
 		"description" : "Pregunta para la calificación de tutores",
 		// "message" : "\u00BFDesea calificar al tutor r\u00E1pidamente?"
-		"message" : "¿Desea calificar al tutor rápidamente?"
+		"message" : "¿Desea evaluar al tutor rápidamente?"
 	},
 	"add_subject" : {
 		"description" : "Agregar materia",
