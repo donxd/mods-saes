@@ -65,7 +65,6 @@
 	},
 	"update_message" : {
 		"description" : "Mensaje para actualizar la extensión",
-		// "message" : "&#161;Manten al d&iacute;a la extensi&oacute;n&#33;"
 		"message" : "¡Ten al día la extensión!"
 	},
 	"close_div" : {
@@ -110,12 +109,10 @@
 	},
 	"question_score_teacher" : {
 		"description" : "Pregunta para la calificación de profesores",
-		// "message" : "\u00BFDesea calificar al profesor r\u00E1pidamente?"
 		"message" : "¿Desea evaluar al profesor rápidamente?"
 	},
 	"question_score_tutor" : {
 		"description" : "Pregunta para la calificación de tutores",
-		// "message" : "\u00BFDesea calificar al tutor r\u00E1pidamente?"
 		"message" : "¿Desea evaluar al tutor rápidamente?"
 	},
 	"add_subject" : {
@@ -180,7 +177,6 @@
 	},
 	"reload_page" : {
 		"description" : "Recargar la página",
-		// "message" : "Se va a recargar la p\u00E1gina."
 		"message" : "Se va a recargar la página."
 	},
 	"no_results" : {
@@ -205,7 +201,6 @@
 	},
 	"confirm_delete" : {
 		"description" : "Confirmar borrado",
-		// "message" : "\u00BFEsta seguro?"
 		"message" : "¿Está seguro?"
 	},
 	"shortcut" : {
@@ -214,7 +209,6 @@
 	},
 	"section" : {
 		"description" : "Sección",
-		// "message" : "Secci&oacute;n"
 		"message" : "Sección"
 	},
 	"bad_schedule" : {
