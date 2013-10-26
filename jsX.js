@@ -12,7 +12,7 @@ function ajustarDisenio (){
 		var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
 		for (var i = 0; i < elementosMenu.length; i++){
 			if (elementosMenu[i].children.length == 2){
-				elementosMenu[i].children[1].style.paddingLeft="20px";
+				elementosMenu[i].children[1].style.paddingLeft = "20px";
 			}
 		}
 		var espaciosImagenes = document.getElementById("ctl00_subMenu").getElementsByTagName("br");
@@ -117,17 +117,19 @@ function pedir (tipo){
 	// 	1 maestro
 	// 	2 tutor
 	var opcion = prompt(chrome.i18n.getMessage("options_score"),"");
-	switch (opcion){
-		case "1": 	califica(5,1,2,1,tipo);
-			break;
-		case "2": 	califica(5,5,2,2,tipo);
-			break;
-		case "3": 	califica(5,3,2,1,tipo);
-			break;
-		case "4": 	califica(3,1,2,1,tipo);
-			break;
-		case "5": 	califica(1,1,1,1,tipo);
-			break;
+	if (opcion != null){
+		switch (opcion){
+			case "1": 	califica(5,1,2,1,tipo);
+				break;
+			case "2": 	califica(5,5,2,2,tipo);
+				break;
+			case "3": 	califica(5,3,2,1,tipo);
+				break;
+			case "4": 	califica(3,1,2,1,tipo);
+				break;
+			case "5": 	califica(1,1,1,1,tipo);
+				break;
+		}
 	}
 }
 function califica (maximo, minimo, recomendar1, recomendar2, tipo){
@@ -456,9 +458,9 @@ function agregaBuscador (opc){
 }
 //##############<-buscador
 
-// function actualizaOcupabilidad(){
-// 	valida(3);
-// }
+function actualizaOcupabilidad(){
+	valida(2);
+}
 var READY_STATE_COMPLETE = 4;
 var peticion_http = null;
 function inicializa_xhr (){
@@ -493,8 +495,15 @@ function valida (opc){
 					if (elementos[i].getAttribute("name") != null && elementos[i].getAttribute("name") != ultimo){
 						// parm += elementos[i].getAttribute("name")+"\t("+elementos[i].value.length+")\n";
 						switch (elementos[i].getAttribute("name")){
+							//document.querySelector("#__EVENTTARGET").value   = "ctl00$mainCopy$Aceptar";
+							// document.querySelector("#__EVENTARGUMENT").value = "";
+
 							case "__EVENTTARGET" :
+								parametros += agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"="+encodeURIComponent("ctl00$mainCopy$dpdplan");
+								break;	
 							case "__EVENTARGUMENT" :
+								parametros += agregar+encodeURIComponent(elementos[i].getAttribute("name"))+"=";
+								break;
 							case "__LASTFOCUS" :
 							case "__VIEWSTATE" :
 							case "__VIEWSTATEENCRYPTED" :
@@ -874,14 +883,14 @@ function recordar (){
 			var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
 			var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
 			if (boleta.length > 0 && pass.length > 0){
-				chrome.extension.sendMessage( { command : "setDatos", escuela:location.host, boleta : boleta, pass: pass, identificar: true }, identificar);
+				chrome.extension.sendMessage( { command : "setDatos", escuela : location.host, boleta : boleta, pass : pass, identificar : true }, identificar);
 			} else {
 				alert(chrome.i18n.getMessage("error_data_login"));
 				this.checked = false;
 			}
 		}
 	} else {
-		chrome.extension.sendMessage( { command : "setDatos", identificar: false }, identificar);
+		chrome.extension.sendMessage( { command : "setDatos", identificar : false }, identificar);
 		if (identificado){
 			document.getElementById("recordar").parentNode.style.display = "none";
 		}
@@ -1195,12 +1204,15 @@ function detectaPantalla (){
 		case "/Academica/Equivalencias.aspx":
 			document.querySelector("div#ctl00_mainCopy_UP").addEventListener("DOMSubtreeModified",ajustaEquivalencias,true);
 			break;
+		case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
+		case "/Alumnos/Evaluacion_Docente/Califica_Profe.aspx":
+			evaluacionProfesores();
+			chrome.extension.sendMessage( { command : "getEvaluacionProfesores"}, controlaEvaluacion);
+			break;
 		// case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
 		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
 		case "/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx":
-			if (confirm(chrome.i18n.getMessage("question_score_teacher"))){
-				pedir(1);
-			}
+			chrome.extension.sendMessage( { command : "getEvaluacionProfesores"}, evaluarProfesor);
 			break;
 		case "/Academica/mapa_curricular.aspx":
 			// informacionPlanes();
@@ -1322,6 +1334,134 @@ function detectaPantalla (){
 			}
 			break;
 	}
+}
+function controlaEvaluacion (respuesta){
+	if (respuesta.profesores.length > 0){
+		var califica = false;
+		var listaProfesores = document.querySelector("#ctl00_mainCopy_GV_Profe");
+		if (listaProfesores){
+			var i,j;
+			for (j = 0; j < respuesta.profesores.length; j++){
+				for (i = 1; i < listaProfesores.rows.length; i++){
+					if (respuesta.profesores[j] == listaProfesores.rows[i].cells[3].querySelectorAll("a")[1].search){
+						listaProfesores.rows[i].cells[4].firstChild.checked = true;
+						califica = true;
+						break;
+					}
+				}
+			}
+		}
+		if (califica){
+			desactivaEvaluacionProfesores();
+			// ejecutaEvaluacionProfesor();
+		} else {
+			chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);
+		}
+	}
+}
+function cancelaEvaluacionProfesores (){
+	clearTimeout(temporizadorEvaluacionProfesores);
+	chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);	
+
+	var activarEvaluacion = document.querySelector("#aplicaCalificacion");
+	activarEvaluacion.value = chrome.i18n.getMessage("apply_autoevaluation");
+	activarEvaluacion.addEventListener("click",aplicaEvaluacionProfesores,true);
+}
+var temporizadorEvaluacionProfesores;
+function desactivaEvaluacionProfesores (){
+	var activarEvaluacion = document.querySelector("#aplicaCalificacion");
+	activarEvaluacion.value = chrome.i18n.getMessage("cancel_autoevaluation");
+	activarEvaluacion.removeEventListener("click",aplicaEvaluacionProfesores,true);
+	activarEvaluacion.addEventListener("click",cancelaEvaluacionProfesores,true);
+	activarEvaluacion.focus();
+	temporizadorEvaluacionProfesores = setTimeout(ejecutaEvaluacionProfesor,"1500");
+}
+function ejecutaEvaluacionProfesor (){
+	var profesor = document.querySelector('input[name="calificaProfesor"]:checked');
+	location.assign(profesor.parentNode.parentNode.cells[3].querySelectorAll("a")[1].href);
+}
+function evaluarProfesor (respuesta){
+	var profesorEvaluado = false;
+	if (respuesta.profesores.length > 0){
+		for (var j = 0; j < respuesta.profesores.length; j++){
+			if (respuesta.profesores[j] == location.search){
+				profesorEvaluado = true;
+				break;
+			}
+		}
+		if (profesorEvaluado){
+			var tipo = 1;
+			switch (respuesta.calificacion){
+				case "1": 	califica(5,1,2,1,tipo);
+					break;
+				case "2": 	califica(5,5,2,2,tipo);
+					break;
+				case "3": 	califica(5,3,2,1,tipo);
+					break;
+				case "4": 	califica(3,1,2,1,tipo);
+					break;
+				case "5": 	califica(1,1,1,1,tipo);
+					break;
+				default:
+					log("E:"+respuesta.calificacion);
+					break;
+			}
+
+			document.querySelector("#__EVENTTARGET").value   = "ctl00$mainCopy$Aceptar";
+			document.querySelector("#__EVENTARGUMENT").value = "";
+
+			document.querySelector("select").form.submit();
+			// document.forms[0].submit();
+			// location.assign(document.referrer);
+		}
+	} else {
+		if (confirm(chrome.i18n.getMessage("question_score_teacher"))){
+			pedir(1);
+		}
+	}	
+}
+function evaluacionProfesores (){
+	var listaProfesores = document.querySelector("#ctl00_mainCopy_GV_Profe");
+	if (listaProfesores && listaProfesores.rows.length > 1){
+		var controlesCalificar = document.createElement("div");
+		controlesCalificar.setAttribute("style","text-align:right;");
+
+		var opciones = "";
+		var opcionesCalificar = chrome.i18n.getMessage("options_score_all").split(",");
+		for (var i = 0; i < opcionesCalificar.length; i++) opciones += "<option value='"+(i+1)+"'>"+ opcionesCalificar[i]+"</option>";
+
+		controlesCalificar.innerHTML = chrome.i18n.getMessage("text_options_score_all")+"<select id='calificacionProfesores'>"+opciones+"</select><input type='button' id='aplicaCalificacion' value='"+chrome.i18n.getMessage("apply_autoevaluation")+"'><br/><br/>";
+
+		listaProfesores.parentNode.insertBefore(controlesCalificar,listaProfesores);
+		document.querySelector("#aplicaCalificacion").addEventListener("click",aplicaEvaluacionProfesores,true);
+
+		for (var i = 0; i < listaProfesores.rows.length; i++){
+			listaProfesores.rows[i].insertCell(4);
+			listaProfesores.rows[i].cells[4].innerHTML = (i!=0) ? "<input type='checkbox' name='calificaProfesor'/>" : "#";
+			listaProfesores.rows[i].cells[4].setAttribute("style","text-align:center");
+		}
+		document.querySelector("#calificacionProfesores").focus();
+	}
+}
+function aplicaEvaluacionProfesores (){
+	if (confirm(chrome.i18n.getMessage("confirm_delete"))){
+		var calificacion = document.querySelector("#calificacionProfesores").value;
+
+		var checkProfesores = document.querySelectorAll('input[name="calificaProfesor"]:checked');
+		if (checkProfesores.length > 0){		
+			var profesores = new Array();
+			for (var i = 0; i < checkProfesores.length; i++) {
+				profesores.push(checkProfesores[i].parentNode.parentNode.cells[3].querySelectorAll("a")[1].search);
+			}
+			chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : calificacion, profesores : profesores }, autoEvaluacionGuardada);
+			desactivaEvaluacionProfesores();
+		} else {
+			alert(chrome.i18n.getMessage("text_nothing_selected_score"));
+		}
+	}
+}
+function autoEvaluacionGuardada (){
+	log("Evaluación - Guardada");
 }
 function ajustaEquivalencias (){
 	var equivalencias = document.querySelector("table#ctl00_mainCopy_GV_EquivalenciasA");

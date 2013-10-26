@@ -6,6 +6,8 @@ Extensión cargada desde su versión 0.57
 <-mejorar las equivalencias en el arma horarios
 <-contemplar las opciones para la extensión
 
+->Mejora en el manejo de los mensajes
+->Mejora de la calificación rápida
 ->Ampliar la pantalla de equivalencias
 ->Corregir horario directo
 ->Mejorar el comportamiento de la autoidentificación
