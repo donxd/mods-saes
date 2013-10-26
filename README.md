@@ -1,10 +1,12 @@
-Extensión cargada desde su versión 0.57
+Extensión cargada desde su versión 0.58
 
 <-corregir el filtrado de los registros
 	soporte para borrado y reemplazo de patron de busqueda
 	atajo el foco del cuadro de busqueda (tabindex)
 <-mejorar las equivalencias en el arma horarios
 <-contemplar las opciones para la extensión
+<-incorporar estadisticas de colisiones (arma horarios)
+<-contador de materias combinaciones (combinaciones)
 
 ->Mejora en el manejo de los mensajes
 ->Mejora de la calificación rápida
