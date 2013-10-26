@@ -25,7 +25,7 @@
 	},
 	"options_score_all" : {
 		"description" : "Opciones de evaluación para los profesores",
-		"message" : "[\"1 - Random\", \"2 - Todo Bien\", \"3 - Medio Bien\", \"4 - Medio Mal\", \"5 - Todo Mal\"]"
+		"message" : "1 - Random,2 - Todo Bien,3 - Medio Bien,4 - Medio Mal,5 - Todo Mal"
 	},
 	"text_options_score_all" : {
 		"description" : "Indicaciones",

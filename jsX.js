@@ -1427,7 +1427,7 @@ function evaluacionProfesores (){
 		controlesCalificar.setAttribute("style","text-align:right;");
 
 		var opciones = "";
-		var opcionesCalificar = JSON.parse(chrome.i18n.getMessage("options_score_all"));
+		var opcionesCalificar = chrome.i18n.getMessage("options_score_all").split(",");
 		for (var i = 0; i < opcionesCalificar.length; i++) opciones += "<option value='"+(i+1)+"'>"+ opcionesCalificar[i]+"</option>";
 
 		controlesCalificar.innerHTML = chrome.i18n.getMessage("text_options_score_all")+"<select id='calificacionProfesores'>"+opciones+"</select><input type='button' id='aplicaCalificacion' value='"+chrome.i18n.getMessage("apply_autoevaluation")+"'><br/><br/>";
