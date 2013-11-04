@@ -8,7 +8,7 @@ function ajustarDisenio (){
 		subMenu.style.width = "auto";
 		var disenio = document.createElement("style");
 		disenio.setAttribute("type","text/css");
-		disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border: none; display:inline-block;width:150px;}";
+		disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border : none; display : inline-block; width : 150px; }";
 		var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
 		for (var i = 0; i < elementosMenu.length; i++){
 			if (elementosMenu[i].children.length == 2){
@@ -1241,6 +1241,7 @@ function detectaPantalla (){
 					conexionDiccionario();
 					seleccionMaterias();
 					cargarMateriasHorario();
+					inicializarOrdenamiento();
 					verComentarios();
 					cargarHorariosGenerados();
 					// informacionExtra();
@@ -1492,47 +1493,164 @@ function calificaTutor (){
 		pedir(2);
 	}
 }
+function medidasCeldasSeleccion () {
+	return new Array (71,229,223,69,69,69,69,69,69,63,63);
+}
+// function quitaEspacioCeldas (){
+// 	var estilosSeleccionMaterias = document.createElement("style");	
+// 	estilosSeleccionMaterias.innerHTML = " td, th { padding : 0px 0px } ";
+// 	document.getElementById("regs").parentNode.appendChild(estilosSeleccionMaterias);
+// }
+function inicializarOrdenamiento (){
+	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].addEventListener("dragstart",moviendo,false);
+		registros[i].addEventListener("dragenter",sobre,false);
+		registros[i].addEventListener("dragover",colocando,false);
+		registros[i].addEventListener("dragleave",saliendo,false);
+		registros[i].addEventListener("drop",ingresando,false);
+		registros[i].addEventListener("dragend",soltando,false);
+		registros[i].setAttribute("draggable",true);
+		registros[i].className = "fuera";
+	}
+	posicionRegistroSeleccionado = null;
+}
+var posicionRegistroSeleccionado;
+function moviendo (evento){
+	this.style.opacity = '0.4';
+	posicionRegistroSeleccionado = this.parentNode.parentNode.rowIndex-1;
+	evento.dataTransfer.effectAllowed = 'move';
+// 		evento.dataTransfer.setData('text/html', this.innerHTML);
+}
+function colocando (evento){
+	this.style.opacity = '1';
+	evento.dataTransfer.dropEffect = 'move';
+	 if (evento.preventDefault) {
+		evento.preventDefault(); // Necessary. Allows us to drop.
+		}
+		return false;
+}
+function sobre (evento){
+	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].className = "fuera";
+	}
+	this.className = "sobre";
+}
+function saliendo (evento){
+	// this.classList.remove('sobre');
+	// this.classList.remove('fuera');
+}
+function soltando (){
+	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].className = "fuera";
+		registros[i].setAttribute("draggable","true");
+		registros[i].style.opacity = '1';
+	}
+}
+function ingresando (evento){
+	if (evento.stopPropagation) {
+		evento.stopPropagation(); // stops the browser from redirecting.
+	}
+	// if (dragSrcEl != this) {
+	// 	// Set the source column's HTML to the HTML of the column we dropped on.
+	// 	dragSrcEl.innerHTML = this.innerHTML;
+	// 	this.innerHTML = evento.dataTransfer.getData('text/html');
+	// }
+	var posicionCambio = this.parentNode.parentNode.rowIndex-1;
+	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	if (posicionRegistroSeleccionado != posicionCambio){
+		var temp = registros[posicionRegistroSeleccionado].children[0].rows[0].cloneNode(true);
+		var i, j, inicio = 0, fin = 9, check = 10;
+		if (posicionRegistroSeleccionado > posicionCambio){
+			for (i = posicionRegistroSeleccionado; i > posicionCambio; i--){
+				for (j = inicio; j < fin; j++){
+					registros[i].children[0].rows[0].cells[j].innerHTML = registros[i-1].children[0].rows[0].cells[j].innerHTML;
+				}
+				registros[i].children[0].rows[0].cells[check].children[0].checked = registros[i-1].children[0].rows[0].cells[check].children[0].checked;
+			}
+		} else {
+			for (i = posicionRegistroSeleccionado; i < posicionCambio; i++){
+				// console.log(i+"/"+posicionCambio+":"+registros.length);
+				for (j = inicio; j < fin; j++){
+					registros[i].children[0].rows[0].cells[j].innerHTML = registros[i+1].children[0].rows[0].cells[j].innerHTML;
+				}
+				registros[i].children[0].rows[0].cells[check].children[0].checked = registros[i+1].children[0].rows[0].cells[check].children[0].checked;
+			}
+		}
+		for (j = inicio; j < fin; j++){
+			registros[i].children[0].rows[0].cells[j].innerHTML = temp.cells[j].innerHTML;
+		}
+		registros[i].children[0].rows[0].cells[check].children[0].checked = temp.cells[check].children[0].checked;
+	}
+	return false;
+}
 function seleccionMaterias (){
-	//document.body.innerHTML+="<div id='asignaturas' style='display:none;'></div>";
+
+	var anchoSeleccion = parseInt(window.innerHeight * 0.8);
+
+	var estilosSeleccionMaterias = document.createElement("style");
+	estilosSeleccionMaterias.innerHTML =  "div#asignaturas { min-height : 80px; min-width : 250px; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; opacity : 0.85; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; box-shadow: 0 0 20px 5px #000; width: 1050px; } ";
+	estilosSeleccionMaterias.innerHTML += "div#asignaturas > div:nth-child(1) { background-color : #000; color : #FFF; } ";
+	estilosSeleccionMaterias.innerHTML += "div#resultadoHorarios { display : none; overflow-y : auto; max-height : 450px; } ";
+	estilosSeleccionMaterias.innerHTML += "div#asignaturasSeleccionadas { overflow-y:auto; max-height: "+anchoSeleccion+"px; } ";
+	estilosSeleccionMaterias.innerHTML += "div#asignaturasSeleccionadas > table { width:100%; } ";
+	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1) { background-color : #FF9900; color : #FFF; } ";
+	estilosSeleccionMaterias.innerHTML += ".ocultar { display : none; } ";
+	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; } ";
+	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
+	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas td, th { padding : 0px 0px } ";
+	estilosSeleccionMaterias.innerHTML += "div[name='contenedorRegistro'] > table { width : 100% } ";
+	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select: none; -webkit-user-drag: element; } table#tablaAsignaturas tr { cursor : move; } .sobre { border : 2px dashed #FFF; } .fuera { border : 2px solid #800000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
+
+	var medidasCeldas = medidasCeldasSeleccion();
+	for (var j = 0; j < medidasCeldas.length; j++) {
+		// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1) > td:nth-child(" + (j+1) + "){ width : " + medidasCeldas[j] + "px } table#tablaAsignaturas table td:nth-child(" + (j+1) + "){ width : " + (medidasCeldas[j]-4) + "px } ";
+		estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1) > td:nth-child(" + (j+1) + "), table#tablaAsignaturas table td:nth-child(" + (j+1) + "){ width : " + (medidasCeldas[j]-4) + "px; } ";
+	}
+
 	var tabla = document.getElementById("regs");
 	var posicion = tabla.rows[0].cells.length;
 	tabla.rows[0].insertCell(posicion);
 	tabla.rows[0].cells[posicion].innerHTML = "#";
+
 	var cuadros  	= document.createElement("input");
 	cuadros.type 	= "checkbox";
 	cuadros.title 	= chrome.i18n.getMessage("add_subject");
+
 	for (var i = 1; i < tabla.rows.length; i++){
 		tabla.rows[i].insertCell(posicion);
-		//cuadro.value="Agregar";
-		// cuadro.setAttribute("numero",i);
+
 		var cuadro 		= cuadros.cloneNode(true);
 		cuadro.numero 	= i;
 		cuadro.addEventListener("click",agregarMateria,true);
+
 		tabla.rows[i].cells[posicion].appendChild(cuadro);
 	}
-	var materiasSeleccionadas 	= document.createElement("div");
-	materiasSeleccionadas.id 	= "asignaturas";
-	materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
+	var materiasSeleccionadas = document.createElement("div");
+	materiasSeleccionadas.id  = "asignaturas";
+	materiasSeleccionadas.classList.add("oculto");
+	// materiasSeleccionadas.className = "oculto";
+	// materiasSeleccionadas.setAttribute("class","oculto");
+
+	//materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
 	
-	// materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>[Cerrar con Escape]</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>Grupo</td> <td>Materia</td> <td>Profesor</td> <td>Lun</td> <td>Mar</td> <td>Mi&eacute;</td> <td>Jue</td> <td>Vie</td> <td style=' display : none; '>S&aacute;b</td> <td>Quitar</td> <td>Incluir</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='Borrar Todo'> <input type = 'button' id = 'generarMateriasHorario' value='Generar'> <input type = 'button' id = 'expImp' value = 'Exportar/Importar'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id = 'exportar' style = 'display : none;'>Copia el texto y guardalo en un archivo, o pega y da enter.<input id = 'exportarSeleccion' type = 'text' size = '5'/></div> <div id='informacionHorarios'></div>";
-	materiasSeleccionadas.innerHTML = "<div style='background-color:black; color:white;'>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios' style='display:none; overflow-y:auto; max-height: 450px;'></div> <div id = 'asignaturasSeleccionadas' style='overflow-y:auto; max-height: 450px;'> <table id = 'tablaAsignaturas' style='width:100%;'> <tr style = 'background-color:#FF9900; color:white;'> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td style=' display : none; '>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id ='totalSeleccion' style = ' float:right; padding-right : 30px; '>0</span> </div>  <div id='informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios'></div> <div id = 'asignaturasSeleccionadas'> <table id = 'tablaAsignaturas'> <tr> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td name = 'sabado'>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id = 'totalSeleccion'>0</span> </div>  <div id = 'informacionHorarios'></div>";
+
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
 	mostrarMateriasHorario.value 	= chrome.i18n.getMessage("show_schedule");
 	mostrarMateriasHorario.setAttribute("id","mostrarMateriasHorario");
 	mostrarMateriasHorario.addEventListener("click",mostrarHorario,true);
-
 	document.getElementById("contador").parentNode.appendChild(mostrarMateriasHorario);	
-	//tabla.parentNode.innerHTML+="<div id='asignaturas' style='display:none;'></div>";
+
 	tabla.parentNode.appendChild(materiasSeleccionadas);
+	tabla.parentNode.appendChild(estilosSeleccionMaterias);
+
 	document.getElementById("borrarMateriasHorario").addEventListener("click",borrarMateriasHorario,true);
 	document.getElementById("generarMateriasHorario").addEventListener("click",generarHorarios,true);
-	// document.getElementById("expImp").addEventListener("click",expImp,true);
-	// document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
-	// document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
-	// if (localStorage.horarioMaterias!=null && localStorage.horarioMaterias!="" && localStorage.horarioMaterias!="null" ){ 
-	// 	document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
-	// }
+	// setTimeout(quitaEspacioCeldas,5000);
 }
 function seleccionarContenido (){
 	this.select();
@@ -1850,14 +1968,11 @@ function buscarArregloOrdenado (arreglo, buscar){
 	return pos;
 }
 function mostrarHorario (){
-	if (atajoHorarios) document.getElementById("asignaturas").style.display = "";
-	//this.removeEventListener("click",mostrarHorario,true);
-	//this.addEventListener("click",ocultarHorario,true);
+	// document.getElementById("asignaturas").classList.remove("ocultar");
+	document.getElementById("asignaturas").removeAttribute("class");
 }
 function ocultarHorario (){
-	document.getElementById("asignaturas").style.display = "none";
-	//this.removeEventListener("click",ocultarHorario,true);
-	//this.addEventListener("click",mostrarHorario,true);
+	document.getElementById("asignaturas").classList.add("ocultar");
 }
 function ocultarInfo (){
 	document.getElementById("informacion").style.display = "none";
@@ -2024,17 +2139,19 @@ function agregarMateria (){
 function verificaSeleccionSabado (){
 	//verificando datos para ocultar
 	var ocultarSabado = true;
-	var asignaturasTabla = document.getElementById("tablaAsignaturas");
-	for (var i = 1; i < asignaturasTabla.rows.length; i++){
-		if (asignaturasTabla.rows[i].cells[8].innerHTML != "&nbsp;"){
+	// var asignaturasTabla = document.getElementById("tablaAsignaturas");
+	var celdasSabado = document.querySelectorAll('#tablaAsignaturas td[name="sabado"]');
+	var cantidadRegistros =  celdasSabado.length;
+	for (var i = 1; i < cantidadRegistros; i++){
+		if (celdasSabado[i].innerHTML != "&nbsp;"){
 			ocultarSabado = false;
 			break;
 		}
 	}
-	var opcion = ocultarSabado ? "none" : "";
 	//aplicando el cambio (mostrar, ocultar)
-	for (var i = 0; i < asignaturasTabla.rows.length; i++){
-		asignaturasTabla.rows[i].cells[8].style.display = opcion;
+	for (var i = 0; i < celdasSabado.length; i++){
+		if (ocultarSabado) celdasSabado[i].classList.add("ocultar");
+		else celdasSabado[i].classList.remove("ocultar");
 	}
 }
 function cambiarEstadoSeleccion (){
@@ -2179,6 +2296,7 @@ function borrarMateriaHorario (grupo, nombre){
 }
 function cargarMateriasHorario (){
 	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){
+
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 		var tabla = document.getElementById("regs");
 		var asignaturasTabla = document.getElementById("tablaAsignaturas");
@@ -2186,7 +2304,7 @@ function cargarMateriasHorario (){
 		var i;
 		var numeroDias     = 6;
 		var cantidadCeldas = 11;
-		var posicionCheck = sabadoActivo ? 11 : 10;
+		var posicionCheck  = sabadoActivo ? 11 : 10;
 
 		var quitarMaterias   = document.createElement("img");
 		quitarMaterias.src   = chrome.extension.getURL("/css/menos.png");
@@ -2199,12 +2317,23 @@ function cargarMateriasHorario (){
 		estadoMaterias.name 	= "incluirMateria";
 		
 		var materiaSinEstado = false;
+		var posicionFila;
+
 		for (i = 0; i < materiasHorario.materias.length; i++){
-			asignaturasTabla.insertRow(asignaturasTabla.rows.length);
-			materiaH = asignaturasTabla.rows[asignaturasTabla.rows.length-1];
+			posicionFila = asignaturasTabla.rows.length;
+			asignaturasTabla.insertRow(posicionFila);
+			materiaH = asignaturasTabla.rows[posicionFila];
+			materiaH.insertCell(0);
+			materiaH.cells[0].setAttribute("colspan",cantidadCeldas);
+
+			materiaH.cells[0].innerHTML = "<div name='contenedorRegistro'><table><tr name='registro'></tr></table></div>";
+			materiaH = materiaH.cells[0].querySelector('tr[name="registro"]');
+
 			for (var j = 0; j < cantidadCeldas; j++) materiaH.insertCell(j);
+
 			materiaH.cells[0].innerHTML = materiasHorario.materias[i].grupo;
 			materiaH.cells[1].innerHTML = materiasHorario.materias[i].materia;
+
 			if (destinoConexion != ""){
 				materiaH.cells[2].innerHTML = "<a href='#' name='diccionario' style='color:#F90;'>"+materiasHorario.materias[i].profe+"</a>";
 			} else {
@@ -2226,30 +2355,8 @@ function cargarMateriasHorario (){
 			}
 			materiaH.cells[cantidadCeldas-1].appendChild(estadoMateria);
 			for (var j = 0; j < numeroDias; j++) materiaH.cells[3+j].innerHTML = materiasHorario.materias[i].dias[j];
-			//var horas = materiasHorario.materias[i].horas;
-			// while(horas.length>0){	
-			// 	var gruposHoras = new Array();
-			// 	for (var j=0;j<5;j++){
-			// 		gruposHoras.push(new Array());
-			// 	}
-			// 	for (var j=0;j<horas.length;j++){
-			// 		gruposHoras[parseInt(horas[j]/30)].push(horas[j]);
-			// 	}
-			// 	var rangos = new Array();
-			// 	var max;
-			// 	var min;
-			// 	for (var j=0;j<5;j++){
-			// 		if (gruposHoras[j].length>0){
-			// 			max=gruposHoras[j][0];
-			// 			min=gruposHoras[j][0];
-			// 			for (var n=1; 1 && n<gruposHoras[j].length;n++){
-			// 				if (max<gruposHoras[j][n]) max=gruposHoras[j][n];
-			// 				if (min>gruposHoras[j][n]) max=gruposHoras[j][n];
-			// 			}
-			// 		}
-			// 	}
-
-			// }
+			materiaH.cells[cantidadCeldas-3].setAttribute("name","sabado");
+			
 			//buscando las materias de la seleccion en los registros
 			for (var j = 1; j < tabla.rows.length; j++){
 				// if ( (materiasHorario.materias[i].grupo == tabla.rows[j].cells[0].innerHTML) && ( ( destinoConexion != "" && materiasHorario.materias[i].materia == tabla.rows[j].cells[1].firstChild.innerHTML ) || (materiasHorario.materias[i].materia == tabla.rows[j].cells[1].innerHTML) )){
@@ -2325,7 +2432,7 @@ function tablaAtajos (){
 	document.body.appendChild(seccionAtajos);
 	chrome.extension.sendMessage( { command : "getAtajos" }, function(respuesta){
 		var seccionAtajos 		= document.getElementById("seccionAtajos");
-		seccionAtajos.innerHTML = "<table style='border-collapse: collapse; width:100%;'></table>";
+		seccionAtajos.innerHTML = "<table style='width:100%; border-collapse: collapse;'></table>";
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("shortcut")+"</td><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("section")+"</td></tr>";
 		var teclaAtajo 	= 48;
 		ultimoAtajo 	= respuesta.atajos.atajo.length;

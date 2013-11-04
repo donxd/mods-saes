@@ -193,7 +193,7 @@
 	},
 	"results_3" : {
 		"description" : "Mensaje de resultados - 3 ",
-		"message" : "Puedes usar las flechas ⇑ ⇓"
+		"message" : "Puedes usar las flechas ⇧ ⇩"
 	},
 	"enable_disable" : {
 		"description" : "Habilidar/Deshabilitar para el arma horarios",
