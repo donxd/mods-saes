@@ -2517,7 +2517,7 @@ function tablaAtajos (){
 	});
 }
 function agregaIdentificacion (){
-	if (location.pathname != "/Default.aspx"){
+	if (location.pathname != "/Default.aspx" && location.pathname != "/default.aspx"){
 		chrome.extension.sendMessage( { command : "getDatos"}, identificar);
 	} else {
 		chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
