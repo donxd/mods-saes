@@ -1811,13 +1811,16 @@ function cargarHorariosGenerados (){
 }
 function seleccionarHorario (){
 	if (this.value != "" && this.value.length > 0){
-		switch (parseInt(this.value)){
-			case 0:
-				mostrarSeleccionMaterias();
-				break;
-			default:
-				mostrarHorarioGenerado(this.value);
-				break;
+		var numeroResultado = parseInt(this.value);
+		if (numeroResultado  >= 0  && numeroResultado <= document.getElementById("seleccionHorarios").getAttribute("max")){
+			switch (numeroResultado){
+				case 0:
+					mostrarSeleccionMaterias();
+					break;
+				default:
+					mostrarHorarioGenerado(numeroResultado);
+					break;
+			}
 		}
 	}
 }
@@ -1839,6 +1842,7 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 	seleccionHorarios 	= document.getElementById("seleccionHorarios");
 	seleccionHorarios.setAttribute("style","text-align:center;");
 	seleccionHorarios.addEventListener("keyup",seleccionarHorario,true);
+	seleccionHorarios.addEventListener("change",seleccionarHorario,true);
 
 	// var seleccionMaterias 	= document.createElement("input");
 	// seleccionMaterias.type 	= "button";
@@ -2420,7 +2424,7 @@ function cargarMateriasHorario (){
 				}
 			}
 			materiaH.cells[cantidadCeldas-1].appendChild(estadoMateria);
-			log("**"+materiaH.cells.length+"-"+materiasHorario.materias.length+"-"+JSON.stringify(materiasHorario.materias[i]));
+			// log("**"+materiaH.cells.length+"-"+materiasHorario.materias.length+"-"+JSON.stringify(materiasHorario.materias[i]));
 			for (var j = 0; j < numeroDias; j++) materiaH.cells[3+j].innerHTML = materiasHorario.materias[i].dias[j];
 			materiaH.cells[cantidadCeldas-3].setAttribute("name","sabado");
 			

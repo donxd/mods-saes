@@ -1,4 +1,7 @@
 pendientes 
+	
+	<-cargar respaldo drag & drop
+	<-sincronización selección y ocupabilidad (2 pestañas)
 	<-corregir el filtrado de los registros
 		soporte para borrado y reemplazo de patron de busqueda
 		atajo el foco del cuadro de busqueda (tabindex)
@@ -11,7 +14,6 @@ pendientes
 Versión 0.59
 
 ->drag & drop (ordenado)
-drag & drop (exportar/ importar)
 
 Versión 0.58
 
