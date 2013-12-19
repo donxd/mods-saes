@@ -441,21 +441,78 @@ function agregaBuscador (opc){
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
-			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = '"+chrome.i18n.getMessage("exp_imp_button")+"'> <div id = 'exportar'>"+chrome.i18n.getMessage("instructions_exp_imp")+"<input id = 'exportarSeleccion' type = 'text' size = '5'/></div>"; 
+			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = '"+chrome.i18n.getMessage("exp_imp_button")+"'><div id = 'exportar'><input id = 'exportarSeleccion' type = 'file'/></div>"; 
 			break;
 	}
 	document.getElementById(tipo).parentNode.insertBefore(controlesBuscador, document.getElementById(tipo));
 	if (tipo == "ctl00_mainCopy_dbgHorarios"){
 		document.getElementById("expImp").addEventListener("click",expImp,true);
-		document.getElementById("exportar").classList.add("oculto");
-		document.getElementById("exportarSeleccion").addEventListener("change",importar,true);
-		document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
+		var exportar = document.getElementById("exportar");
+		exportar.classList.add("oculto");
+		exportar.classList.add("fueraImportar");
+		// exportar.addEventListener("dragstart",moviendo,false);
+		exportar.addEventListener("dragenter",sobreImportar,true);
+		exportar.addEventListener("dragover",colocandoImportar,true);
+		exportar.addEventListener("drop",ingresandoImportar,true);
+		document.getElementById("exportarSeleccion").addEventListener("change",seleccionImportar,true);
+		//document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
+
 		if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){ 
-			document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
+			// document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 		}
 	}
 	document.getElementById(tipo).setAttribute("id","regs");
 	inicializar();
+}
+function seleccionImportar (){
+	validaArchivo(this.files[0]);
+}
+function validaArchivo (archivo){
+	var tipoArchivo = /text.*/;
+	if (archivo.type.match(tipoArchivo)){
+		var lector = new FileReader();
+		lector.onload = function(event) {
+  			infoImportar = lector.result;
+		}
+		lector.readAsText(archivo);
+		setTimeout(temporizadorImportar,500);
+	} else {
+		alert(chrome.i18n.getMessage("error_type_file"));
+	}
+}
+function sobreImportar (evento){
+	// log("1");
+	this.classList.remove('fueraImportar');
+	this.classList.add('sobreImportar');
+	return false;
+}
+function colocandoImportar (evento){
+	// log("2");
+	this.style.opacity = '1';
+	evento.dataTransfer.dropEffect = 'move';
+	if (evento.preventDefault) {
+		evento.preventDefault();
+	}
+	return false;
+}
+function ingresandoImportar (evento){
+	// log("4");
+	evento.stopPropagation(); // Stops some browsers from redirecting.
+	evento.preventDefault();
+	var file = evento.dataTransfer.files[0];
+	validaArchivo(file);
+	var lector = new FileReader();
+	lector.onload = function(event) {
+  		infoImportar = lector.result;
+	}
+	lector.readAsText(file);
+	setTimeout(temporizadorImportar,500);
+	this.classList.remove('sobreImportar');
+	this.classList.add('fueraImportar');
+	return false;
+}
+function temporizadorImportar (){
+	importar(infoImportar);
 }
 //##############<-buscador
 
@@ -1527,9 +1584,9 @@ function colocando (evento){
 	this.style.opacity = '1';
 	evento.dataTransfer.dropEffect = 'move';
 	 if (evento.preventDefault) {
-		evento.preventDefault(); // Necessary. Allows us to drop.
-		}
-		return false;
+		evento.preventDefault();
+	}
+	return false;
 }
 function sobre (evento){
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
@@ -1537,10 +1594,12 @@ function sobre (evento){
 		registros[i].className = "fuera";
 	}
 	this.className = "sobre";
+	return false;
 }
 function saliendo (evento){
 	// this.classList.remove('sobre');
 	// this.classList.remove('fuera');
+	return false;
 }
 function soltando (){
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
@@ -1549,6 +1608,7 @@ function soltando (){
 		registros[i].setAttribute("draggable","true");
 		registros[i].style.opacity = '1';
 	}
+	return false;
 }
 function ingresando (evento){
 	if (evento.stopPropagation) {
@@ -1604,7 +1664,8 @@ function seleccionMaterias (){
 	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
 	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas td, th { padding : 0px 0px } ";
 	estilosSeleccionMaterias.innerHTML += "div[name='contenedorRegistro'] > table { width : 100% } ";
-	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select: none; -webkit-user-drag: element; } table#tablaAsignaturas tr { cursor : move; } .sobre { border : 2px dashed #FFF; } .fuera { border : 2px solid #800000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
+	estilosSeleccionMaterias.innerHTML += "div#exportar { width : 560px; background-color : #DADADA; text-align : left; padding : 5px 20px 5px 20px; } ";
+	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select: none; -webkit-user-drag: element; } table#tablaAsignaturas tr { cursor : move; } .sobre { border : 2px dashed #FFF; } .sobreImportar { border : 2px dashed #000; } .fuera { border : 2px solid #800000; } .fueraImportar { border : 1px solid #000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
 
 	var medidasCeldas = medidasCeldasSeleccion();
 	for (var j = 0; j < medidasCeldas.length; j++) {
@@ -1657,20 +1718,39 @@ function seleccionMaterias (){
 function seleccionarContenido (){
 	this.select();
 }
-function importar (){
-	if (this.value != localStorage.horarioMaterias){
-		try {
-			materiasHorario = JSON.parse(this.value);
-			guardarMateriasHorario();
-			alert(chrome.i18n.getMessage("reload_page"));
-			// location.reload();
-			document.forms[0].submit();
-		} catch (msj){
-			alert(chrome.i18n.getMessage("error_imp"));
-			this.value = localStorage.horarioMaterias;
+var infoImportar = "";
+var importando = false;
+function importar (contenidoImportar){
+	if (!importando){
+		importando = true;
+		if (contenidoImportar != ""){	
+			if (contenidoImportar != localStorage.horarioMaterias){
+				try {
+					// log("I");
+					materiasHorario = JSON.parse(contenidoImportar);
+					// log("II");
+					guardarMateriasHorario();
+					// log("III");
+					alert(chrome.i18n.getMessage("reload_page"));
+					// location.reload();
+					// log("IV");
+					document.forms[0].submit();
+				} catch (msj){
+					alert(chrome.i18n.getMessage("error_imp"));
+					// contenidoImportar = localStorage.horarioMaterias;
+				}
+			} else {
+				alert(chrome.i18n.getMessage("same_info"));
+			}
+		} else {
+			alert(chrome.i18n.getMessage("nothing_4_import"));
 		}
-		
+		setTimeout(reiniciarImportacion,1000);
 	}
+	infoImportar = "";
+}
+function reiniciarImportacion (){
+	importando = false;
 }
 function expImp (){
 	// document.getElementById("exportar").classList.toggle("oculto");
@@ -1681,8 +1761,9 @@ function expImp (){
 	// 	document.getElementById("exportarSeleccion").focus();
 	// }
 	if (document.getElementById("exportar").classList.contains("oculto")){
-		document.getElementById("exportar").removeAttribute("class");
-		document.getElementById("exportarSeleccion").focus();
+		// document.getElementById("exportar").removeAttribute("class");
+		document.getElementById("exportar").classList.remove("oculto");
+		// document.getElementById("exportarSeleccion").focus();
 	} else {
 		document.getElementById("exportar").classList.add("oculto");
 	}
@@ -2255,7 +2336,7 @@ function guardarMateriasHorario (){
 	// log("totalGuardadoFinal :"+materiasHorario.materias.length);
 	if (materiasHorario.materias.length != 0){
 		localStorage.horarioMaterias = JSON.stringify(materiasHorario);
-		document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
+		// document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 	}
 }
 var atajoHorarios = false;

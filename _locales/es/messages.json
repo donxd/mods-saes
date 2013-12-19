@@ -214,5 +214,21 @@
 	"bad_schedule" : {
 		"description" : "Horario incorrecto",
 		"message" : "No es tu horario, recarga tus pestañas del saes, menos esta."
+	},
+	"error_imp" : {
+		"description" : "Error en el archivo a importar",
+		"message" : "El contenido del archivo no es válido."
+	},
+	"same_info" : {
+		"description" : "Se quiere importar la misma información que ya esta almacenada",
+		"message" : "El contenido del archivo es igual al que tiene seleccionado."	
+	},
+	"nothing_4_import" : {
+		"description" : "Archivo vacio",
+		"message" : "El archivo se encuentra vacio."
+	},
+	"error_type_file" : {
+		"description" : "Tipo de archivo incorrecto",
+		"message" : "El archivo no es del tipo texto."	
 	}
 }
