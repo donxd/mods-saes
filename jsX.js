@@ -441,7 +441,7 @@ function agregaBuscador (opc){
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
-			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = '"+chrome.i18n.getMessage("exp_imp_button")+"'><div id = 'exportar'><input id = 'exportarSeleccion' type = 'file'/></div>"; 
+			controlesBuscador.innerHTML += "<input type = 'button' id = 'expImp' value = '"+chrome.i18n.getMessage("imp_button")+"'><div id = 'exportar'><input id = 'exportarSeleccion' type = 'file'/><span class='importar'>"+chrome.i18n.getMessage("imp_text")+"</span></div>"; 
 			break;
 	}
 	document.getElementById(tipo).parentNode.insertBefore(controlesBuscador, document.getElementById(tipo));
@@ -456,7 +456,6 @@ function agregaBuscador (opc){
 		exportar.addEventListener("drop",ingresandoImportar,true);
 		document.getElementById("exportarSeleccion").addEventListener("change",seleccionImportar,true);
 		//document.getElementById("exportarSeleccion").addEventListener("focus",seleccionarContenido,true);
-
 		if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){ 
 			// document.getElementById("exportarSeleccion").value = localStorage.horarioMaterias;
 		}
@@ -497,16 +496,18 @@ function colocandoImportar (evento){
 }
 function ingresandoImportar (evento){
 	// log("4");
-	evento.stopPropagation(); // Stops some browsers from redirecting.
+	evento.stopPropagation(); // Detiene al navegador para que no lea el archivo
 	evento.preventDefault();
-	var file = evento.dataTransfer.files[0];
-	validaArchivo(file);
-	var lector = new FileReader();
-	lector.onload = function(event) {
-  		infoImportar = lector.result;
+	if (evento.dataTransfer.files.length > 0){	
+		var file = evento.dataTransfer.files[0];
+		validaArchivo(file);
+		var lector = new FileReader();
+		lector.onload = function(event) {
+	  		infoImportar = lector.result;
+		}
+		lector.readAsText(file);
+		setTimeout(temporizadorImportar,500);
 	}
-	lector.readAsText(file);
-	setTimeout(temporizadorImportar,500);
 	this.classList.remove('sobreImportar');
 	this.classList.add('fueraImportar');
 	return false;
@@ -1663,9 +1664,10 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; } ";
 	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
 	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas td, th { padding : 0px 0px } ";
-	estilosSeleccionMaterias.innerHTML += "div[name='contenedorRegistro'] > table { width : 100% } ";
+	estilosSeleccionMaterias.innerHTML += "div[name='contenedorRegistro'] { cursor : pointer; } div[name='contenedorRegistro'] > table { width : 100% } ";
 	estilosSeleccionMaterias.innerHTML += "div#exportar { width : 560px; background-color : #DADADA; text-align : left; padding : 5px 20px 5px 20px; } ";
-	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select: none; -webkit-user-drag: element; } table#tablaAsignaturas tr { cursor : move; } .sobre { border : 2px dashed #FFF; } .sobreImportar { border : 2px dashed #000; } .fuera { border : 2px solid #800000; } .fueraImportar { border : 1px solid #000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
+	estilosSeleccionMaterias.innerHTML += "span.importar { text-decoration : underline; font-weight : bold; text-transform : uppercase; } ";
+	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select: none; -webkit-user-drag: element; } .sobre { border : 2px dashed #FFF; } .sobreImportar { border : 2px dashed #000; } .fuera { border : 2px solid #800000; } .fueraImportar { border : 1px solid #000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
 
 	var medidasCeldas = medidasCeldasSeleccion();
 	for (var j = 0; j < medidasCeldas.length; j++) {
@@ -1699,7 +1701,7 @@ function seleccionMaterias (){
 
 	//materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
 	
-	materiasSeleccionadas.innerHTML = "<div>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios'></div> <div id = 'asignaturasSeleccionadas'> <table id = 'tablaAsignaturas'> <tr> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td name = 'sabado'>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id = 'totalSeleccion'>0</span> </div>  <div id = 'informacionHorarios'></div>";
+	materiasSeleccionadas.innerHTML = "<div>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios'></div> <div id = 'asignaturasSeleccionadas'> <table id = 'tablaAsignaturas'> <tr> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td name = 'sabado'>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='exportar_boton' value='"+chrome.i18n.getMessage("exp_button")+"'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id = 'totalSeleccion'>0</span> </div>  <div id = 'informacionHorarios'></div>";
 
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
@@ -1713,7 +1715,28 @@ function seleccionMaterias (){
 
 	document.getElementById("borrarMateriasHorario").addEventListener("click",borrarMateriasHorario,true);
 	document.getElementById("generarMateriasHorario").addEventListener("click",generarHorarios,true);
+	document.getElementById("exportar_boton").addEventListener("click",exportar,true);
 	// setTimeout(quitaEspacioCeldas,5000);
+}
+function exportar (){
+	var port = chrome.extension.connect({ name: "msg" });
+	port.postMessage({ method : 'exportar', datos : localStorage.horarioMaterias });
+	port.onMessage.addListener(function (data) {
+		if (data.method == 'hecho') {
+			var fecha = new Date();
+			var nombreArchivo = fecha.getFullYear()+"-"+(fecha.getMonth() < 9 ? "0"+(fecha.getMonth()+1) : fecha.getMonth())+"-"+fecha.getDate()+"["+document.getElementById("totalSeleccion").innerHTML+"]"+".txt";
+			// log("nombre "+data.archivo+"\nurl"+data.url);
+			var link = document.createElement('a');
+			link.setAttribute('href', data.url);
+			link.setAttribute('download', nombreArchivo);
+			document.body.appendChild(link);
+
+			var clickEvent = document.createEvent("MouseEvent");
+			clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+			link.dispatchEvent(clickEvent);
+			setTimeout(function () { document.removeChild(link); }, 10);
+		}
+	});	
 }
 function seleccionarContenido (){
 	this.select();

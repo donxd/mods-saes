@@ -1,6 +1,4 @@
-pendientes 
-	
-	<-cargar respaldo drag & drop
+pendientes 	
 	<-sincronización selección y ocupabilidad (2 pestañas)
 	<-corregir el filtrado de los registros
 		soporte para borrado y reemplazo de patron de busqueda
@@ -14,6 +12,7 @@ pendientes
 Versión 0.59
 
 ->drag & drop (ordenado)
+<-cargar respaldo drag & drop
 
 Versión 0.58
 

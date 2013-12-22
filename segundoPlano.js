@@ -99,6 +99,47 @@ chrome.extension.onMessage.addListener(
 		}
 	}
 );
+chrome.extension.onConnect.addListener(function (port) {
+	// console.assert(port.name == "msg");
+	port.onMessage.addListener(function (data) {
+		if (data.method == 'exportar') {
+			var contextData = { port: port, datos : data.datos };
+			generaArchivo(contextData);
+		}
+	});
+});
+function generaArchivo (contextData){
+	creaArchivo(contextData, function (contextData) {
+		enviaArchivo(contextData);
+	});
+}
+function enviaArchivo(contextData) {
+	var port = contextData.port;
+	port.postMessage({ method : 'hecho', url : contextData.fileUrl });
+}
+function creaArchivo (contextData,callback){
+	var errorHandler = function errorHandler (){
+		console.log("Error en la creación del archivo");
+	}
+	window.webkitRequestFileSystem(window.TEMPORARY, 100*1024 /*10KB*/,
+		function (fs) {
+			fs.root.getFile('log.txt', { create: true }, function(fileEntry) {
+				fileEntry.createWriter(function(fileWriter) {
+					fileWriter.onwriteend = function(e) {
+						console.log('Archivo creado. «'+fileEntry.toURL()+'»');
+						contextData.fileUrl = fileEntry.toURL();
+						callback(contextData);
+					};
+				  	fileWriter.onerror = function(e) {
+						console.log('Error archivo: ' + e.toString());
+				  	};
+					var blob = new Blob([contextData.datos], {type: 'text/plain'});
+					fileWriter.write(blob);
+				}, errorHandler);
+			}, errorHandler);
+		}, errorHandler
+	);
+}
 chrome.runtime.onSuspend.addListener(function() {
 	log("Descansando....");
 });

@@ -55,9 +55,13 @@
 		"description" : "Mostrar todos los registros",
 		"message" : "Ver todo"
 	},
-	"exp_imp_button" : {
-		"description" : "Exportar/Importar",
-		"message" : "Exportar/Importar"
+	"imp_button" : {
+		"description" : "Importar",
+		"message" : "Importar"
+	},
+	"exp_button" : {
+		"description" : "Exportar",
+		"message" : "Exportar"
 	},
 	"instructions_exp_imp" : {
 		"description" : "Instrucciones para Exportar e Importar",
@@ -229,6 +233,10 @@
 	},
 	"error_type_file" : {
 		"description" : "Tipo de archivo incorrecto",
-		"message" : "El archivo no es del tipo texto."	
+		"message" : "El archivo no es del tipo texto."
+	},
+	"imp_text" : {
+		"description" : "Instrucciones del drag importar",
+		"message" : " ó arrástrelo a esta área."
 	}
 }

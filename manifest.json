@@ -10,7 +10,7 @@
 		"48" : "/css/fu_48.png",
 		"128": "/css/fu_128.png"
     },
-	"permissions" : ["tabs", "*://*.ipn.mx/*", "*://*.google.com/*"],
+	"permissions" : ["tabs", "*://*.ipn.mx/*", "*://*.google.com/*", "storage", "unlimitedStorage"],
 	"homepage_url" : "https://www.facebook.com/ComplementoSaesChrome",
 	"options_page" :"opciones.html",
     "background" : {
