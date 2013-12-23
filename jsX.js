@@ -1720,6 +1720,7 @@ function seleccionMaterias (){
 }
 function exportar (){
 	var port = chrome.extension.connect({ name: "msg" });
+	port.postMessage({ method : 'limpiar' });
 	port.postMessage({ method : 'exportar', datos : localStorage.horarioMaterias });
 	port.onMessage.addListener(function (data) {
 		if (data.method == 'hecho') {
@@ -1729,14 +1730,20 @@ function exportar (){
 			var link = document.createElement('a');
 			link.setAttribute('href', data.url);
 			link.setAttribute('download', nombreArchivo);
+			link.setAttribute('id', "respaldo");
 			document.body.appendChild(link);
 
 			var clickEvent = document.createEvent("MouseEvent");
 			clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			link.dispatchEvent(clickEvent);
-			setTimeout(function () { document.removeChild(link); }, 10);
+			// setTimeout(function () { document.removeChild(link); }, 10);
+			setTimeout(eliminaEnlace, 10);
 		}
 	});	
+}
+function eliminaEnlace (){
+	var enlace = document.getElementById("respaldo");
+	enlace.parentNode.removeChild(enlace);
 }
 function seleccionarContenido (){
 	this.select();

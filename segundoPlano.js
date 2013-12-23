@@ -102,12 +102,49 @@ chrome.extension.onMessage.addListener(
 chrome.extension.onConnect.addListener(function (port) {
 	// console.assert(port.name == "msg");
 	port.onMessage.addListener(function (data) {
+		switch (data.method){
+			case "exportar":
+				var contextData = { port: port, datos : data.datos };
+				generaArchivo(contextData);
+				break;
+			case "limpiar":
+				limpiaRespaldo();
+		}
+		/*
 		if (data.method == 'exportar') {
 			var contextData = { port: port, datos : data.datos };
 			generaArchivo(contextData);
 		}
+		*/
 	});
 });
+function limpiaRespaldo (){
+	var errorHandler = function errorHandler (){
+		console.log("Error limpiando el archivo.");
+	}
+	window.webkitRequestFileSystem(window.TEMPORARY, 100*1024 /*10KB*/,
+		function (fs){
+			// //leyendo
+			// fs.root.getFile('log.txt', {}, function (fileEntry){
+			// 	fileEntry.file(function(file) {
+			// 		var reader = new FileReader();
+			// 		reader.onloadend = function(e) {
+			// 			var txtArea = document.createElement('textarea');
+			// 			txtArea.value = this.result;
+			// 			document.body.appendChild(txtArea);
+			// 		};
+			// 		reader.readAsText(file);
+			// 	}, errorHandler);
+			// }, errorHandler);
+
+			fs.root.getFile('log.txt', { create : false }, function (fileEntry){
+				fileEntry.remove(function (){
+					log('File removed.');
+				}, errorHandler);
+			}, errorHandler);
+		}, errorHandler
+	);
+}
 function generaArchivo (contextData){
 	creaArchivo(contextData, function (contextData) {
 		enviaArchivo(contextData);
@@ -119,19 +156,19 @@ function enviaArchivo(contextData) {
 }
 function creaArchivo (contextData,callback){
 	var errorHandler = function errorHandler (){
-		console.log("Error en la creación del archivo");
+		log("Error en la creación del archivo.");
 	}
 	window.webkitRequestFileSystem(window.TEMPORARY, 100*1024 /*10KB*/,
-		function (fs) {
-			fs.root.getFile('log.txt', { create: true }, function(fileEntry) {
-				fileEntry.createWriter(function(fileWriter) {
-					fileWriter.onwriteend = function(e) {
-						console.log('Archivo creado. «'+fileEntry.toURL()+'»');
+		function (fs){
+			fs.root.getFile('log.txt', { create: true }, function (fileEntry){
+				fileEntry.createWriter(function (fileWriter){
+					fileWriter.onwriteend = function (e){
+						log('Archivo creado. «'+fileEntry.toURL()+'»');
 						contextData.fileUrl = fileEntry.toURL();
 						callback(contextData);
 					};
-				  	fileWriter.onerror = function(e) {
-						console.log('Error archivo: ' + e.toString());
+				  	fileWriter.onerror = function (e){
+						log('Error archivo: ' + e.toString());
 				  	};
 					var blob = new Blob([contextData.datos], {type: 'text/plain'});
 					fileWriter.write(blob);
