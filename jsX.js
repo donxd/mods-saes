@@ -1836,6 +1836,8 @@ function generarHorarios (){
 		var horariosPosiblesAnteriores 	= { combinacion : [] };
 		var combinacionesDisponibles 	= true;
 
+		var traslapes = new Array();
+
 		// alert("Numero de materias "+gruposOrdenados.materias.length);
 		// log("-> Generando horarios....1.2");
 		if (gruposOrdenados.materias.length != 0){
@@ -1881,6 +1883,19 @@ function generarHorarios (){
 							//alert("secuencia  "+nuevaCombinacion.secuencia+" - "+nuevaCombinacion.secuencia.length);
 							horariosPosibles.combinacion.push(nuevaCombinacion);
 							// alert(n+" - "+nuevaCombinacion.secuencia+" # "+JSON.stringify(horariosPosibles.combinacion));
+						} else {
+							var x = 0;
+							var nivel = combinacion.secuencia.length-1;
+							for (; x < traslapes.length; x++){
+								// if (traslapes[x].nivel == i && traslapes[x].opcion == n) break;
+								if (traslapes[x].nivel == nivel && traslapes[x].opcion == combinacion.secuencia[nivel]) break;
+							}
+							if (x == traslapes.length){
+								// traslapes.push({ nivel : i, opcion : n, colision : [] });
+								traslapes.push({ nivel : nivel, opcion : combinacion.secuencia[nivel], colision : [] });
+							}
+							// traslapes[x].colision.push({ nivel : nivel, opcion : combinacion.secuencia[nivel] });
+							traslapes[x].colision.push({ nivel : i, opcion : n });
 						}
 					}
 					// alert("opciones anteriores  "+j+"/"+horariosPosiblesAnteriores.combinacion.length);
@@ -1890,6 +1905,7 @@ function generarHorarios (){
 				// alert("opciones anteriores  "+horariosPosiblesAnteriores.combinacion.length+" #"+JSON.stringify(horariosPosiblesAnteriores.combinacion));
 			}
 		}
+		log("###»»»»\n"+JSON.stringify(traslapes));
 		// alert("Listo");
 		// log("-> Generando horarios....1.3");
 		if (combinacionesDisponibles && horariosPosiblesAnteriores.combinacion.length > 0){
