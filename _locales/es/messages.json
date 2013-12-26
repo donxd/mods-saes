@@ -238,5 +238,25 @@
 	"imp_text" : {
 		"description" : "Instrucciones del drag importar",
 		"message" : " ó arrástrelo a esta área."
+	},
+	"id_subject" : {
+		"description" : "Identificador de las materias",
+		"message" : "ID"
+	},
+	"details" : {
+		"description" : "Detalle de los traslapes",
+		"message" : "» Ver detalles de traslapes"
+	},
+	"return" : {
+		"description" : "Regresar",
+		"message" : "Regresar"
+	},
+	"overlap_porcent" :	{
+		"description" : "Traslape",
+		"message" : "Grado de Traslape (%)"	
+	},
+	"overlapping_elements" : {
+		"description" : "Elementos traslapados",
+		"message" : "Conflictos"		
 	}
 }
