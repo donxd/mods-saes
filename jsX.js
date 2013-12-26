@@ -2022,7 +2022,7 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 			// id = buscaIdentificador(infoTraslapes[i],materias);
 			// porcentaje = calculaImpacto(infoTraslapes[i],gruposOrdenados);
 			// conflictos = listaConflictos(infoTraslapes[i],materias);
-			traslapes.rows[i+1].cells[0].innerHTML = buscaIdentificador(infoTraslapes[i],materias);;
+			traslapes.rows[i+1].cells[0].innerHTML = buscaIdentificador(infoTraslapes[i],materias);
 			traslapes.rows[i+1].cells[1].innerHTML = calculaImpacto(infoTraslapes[i],gruposOrdenados.materias,totalResultados);
 			traslapes.rows[i+1].cells[2].innerHTML = listaConflictos(infoTraslapes[i],materias);
 		}
@@ -2051,8 +2051,12 @@ function calculaImpacto (materia, gruposOrdenados, totalResultados){
 	for (var i = materia.nivel+1; i < gruposOrdenados.length; i++){
 		gradoImpacto *= gruposOrdenados[i].grupos.length;
 	}
-	// log("##########"+gradoImpacto+"/"+totalResultados);
-	gradoImpacto *= 100;
+	var totalRepeticiones = 0;
+	for (var i = 0; i < materia.colision.length; i++){
+		totalRepeticiones += materia.colision[i].repeticiones;
+	}
+	gradoImpacto *= totalRepeticiones * 100;
+	// log("##########"+gradoImpacto+"*"+totalRepeticiones+"/"+totalResultados);
 	gradoImpacto /= totalResultados;
 	return gradoImpacto.toFixed(1);
 }
