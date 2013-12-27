@@ -1593,9 +1593,13 @@ function colocando (evento){
 function sobre (evento){
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
 	for (var i = 0; i < registros.length; i++){
-		registros[i].className = "fuera";
+		// registros[i].className = "fuera";
+		registros[i].classList.remove("sobre");
+		registros[i].classList.add("fuera");
 	}
-	this.className = "sobre";
+	// this.className = "sobre";
+	this.classList.remove("fuera");
+	this.classList.add("sobre");
 	return false;
 }
 function saliendo (evento){
@@ -1606,7 +1610,9 @@ function saliendo (evento){
 function soltando (){
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
 	for (var i = 0; i < registros.length; i++){
-		registros[i].className = "fuera";
+		// registros[i].className = "fuera";
+		registros[i].classList.remove("sobre");
+		registros[i].classList.add("fuera");
 		registros[i].setAttribute("draggable","true");
 		registros[i].style.opacity = '1';
 	}
@@ -1624,6 +1630,9 @@ function ingresando (evento){
 	var posicionCambio = this.parentNode.parentNode.rowIndex-1;
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
 	if (posicionRegistroSeleccionado != posicionCambio){
+		var estiloTemp = registros[posicionRegistroSeleccionado].className;
+		registros[posicionRegistroSeleccionado].className = registros[posicionCambio].className;
+		registros[posicionCambio].className = estiloTemp;
 		var temp = registros[posicionRegistroSeleccionado].children[0].rows[0].cloneNode(true);
 		var i, j, inicio = 0, fin = 9, check = 10;
 		if (posicionRegistroSeleccionado > posicionCambio){
@@ -1662,7 +1671,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "div#asignaturasSeleccionadas > table { width:100%; } ";
 	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1), table[name='traslapes'] > tbody > tr:nth-child(1) { background-color : #FF9900; color : #FFF; } ";
 	// estilosSeleccionMaterias.innerHTML += "table.traslapes tr:not(.titulos) td { border : 1px solid #FFF } ";
-	estilosSeleccionMaterias.innerHTML += "table[name='traslapes'] td { border : 1px solid #FFF; } table[name='traslapes'] { border-collapse : collapse; }";
+	estilosSeleccionMaterias.innerHTML += "table[name='traslapes'] td { border : 1px solid #FFF; } table[name='traslapes'] { border-collapse : collapse; } ";
 	estilosSeleccionMaterias.innerHTML += ".ocultar { display : none; } ";
 	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; } ";
 	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
@@ -1672,6 +1681,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "span.importar { text-decoration : underline; font-weight : bold; text-transform : uppercase; } ";
 	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select : none; -webkit-user-drag: element; } .sobre { border : 2px dashed #FFF; } .sobreImportar { border : 2px dashed #000; } .fuera { border : 2px solid #800000; } .fueraImportar { border : 1px solid #000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
 	estilosSeleccionMaterias.innerHTML += "div.tabla { display : table; width : 100%; } div.celda { display : table-cell; vertical-align : middle; } ";
+	estilosSeleccionMaterias.innerHTML += "div.resaltar { border : 1px solid #FFF; background-color : #154215; } ";
 
 	var medidasCeldas = medidasCeldasSeleccion();
 	for (var j = 0; j < medidasCeldas.length; j++) {
@@ -1952,10 +1962,17 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 		localStorage.traslapes = JSON.stringify(infoTraslapes);
 
 		//Organizando la información de los traslapes
-		var materias = agrupaMaterias(infoTraslapes);
-		materias = nombreMaterias(materias,gruposOrdenados);
-		materias = ordenaSecuenciaMaterias(materias);
-		materias = agregaIdMaterias(materias);
+		var materias;
+		if (localStorage.materiasTraslapes != null && localStorage.materiasTraslapes != ""){
+			materias = JSON.parse(localStorage.materiasTraslapes);
+		} else {
+			materias = agrupaMaterias(infoTraslapes);
+			materias = nombreMaterias(materias,gruposOrdenados);
+			materias = ordenaSecuenciaMaterias(materias);
+			materias = agregaIdMaterias(materias);
+			localStorage.materiasTraslapes = JSON.stringify(materias);
+		}
+
 
 		//Generando la tabla de identificadores
 		var traslapes = document.createElement("table");
@@ -2022,7 +2039,7 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 			// id = buscaIdentificador(infoTraslapes[i],materias);
 			// porcentaje = calculaImpacto(infoTraslapes[i],gruposOrdenados);
 			// conflictos = listaConflictos(infoTraslapes[i],materias);
-			traslapes.rows[i+1].cells[0].innerHTML = buscaIdentificador(infoTraslapes[i],materias);
+			traslapes.rows[i+1].cells[0].innerHTML = "<a href='#' name='traslape' style='color : #F5E638;'>"+buscaIdentificador(infoTraslapes[i],materias)+"</a>";
 			traslapes.rows[i+1].cells[1].innerHTML = calculaImpacto(infoTraslapes[i],gruposOrdenados.materias,totalResultados);
 			traslapes.rows[i+1].cells[2].innerHTML = listaConflictos(infoTraslapes[i],materias);
 		}
@@ -2044,7 +2061,94 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 			informacionHorarios = informacionHorarios.children[0].rows[0].cells[2];
 		}
 		informacionHorarios.appendChild(botonDetalles);
+		verTraslapes();
 	}
+}
+function verTraslapes (){
+	var materiasTraslapes = document.getElementsByName("traslape");
+	for (var i = 0; i < materiasTraslapes.length; i++){
+		materiasTraslapes[i].addEventListener("click",marcaTraslapes,true);
+	}
+}
+function marcaTraslapes (){
+	// log("1");
+	mostrarDetalleTraslapes(this);
+	// log("2");
+	var materias  = JSON.parse(localStorage.materiasTraslapes);
+	var traslapes = JSON.parse(localStorage.traslapes);
+	var detalle;
+	// log("3\n"+this.innerText);
+	for (var i = 0; i < materias.length; i++){
+		if (this.innerText == materias[i].id) {
+			// log("3.5\n"+JSON.stringify(materias[i]));
+			detalle = materias[i];
+			break;
+		}
+	}
+	for (var i = 0; i < traslapes.length; i++){
+		if (detalle.nivel == traslapes[i].nivel && detalle.opcion == traslapes[i].opcion) {
+			// log("3.8\n"+JSON.stringify(traslapes[i]));
+			detalle = traslapes[i];
+			break;
+		}
+	}
+	// log("4\n"+JSON.stringify(detalle));
+	detalle = datosTraslape(detalle, materias);
+	// log("5\n"+JSON.stringify(detalle));
+
+	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
+	var i, j;
+	for (i = 0; i < registros.length; i++){
+		registros[i].classList.remove("resaltar");
+	}
+	// log("6");
+	for (i = 0; i < detalle.length; i++){
+		for (j = 0; j < registros.length; j++){
+			// log("6.1\n"+detalle[i].secuencia+" | "+registros[j].children[0].rows[0].cells[0].innerHTML+"\n"+detalle[i].materia+" | "+registros[j].children[0].rows[0].cells[1].innerHTML);
+			if (detalle[i].secuencia == registros[j].children[0].rows[0].cells[0].innerHTML && detalle[i].materia == registros[j].children[0].rows[0].cells[1].innerHTML){
+				// log("6.5");
+				registros[j].classList.add("resaltar");
+				break;
+			}
+		}
+	}
+	// log("7");
+}
+function datosTraslape (detalle, materias){
+	// var temp = recuperaDatos(detalle, materias);
+	// detalle.secuencia = temp.secuencia;
+	// detalle.materia = temp.materia;
+	// for (var i = 0; i < detalle.colision.length; i++){
+	// 	detalle.colision[i] = recuperaDatos(detalle.colision[i], materias);
+	// }
+	// return detalle;
+	// log("4.1");
+	//Coloca las materias en un mismo nivel
+	var materiasTraslapes = new Array();
+	for (var i = 0; i < detalle.colision.length; i++){
+		materiasTraslapes.push(detalle.colision[i]);
+	}
+	detalle.colision = new Array();
+	materiasTraslapes.push(detalle);
+
+	// log("4.2\n"+JSON.stringify(materiasTraslapes));
+	//Trae los datos de secuencia, materia y letra
+	for (var i = 0; i < materiasTraslapes.length; i++){
+		materiasTraslapes[i] = recuperaDatos(materiasTraslapes[i], materias);
+	}
+	// log("4.3\n"+JSON.stringify(materiasTraslapes));
+	return materiasTraslapes;
+}
+function recuperaDatos (detalle, materias){
+	for (var i = 0; i < materias.length; i++){
+		if (detalle.nivel == materias[i].nivel && detalle.opcion == materias[i].opcion){
+			detalle.secuencia = materias[i].secuencia;
+			detalle.materia = materias[i].materia;
+			detalle.id = materias[i].id;
+			break;
+		}
+	}
+	return detalle;
 }
 function calculaImpacto (materia, gruposOrdenados, totalResultados){
 	var gradoImpacto = 1;
@@ -2086,18 +2190,19 @@ function agregaIdMaterias (materias){
 }
 function mostrarDetalleTraslapes (){
 	switch (this.value){
-		case chrome.i18n.getMessage("return"):
-			document.getElementById("detalleTraslapes").classList.add("oculto");
-			mostrarSeleccionMaterias();
-			document.getElementById("informacionHorarios").removeAttribute("class");
-			document.getElementById("seleccionHorarios").value = 0;
-			break;
 		case chrome.i18n.getMessage("details"):
 			document.getElementById("detalleTraslapes").removeAttribute("class");
 			document.getElementById("asignaturasSeleccionadas").classList.add("oculto");
 			document.getElementById("controlesHorarios").classList.add("oculto");
 			document.getElementById("informacionHorarios").classList.add("oculto");
 			document.getElementById("resultadoHorarios").classList.add("oculto");
+			break;
+		case chrome.i18n.getMessage("return"):
+		default:
+			document.getElementById("detalleTraslapes").classList.add("oculto");
+			mostrarSeleccionMaterias();
+			document.getElementById("informacionHorarios").removeAttribute("class");
+			document.getElementById("seleccionHorarios").value = 0;
 			break;
 	}
 }
@@ -2602,9 +2707,11 @@ function borrarMateriasHorario (){
 	ocultarHorario();
 	atajoHorarios 	= false;
 	materiasHorario = { materias : [] };
-	localStorage.horarioMaterias 	= "";
-	localStorage.armadoOrdenado 	= "";
-	localStorage.resultados 		= "";
+	localStorage.horarioMaterias   = "";
+	localStorage.armadoOrdenado    = "";
+	localStorage.resultados        = "";
+	localStorage.traslapes         = "";
+	localStorage.materiasTraslapes = "";
 	mostrarSeleccionMaterias();
 	document.getElementById("exportarSeleccion").value       = "";
 	document.getElementById("resultadoHorarios").innerHTML   = "";
