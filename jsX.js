@@ -1361,8 +1361,8 @@ function detectaPantalla (){
 				document.getElementById("floatwrapper").appendChild(parteDerecha);
 				
 				ajustaPeriodos();
-				// informacionHistorico();
 			}
+			informacionHistorico();
 			break;
 		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
 			var evaluacionTutores = document.getElementById("ctl00_mainCopy_Pnl_Evaluacion");
@@ -1630,9 +1630,6 @@ function ingresando (evento){
 	var posicionCambio = this.parentNode.parentNode.rowIndex-1;
 	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
 	if (posicionRegistroSeleccionado != posicionCambio){
-		var estiloTemp = registros[posicionRegistroSeleccionado].className;
-		registros[posicionRegistroSeleccionado].className = registros[posicionCambio].className;
-		registros[posicionCambio].className = estiloTemp;
 		var temp = registros[posicionRegistroSeleccionado].children[0].rows[0].cloneNode(true);
 		var i, j, inicio = 0, fin = 9, check = 10;
 		if (posicionRegistroSeleccionado > posicionCambio){
@@ -1655,9 +1652,21 @@ function ingresando (evento){
 			registros[i].children[0].rows[0].cells[j].innerHTML = temp.cells[j].innerHTML;
 		}
 		registros[i].children[0].rows[0].cells[check].children[0].checked = temp.cells[check].children[0].checked;
+		//remarcar los resaltados
+		removerResaltado();
+		agregaResaltado();
 	}
 	actualizaMaterias();
 	return false;
+}
+function agregaResaltado (){
+	// log("agregaResaltado\t\t1");
+	var registros = document.querySelectorAll('span.resaltar');
+	for (var i = 0; i < registros.length; i++){
+		// log("agregaResaltado\t\t1.5");
+		registros[i].parentNode.parentNode.parentNode.parentNode.parentNode.classList.add("resaltar");
+	}
+	// log("agregaResaltado\t\t2");
 }
 function seleccionMaterias (){
 
@@ -1905,6 +1914,10 @@ function generarHorarios (){
 							horariosPosibles.combinacion.push(nuevaCombinacion);
 							// alert(n+" - "+nuevaCombinacion.secuencia+" # "+JSON.stringify(horariosPosibles.combinacion));
 						} else {
+
+							//Corregir informe de traslape
+								//ultima materia de rama viable x materia que tiene conflicto
+
 							var x = 0;
 							var nivel = combinacion.secuencia.length-1;
 							//buscando al colisionador
@@ -1954,7 +1967,9 @@ function generarHorarios (){
 	// log("-> Generando horarios....2");
 }
 function cargarTraslapes (){
-	informeTraslapes (JSON.parse(localStorage.traslapes),JSON.parse(localStorage.armadoOrdenado));
+	if (localStorage.traslapes != null && localStorage.traslapes!= "" && localStorage.armadoOrdenado != null && localStorage.armadoOrdenado != ""){
+		informeTraslapes (JSON.parse(localStorage.traslapes),JSON.parse(localStorage.armadoOrdenado));
+	}
 }
 function informeTraslapes (infoTraslapes, gruposOrdenados){
 	if (infoTraslapes.length > 0){
@@ -1962,6 +1977,7 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 		localStorage.traslapes = JSON.stringify(infoTraslapes);
 
 		//Organizando la información de los traslapes
+		/*
 		var materias;
 		if (localStorage.materiasTraslapes != null && localStorage.materiasTraslapes != ""){
 			materias = JSON.parse(localStorage.materiasTraslapes);
@@ -1972,7 +1988,12 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 			materias = agregaIdMaterias(materias);
 			localStorage.materiasTraslapes = JSON.stringify(materias);
 		}
-
+		*/
+		var materias = agrupaMaterias(infoTraslapes);
+		materias = nombreMaterias(materias,gruposOrdenados);
+		materias = ordenaSecuenciaMaterias(materias);
+		materias = agregaIdMaterias(materias);
+		localStorage.materiasTraslapes = JSON.stringify(materias);
 
 		//Generando la tabla de identificadores
 		var traslapes = document.createElement("table");
@@ -2071,6 +2092,7 @@ function verTraslapes (){
 	}
 }
 function marcaTraslapes (){
+	removerMarcaResaltado();
 	// log("1");
 	mostrarDetalleTraslapes(this);
 	// log("2");
@@ -2096,23 +2118,45 @@ function marcaTraslapes (){
 	detalle = datosTraslape(detalle, materias);
 	// log("5\n"+JSON.stringify(detalle));
 
-	var registros = document.querySelectorAll('div[name="contenedorRegistro"]');
-	var i, j;
-	for (i = 0; i < registros.length; i++){
-		registros[i].classList.remove("resaltar");
-	}
+	//Quitando el estilo a los registros ya resaltados
+	removerResaltado();
 	// log("6");
+
+	//Agregando el estilo para resaltar
+	registros = document.querySelectorAll('div[name="contenedorRegistro"]');
 	for (i = 0; i < detalle.length; i++){
 		for (j = 0; j < registros.length; j++){
 			// log("6.1\n"+detalle[i].secuencia+" | "+registros[j].children[0].rows[0].cells[0].innerHTML+"\n"+detalle[i].materia+" | "+registros[j].children[0].rows[0].cells[1].innerHTML);
 			if (detalle[i].secuencia == registros[j].children[0].rows[0].cells[0].innerHTML && detalle[i].materia == registros[j].children[0].rows[0].cells[1].innerHTML){
 				// log("6.5");
 				registros[j].classList.add("resaltar");
+				registros[j].children[0].rows[0].cells[2].innerHTML = "<span class='resaltar'></span>"+registros[j].children[0].rows[0].cells[2].innerHTML;
 				break;
 			}
 		}
 	}
 	// log("7");
+}
+function removerMarcaResaltado (){
+	var posicionesFilasMarcas = new Array();
+	var registros = document.querySelectorAll('span.resaltar');
+	var i;
+	for (i = 0; i < registros.length; i++){
+		registros[i].parentNode.removeChild(registros[i]);
+		// posicionesFilasMarcas.push(registros[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex);
+	}
+	// registros = document.getElementById("tablaAsignaturas");
+	// for (i = 0; i < posicionesFilasMarcas.length; i++){
+	// 	registros.rows[posicionesFilasMarcas[i]].cells[0].children[0].children[0].rows[0].cells[2].removeChild()
+	// }
+}
+function removerResaltado (){
+	// log("removerResaltado\t\t1");
+	var registros = document.querySelectorAll('div.resaltar');
+	for (var i = 0; i < registros.length; i++){
+		registros[i].classList.remove("resaltar");
+	}
+	// log("removerResaltado\t\t2");
 }
 function datosTraslape (detalle, materias){
 	// var temp = recuperaDatos(detalle, materias);
