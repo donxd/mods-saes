@@ -1826,6 +1826,7 @@ function generarHorarios (){
 	cargarMateriasHorarioGuardadas();
 	if (materiasHorario.materias.length != 0){
 		// log("-> Generando horarios....1.1");
+		// Agrupar las materias por la secuencia
 		var materiasCombinar 	= materiasHorario;
 		var grupoMaterias 		= { materias : [] };
 		while (materiasCombinar.materias.length != 0){
@@ -1849,6 +1850,7 @@ function generarHorarios (){
 				}
 			}
 		}
+		// Ordenar los materias agrupadas por secuencias ascendente
 		//localStorage.armado = JSON.stringify(grupoMaterias);
 		var gruposOrdenados = {materias : []};
 		while (grupoMaterias.materias.length != 0){
@@ -1897,9 +1899,11 @@ function generarHorarios (){
 						
 						// alert(combinacion.horas+"###"+gruposOrdenados.materias[i].grupos[n].horas);
 						// alert(i+" , "+n);
+						var posicionTraslape = gruposOrdenados.materias[i].grupos[n].horas.length;
 						for (var k = 0; !encontrado && k < gruposOrdenados.materias[i].grupos[n].horas.length; k++){
 							if (buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k]) != -1){
 								encontrado = true;
+								posicionTraslape = k;
 							}
 						}
 						if (!encontrado){
@@ -1919,7 +1923,6 @@ function generarHorarios (){
 								//ultima materia de rama viable x materia que tiene conflicto
 
 							var x = 0;
-							var nivel = combinacion.secuencia.length-1;
 							//buscando al colisionador
 							for (; x < traslapes.length; x++){
 								// if (traslapes[x].nivel == nivel && traslapes[x].opcion == combinacion.secuencia[nivel]) break;
@@ -1929,6 +1932,20 @@ function generarHorarios (){
 								// traslapes.push({ nivel : nivel, opcion : combinacion.secuencia[nivel], colision : [] });
 								traslapes.push({ nivel : i, opcion : n, colision : [] });
 							}
+							//localizando al colisionado
+							// var nivel = combinacion.secuencia.length-1;
+							var nivel;
+							encontrado = false;
+							while (!encontrado){
+								for (var k = 0; !encontrado && k < combinacion.secuencia.length; k++){
+									if (buscarArregloOrdenado(gruposOrdenados.materias[k].grupos[combinacion.secuencia[k]].horas,gruposOrdenados.materias[i].grupos[n].horas[posicionTraslape]) != -1){
+										encontrado = true;
+										nivel = k;
+									}
+								}
+							}
+
+
 							//buscando al colisionado
 							var k = 0
 							for (; k < traslapes[x].colision.length; k++){
