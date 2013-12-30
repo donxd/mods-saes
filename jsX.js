@@ -1091,7 +1091,7 @@ function conexionDiccionario (){
 			destinoConexion = "http://"+escuela+".tusprofes.tk/";
 			break;
 		case "upiicsa":
-			destinoConexion = "http://foroupiicsa.net/web/";
+			destinoConexion = "http://foroupiicsa.net/diccionario/";
 			break;
 		default:
 			alert(chrome.i18n.getMessage("campus_not_found"));
