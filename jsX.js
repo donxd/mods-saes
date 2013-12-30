@@ -1300,6 +1300,7 @@ function detectaPantalla (){
 					conexionDiccionario();
 					seleccionMaterias();
 					cargarMateriasHorario();
+					cargarOptativas();
 					inicializarOrdenamiento();
 					verComentarios();
 					cargarHorariosGenerados();
@@ -1724,7 +1725,35 @@ function seleccionMaterias (){
 
 	//materiasSeleccionadas.setAttribute("style","display:none; min-height:80px; min-width:250px; position: fixed; background-color: maroon; color: white; top: 6%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; margin:0px 0px 0px -525px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000; width: 1050px; ");
 	
-	materiasSeleccionadas.innerHTML = "<div>"+chrome.i18n.getMessage("close_div")+"</div> <div id = 'resultadoHorarios'></div> <div id = 'asignaturasSeleccionadas'> <table id = 'tablaAsignaturas'> <tr> <td>"+chrome.i18n.getMessage("group")+"</td> <td>"+chrome.i18n.getMessage("subject")+"</td> <td>"+chrome.i18n.getMessage("teacher")+"</td> <td>"+chrome.i18n.getMessage("monday")+"</td> <td>"+chrome.i18n.getMessage("tuesday")+"</td> <td>"+chrome.i18n.getMessage("wednesday")+"</td> <td>"+chrome.i18n.getMessage("thursday")+"</td> <td>"+chrome.i18n.getMessage("friday")+"</td> <td name = 'sabado'>"+chrome.i18n.getMessage("saturday")+"</td> <td>"+chrome.i18n.getMessage("delete_subject")+"</td> <td>"+chrome.i18n.getMessage("include_subject")+"</td> </tr> </table> </div><div id = 'controlesHorarios'> <input type='button' id='exportar_boton' value='"+chrome.i18n.getMessage("exp_button")+"'> <input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'> <input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'> <span id = 'totalSeleccion'>0</span> </div>  <div id = 'informacionHorarios'></div> <div id = 'detalleTraslapes' class= 'oculto'></div>";
+	materiasSeleccionadas.innerHTML = 	"<div>"+chrome.i18n.getMessage("close_div")+"</div>"+
+										"<div id = 'resultadoHorarios'></div>"+
+										"<div id = 'asignaturasSeleccionadas'>"+
+											"<table id = 'tablaAsignaturas'>"+
+												"<tr>"+
+													"<td>"+chrome.i18n.getMessage("group")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("subject")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("teacher")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("monday")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("tuesday")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("wednesday")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("thursday")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("friday")+"</td>"+
+													"<td name = 'sabado'>"+chrome.i18n.getMessage("saturday")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("delete_subject")+"</td>"+
+													"<td>"+chrome.i18n.getMessage("include_subject")+"</td>"+
+												"</tr>"+
+											"</table>"+
+										"</div>"+
+										"<div id = 'controlesHorarios'>"+
+											"<input type='button' id='exportar_boton' value='"+chrome.i18n.getMessage("exp_button")+"'>"+
+											"<input type='button' id='borrarMateriasHorario' value='"+chrome.i18n.getMessage("delete_all_button")+"'>"+
+											"<input type = 'button' id = 'generarMateriasHorario' value='"+chrome.i18n.getMessage("generate_button")+"'>"+
+											"<input type = 'button' id = 'optativas' value='"+chrome.i18n.getMessage("optionals")+"'>"+
+											"<span id = 'totalSeleccion'>0</span>"+
+										"</div>"+
+										"<div id = 'informacionHorarios'></div>"+
+										"<div id = 'informacionOptativas'></div>"+
+										"<div id = 'detalleTraslapes' class= 'oculto'></div>";
 
 	var mostrarMateriasHorario 	 	= document.createElement("input");
 	mostrarMateriasHorario.type  	= "button";
@@ -1739,7 +1768,14 @@ function seleccionMaterias (){
 	document.getElementById("borrarMateriasHorario").addEventListener("click",borrarMateriasHorario,true);
 	document.getElementById("generarMateriasHorario").addEventListener("click",generarHorarios,true);
 	document.getElementById("exportar_boton").addEventListener("click",exportar,true);
+	document.getElementById("optativas").addEventListener("click",mostrarOptativas,true);
 	// setTimeout(quitaEspacioCeldas,5000);
+}
+function cargarOptativas (){
+	//TO DO
+}
+function mostrarOptativas (){
+	//TO DO
 }
 function exportar (){
 	var port = chrome.extension.connect({ name: "msg" });

@@ -253,10 +253,14 @@
 	},
 	"overlap_porcent" :	{
 		"description" : "Traslape",
-		"message" : "Grado de Traslape (%)"	
+		"message" : "Grado de Traslape (%)"
 	},
 	"overlapping_elements" : {
 		"description" : "Elementos traslapados",
-		"message" : "Conflictos"		
+		"message" : "Conflictos"
+	},
+	"optionals" : {
+		"description" : "Optativas",
+		"message" : "Optativas"
 	}
 }
