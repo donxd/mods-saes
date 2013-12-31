@@ -1752,7 +1752,7 @@ function seleccionMaterias (){
 											"<span id = 'totalSeleccion'>0</span>"+
 										"</div>"+
 										"<div id = 'informacionHorarios'></div>"+
-										"<div id = 'informacionOptativas'></div>"+
+										"<div id = 'informacionOptativas' class= 'oculto'></div>"+
 										"<div id = 'detalleTraslapes' class= 'oculto'></div>";
 
 	var mostrarMateriasHorario 	 	= document.createElement("input");
@@ -1772,10 +1772,91 @@ function seleccionMaterias (){
 	// setTimeout(quitaEspacioCeldas,5000);
 }
 function cargarOptativas (){
+	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != ""){
+		var listaOptativas;
+		if (localStorage.optativas != null && localStorage.optativas != ""){
+			listaOptativas = JSON.parse(localStorage.optativas);
+		} else {
+			materiasHorario = JSON.parse(localStorage.horarioMaterias);
+			//Agrupando los datos por materia
+			listaOptativas = new Array();
+			var i, j, encontrado;
+			for (i = 0; i < materiasHorario.materias.length; i++){
+				encontrado = false;
+				for (j = 0; !encontrado && j < listaOptativas.length; j++){
+					if (materiasHorario.materias[i].materia == listaOptativas[j].materia){
+						encontrado = true;
+					}
+				}
+				if (!encontrado){
+					listaOptativas.push( { materia : materiasHorario.materias[i].materia, check : false });
+				}
+			}
+			localStorage.optativas = JSON.stringify(listaOptativas);
+		}
+		creaTablaOptativas(listaOptativas);
+	}
+}
+function creaTablaOptativas (listaOptativas){
+	//Construyendo la tabla de optativas
+	var tablaOptativas = document.createElement("table");
+	tablaOptativas.insertRow(0);
+	tablaOptativas.rows[0].insertCell(0);
+	tablaOptativas.rows[0].insertCell(1);
+	tablaOptativas.rows[0].cells[0].innerHTML = chrome.i18n.getMessage("subject");
+	tablaOptativas.rows[0].cells[1].innerHTML = chrome.i18n.getMessage("optional");
+
+	var checkOptativas = document.createElement("input");
+	checkOptativas.type = "checkbox";
+	checkOptativas.href = "#";
+	checkOptativas.name = "optativa";
+
+	for (i = 0; i < listaOptativas.length; i++){
+		var checkOptativa = checkOptativas.cloneNode(true);
+		checkOptativa.addEventListener("change",cambiaEstadoOptativa,true);
+		if (listaOptativas[i].check){
+			checkOptativa.checked = true;
+		}
+
+		tablaOptativas.insertRow(i+1);
+		tablaOptativas.rows[i+1].insertCell(0);
+		tablaOptativas.rows[i+1].insertCell(1);
+		tablaOptativas.rows[i+1].cells[0].innerHTML = listaOptativas[i].materia;
+		tablaOptativas.rows[i+1].cells[1].appendChild(checkOptativa);
+	}
+
+	var regresar = document.createElement("input");
+	regresar.type = "button";
+	regresar.value = chrome.i18n.getMessage("return");
+	regresar.addEventListener("click",mostrarOptativas,true);
+
+	var informacionOptativas = document.getElementById("informacionOptativas");
+	informacionOptativas.appendChild(tablaOptativas);
+	informacionOptativas.appendChild(regresar);
+}
+function cambiaEstadoOptativa (){
 	//TO DO
 }
 function mostrarOptativas (){
-	//TO DO
+	switch (this.value){
+		case chrome.i18n.getMessage("optionals"):
+			document.getElementById("informacionOptativas").removeAttribute("class");
+			document.getElementById("asignaturasSeleccionadas").classList.add("oculto");
+			document.getElementById("controlesHorarios").classList.add("oculto");
+			document.getElementById("informacionHorarios").classList.add("oculto");
+			document.getElementById("resultadoHorarios").classList.add("oculto");
+			break;
+		case chrome.i18n.getMessage("return"):
+		default:
+			document.getElementById("informacionOptativas").classList.add("oculto");
+			mostrarSeleccionMaterias();
+			document.getElementById("informacionHorarios").removeAttribute("class");
+			var contadorSeleccion = document.getElementById("seleccionHorarios");
+			if (contadorSeleccion){
+				contadorSeleccion.value = 0;
+			}
+			break;
+	}
 }
 function exportar (){
 	var port = chrome.extension.connect({ name: "msg" });
@@ -2021,7 +2102,7 @@ function generarHorarios (){
 }
 function cargarTraslapes (){
 	if (localStorage.traslapes != null && localStorage.traslapes!= "" && localStorage.armadoOrdenado != null && localStorage.armadoOrdenado != ""){
-		informeTraslapes (JSON.parse(localStorage.traslapes),JSON.parse(localStorage.armadoOrdenado));
+		informeTraslapes(JSON.parse(localStorage.traslapes),JSON.parse(localStorage.armadoOrdenado));
 	}
 }
 function informeTraslapes (infoTraslapes, gruposOrdenados){

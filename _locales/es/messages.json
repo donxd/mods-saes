@@ -262,5 +262,9 @@
 	"optionals" : {
 		"description" : "Optativas",
 		"message" : "Optativas"
+	},
+	"optional" : {
+		"description" : "Titulo de la columna check para las optativas",
+		"message" : "Optativa"
 	}
 }
