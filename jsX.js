@@ -1679,9 +1679,9 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "div#resultadoHorarios { overflow-y : auto; max-height : "+anchoSeleccion+"px; } ";
 	estilosSeleccionMaterias.innerHTML += "div#asignaturasSeleccionadas { overflow-y:auto; max-height: "+anchoSeleccion+"px; } ";
 	estilosSeleccionMaterias.innerHTML += "div#asignaturasSeleccionadas > table { width:100%; } ";
-	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1), table[name='traslapes'] > tbody > tr:nth-child(1) { background-color : #FF9900; color : #FFF; } ";
+	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas > tbody > tr:nth-child(1), table[name='traslapes'] > tbody > tr:nth-child(1), table#tablaOptativas tr:nth-child(1) { background-color : #FF9900; color : #FFF; } ";
 	// estilosSeleccionMaterias.innerHTML += "table.traslapes tr:not(.titulos) td { border : 1px solid #FFF } ";
-	estilosSeleccionMaterias.innerHTML += "table[name='traslapes'] td { border : 1px solid #FFF; } table[name='traslapes'] { border-collapse : collapse; } ";
+	estilosSeleccionMaterias.innerHTML += "table[name='traslapes'] td, div#informacionOptativas td { border : 1px solid #FFF; } table[name='traslapes'], table#tablaOptativas { border-collapse : collapse; } ";
 	estilosSeleccionMaterias.innerHTML += ".ocultar { display : none; } ";
 	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; } ";
 	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
@@ -1692,6 +1692,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "[draggable] { -webkit-user-select : none; -webkit-user-drag: element; } .sobre { border : 2px dashed #FFF; } .sobreImportar { border : 2px dashed #000; } .fuera { border : 2px solid #800000; } .fueraImportar { border : 1px solid #000; } .seleccionado { background-color : rgba(122, 196, 41, 0.53); } ";
 	estilosSeleccionMaterias.innerHTML += "div.tabla { display : table; width : 100%; } div.celda { display : table-cell; vertical-align : middle; } ";
 	estilosSeleccionMaterias.innerHTML += "div.resaltar { border : 1px solid #FFF; background-color : #154215; } ";
+	estilosSeleccionMaterias.innerHTML += "div#informacionOptativas { text-align : center; } table#tablaOptativas { margin : 0px auto; }";
 
 	var medidasCeldas = medidasCeldasSeleccion();
 	for (var j = 0; j < medidasCeldas.length; j++) {
@@ -1800,6 +1801,7 @@ function cargarOptativas (){
 function creaTablaOptativas (listaOptativas){
 	//Construyendo la tabla de optativas
 	var tablaOptativas = document.createElement("table");
+	tablaOptativas.setAttribute("id","tablaOptativas");
 	tablaOptativas.insertRow(0);
 	tablaOptativas.rows[0].insertCell(0);
 	tablaOptativas.rows[0].insertCell(1);
@@ -1835,7 +1837,10 @@ function creaTablaOptativas (listaOptativas){
 	informacionOptativas.appendChild(regresar);
 }
 function cambiaEstadoOptativa (){
-	//TO DO
+	var posicion = this.parentNode.parentNode.rowIndex-1;
+	var listaOptativas = JSON.parse(localStorage.optativas);
+	listaOptativas[posicion].check = !listaOptativas[posicion].check;
+	localStorage.optativas = JSON.stringify(listaOptativas);
 }
 function mostrarOptativas (){
 	switch (this.value){
@@ -1857,6 +1862,65 @@ function mostrarOptativas (){
 			}
 			break;
 	}
+}
+function agregarOptativa (materia){
+	var encontrado = false;
+	var listaOptativas = JSON.parse(localStorage.optativas);
+	for (var i = 0; i < listaOptativas.length; i++){
+		if (materia == listaOptativas[i].materia) {
+			encontrado = true;
+			break;
+		}
+	}
+	if (!encontrado){
+		listaOptativas.push( { materia : materia, check : false} );
+		guardarOptativas(listaOptativas);
+		insertarOptativaTabla(materia);
+	}
+}
+function insertarOptativaTabla (materia){
+	var tablaOptativas = document.getElementById("tablaOptativas");
+	var posicionFila = tablaOptativas.rows.length;
+
+	var checkOptativa = document.createElement("input");
+	checkOptativa.type = "checkbox";
+	checkOptativa.href = "#";
+	checkOptativa.name = "optativa";
+	checkOptativa.addEventListener("change",cambiaEstadoOptativa,true);
+
+	tablaOptativas.insertRow(posicionFila);
+	tablaOptativas.rows[posicionFila].insertCell(0);
+	tablaOptativas.rows[posicionFila].insertCell(1);
+	tablaOptativas.rows[posicionFila].cells[0].innerHTML = materia;
+	tablaOptativas.rows[posicionFila].cells[1].appendChild(checkOptativa);
+}
+function guardarOptativas (listaOptativas){
+	localStorage.optativas = JSON.stringify(listaOptativas);
+}
+function eliminarOptativa (materia){
+	var listaOptativas = JSON.parse(localStorage.optativas);
+	for (var i = 0; i < listaOptativas.length; i++){
+		if (materia == listaOptativas[i].materia) {
+			// log("##1:"+listaOptativas.length);
+			listaOptativas.splice(i,1)
+			guardarOptativas(listaOptativas);
+			// log("##2:"+listaOptativas.length);
+			// removerOptativaTabla(materia);
+			removerOptativaTabla(i+1);
+			break;
+		}
+	}
+}
+// function removerOptativaTabla (materia){
+function removerOptativaTabla (posicion){
+	var tablaOptativas = document.getElementById("tablaOptativas");
+	// for (var i = 1; i < tablaOptativas.rows.length; i++) {
+	// 	if (materia == tablaOptativas.rows[i].cells[0].innerText){
+	// 		tablaOptativas.deleteRow(i);
+	// 		break;
+	// 	}
+	// }
+	tablaOptativas.deleteRow(posicion);
 }
 function exportar (){
 	var port = chrome.extension.connect({ name: "msg" });
@@ -1944,6 +2008,7 @@ function generarHorarios (){
 	if (materiasHorario.materias.length != 0){
 		// log("-> Generando horarios....1.1");
 		// Agrupar las materias por la secuencia
+		// TO DO : incluir las optativas en la agrupación
 		var materiasCombinar 	= materiasHorario;
 		var grupoMaterias 		= { materias : [] };
 		while (materiasCombinar.materias.length != 0){
@@ -1967,7 +2032,7 @@ function generarHorarios (){
 				}
 			}
 		}
-		// Ordenar los materias agrupadas por secuencias ascendente
+		// Se ordenan las materias agrupadas con las secuencias : ascendente
 		//localStorage.armado = JSON.stringify(grupoMaterias);
 		var gruposOrdenados = {materias : []};
 		while (grupoMaterias.materias.length != 0){
@@ -2837,6 +2902,7 @@ function agregarMateria (){
 		atajoHorarios = true;
 		//respaldando selección
 		guardarMateriasHorario();
+		agregarOptativa(nombre);
 	} else { //quitar
 		eliminaMateriaSeleccion(grupo, nombre, i, 0);
 	}
@@ -2940,7 +3006,7 @@ function removerMateria (){
 	}
 }
 function eliminaMateriaSeleccion (grupo, materia, posicion, tipoAccion){
-	log("eliminaMateriaSeleccion\n"+grupo+", "+materia+", "+posicion+", "+tipoAccion);
+	// log("eliminaMateriaSeleccion\n"+grupo+", "+materia+", "+posicion+", "+tipoAccion);
 	var tablaSeleccion = document.getElementById("tablaAsignaturas");
 	var registros = document.getElementById("regs");
 	// var i = posicion;
@@ -2985,6 +3051,7 @@ function eliminaMateriaSeleccion (grupo, materia, posicion, tipoAccion){
 	actualizaTotalSeleccion(-1);
 	//eliminar de la lista permanente
 	borrarMateriaHorario(grupo, materia);
+	eliminarOptativa(materia);
 }
 function actualizaTotalSeleccion (opcion){
 	document.getElementById("totalSeleccion").innerHTML = parseInt(document.getElementById("totalSeleccion").innerHTML)+opcion;	
