@@ -2011,26 +2011,41 @@ function generarHorarios (){
 		// TO DO : incluir las optativas en la agrupación
 		var materiasCombinar 	= materiasHorario;
 		var grupoMaterias 		= { materias : [] };
+		var optativas = { materia : "optativa", grupos : [] };
+		var listaOptativas = JSON.parse(localStorage.optativas);
 		while (materiasCombinar.materias.length != 0){
 			// log("-> Generando horarios....1.1.1");
 			var agrupado = false;
 			var materiaOrdenar = materiasCombinar.materias.pop();
 			if (materiaOrdenar.estado){
-				for (var i = 0; i < grupoMaterias.materias.length; i++){
-					if (materiaOrdenar.materia == grupoMaterias.materias[i].materia){
-						var grupo = { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
-						grupoMaterias.materias[i].grupos.push(grupo);
-						agrupado = true;
+				var optativa = false;
+				for (var j = 0; j < listaOptativas.length; j++){
+					if (materiaOrdenar.materia == listaOptativas[j].materia && listaOptativas[j].check){
+						optativas.grupos.push( { materia : materiaOrdenar.materia, grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe } );
+						optativa = true;
 						break;
 					}
 				}
-				if (!agrupado){
-					var materia = { materia : materiaOrdenar.materia, grupos : [] };
-					var grupo 	= { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
-					materia.grupos.push(grupo);
-					grupoMaterias.materias.push(materia);
+				if (!optativa){
+					for (var i = 0; i < grupoMaterias.materias.length; i++){
+						if (materiaOrdenar.materia == grupoMaterias.materias[i].materia){
+							var grupo = { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
+							grupoMaterias.materias[i].grupos.push(grupo);
+							agrupado = true;
+							break;
+						}
+					}
+					if (!agrupado){
+						var materia = { materia : materiaOrdenar.materia, grupos : [] };
+						var grupo 	= { grupo : materiaOrdenar.grupo, horas : materiaOrdenar.horas, profe : materiaOrdenar.profe };
+						materia.grupos.push(grupo);
+						grupoMaterias.materias.push(materia);
+					}
 				}
 			}
+		}
+		if (optativas.grupos.length > 0){
+			grupoMaterias.materias.push(optativas);
 		}
 		// Se ordenan las materias agrupadas con las secuencias : ascendente
 		//localStorage.armado = JSON.stringify(grupoMaterias);
@@ -2587,7 +2602,7 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 	for (var i = 0; i < horariosPosiblesAnteriores.combinacion[0].secuencia.length; i++){
 		tablaInformacion.insertRow(i+1);
 		for (var k = 0; k < 9; k++) tablaInformacion.rows[i+1].insertCell(k);
-		tablaInformacion.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
+		// tablaInformacion.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
 	}
 
 	cargarMateriasHorarioGuardadas();
@@ -2603,6 +2618,11 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 		var tablaInformacionN = tablaInformacion.cloneNode(true);
 		for (var i = 0; i < horariosPosiblesAnteriores.combinacion[n].secuencia.length; i++){
 			tablaInformacionN.rows[i+1].cells[0].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].grupo;
+			if (gruposOrdenados.materias[i].materia == "optativa"){
+				tablaInformacionN.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].grupos[horariosPosiblesAnteriores.combinacion[n].secuencia[i]].materia;
+			} else {
+				tablaInformacionN.rows[i+1].cells[1].innerHTML = gruposOrdenados.materias[i].materia;
+			}
 			if (destinoConexion != ""){
 				var enlaceDiccionario = document.createElement("a");
 				enlaceDiccionario.href = "#";
@@ -2615,6 +2635,7 @@ function presentarHorariosGenerados (horariosPosiblesAnteriores, gruposOrdenados
 			}
 			var j;
 			// alert("t "+materiasHorario.materias.length);
+			// log("##\n"+JSON.stringify(materiasHorario));
 			for (j = 0; j < materiasHorario.materias.length; j++){
 				// alert(tablaInformacionN.rows[i+1].cells[0].innerHTML+"/"+materiasHorario.materias[j].grupo);
 				if (tablaInformacionN.rows[i+1].cells[0].innerHTML == materiasHorario.materias[j].grupo &&  tablaInformacionN.rows[i+1].cells[1].innerHTML == materiasHorario.materias[j].materia){
