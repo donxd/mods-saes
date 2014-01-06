@@ -121,7 +121,7 @@
 	},
 	"add_subject" : {
 		"description" : "Agregar materia",
-		"message" : "Agregar"
+		"message" : "Agregar a la selección."
 	},
 	"group" : {
 		"description" : "Grupo",
@@ -159,9 +159,13 @@
 		"description" : "Sábado",
 		"message" : "Sáb"
 	},
+	"delete_title" : {
+		"description" : "Titulo para borrar materia",
+		"message" : "Quitar"
+	},
 	"delete_subject" : {
 		"description" : "Borrar materia",
-		"message" : "Quitar"
+		"message" : "Quitar de la selección"
 	},
 	"include_subject" : {
 		"description" : "Incluir materia",
@@ -173,11 +177,11 @@
 	},
 	"generate_button" : {
 		"description" : "Generar horarios",
-		"message" : "Generar"
+		"message" : "Generar Horarios"
 	},
-	"show_schedule" : {
-		"description" : "Ver Horario",
-		"message" : "Ver Horario"
+	"show_selection" : {
+		"description" : "Ver la selección",
+		"message" : "Ver selección"
 	},
 	"reload_page" : {
 		"description" : "Recargar la página",
@@ -201,7 +205,7 @@
 	},
 	"enable_disable" : {
 		"description" : "Habilidar/Deshabilitar para el arma horarios",
-		"message" : "Habilitar/Deshabilitar"
+		"message" : "Habilitar/Deshabilitar del arma horarios."
 	},
 	"confirm_delete" : {
 		"description" : "Confirmar borrado",
@@ -266,5 +270,45 @@
 	"optional" : {
 		"description" : "Titulo de la columna check para las optativas",
 		"message" : "Optativa"
+	},
+	"comments" : {
+		"description" : "Comentarios",
+		"message" : "Ver comentarios."
+	},
+	"import_message" : {
+		"description" : "Mensaje de importación",
+		"message" : "Importar una selección."
+	},
+	"export_message" : {
+		"description" : "Mensaje de exportación",
+		"message" : "Generar un archivo con la selección (No disponible en incognito)."
+	},
+	"total_selection" : {
+		"description" : "Cantidad total de materias seleccionadas",
+		"message" : "Total de materias."
+	},
+	"show_result" : {
+		"description" : "Ver el resultado X",
+		"message" : "Ver el resultado #N."
+	},
+	"enable_disable_optional" : {
+		"description" : "Habilidar/Deshabilitar optativa",
+		"message" : "Habilitar/Deshabilitar optativa."
+	},
+	"title_optionals" : {
+		"description" : "Título de las optativas",
+		"message" : "Optativas"
+	},
+	"title_conflicts" : {
+		"description" : "Título de la tabla de materias con traslapes",
+		"message" : "Materias con traslapes"
+	},
+	"title_detail_conflicts" : {
+		"description" : "Título del detalle de los traslapes",
+		"message" : "Detalle de los traslapes"
+	},
+	"show_conflict" : {
+		"description" : "Resaltar el traslape",
+		"message" : "Marcar el traslape"
 	}
 }
