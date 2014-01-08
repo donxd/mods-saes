@@ -1967,6 +1967,7 @@ function importar (contenidoImportar){
 		if (contenidoImportar != ""){	
 			if (contenidoImportar != localStorage.horarioMaterias){
 				try {
+					borrarMateriasHorario();
 					// log("I");
 					materiasHorario = JSON.parse(contenidoImportar);
 					// log("II");
@@ -2378,8 +2379,7 @@ function marcaTraslapes (){
 function removerMarcaResaltado (){
 	var posicionesFilasMarcas = new Array();
 	var registros = document.querySelectorAll('span.resaltar');
-	var i;
-	for (i = 0; i < registros.length; i++){
+	for (var i; = 0; i < registros.length; i++){
 		registros[i].parentNode.removeChild(registros[i]);
 		// posicionesFilasMarcas.push(registros[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex);
 	}
@@ -2966,6 +2966,7 @@ function agregarMateria (){
 	} else { //quitar
 		eliminaMateriaSeleccion(grupo, nombre, i, 0);
 	}
+	removerMarcaResaltado();
 	if (numeroDias > 5) {
 		//verificacion para la visualización de la columna sábado
 		verificaSeleccionSabado();

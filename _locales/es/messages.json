@@ -172,8 +172,8 @@
 		"message" : "Incluir"
 	},
 	"delete_all_button" : {
-		"description" : "Incluir materia",
-		"message" : "Borrar Todo"
+		"description" : "Eliminar toda la selección",
+		"message" : "Borrar selección"
 	},
 	"generate_button" : {
 		"description" : "Generar horarios",
