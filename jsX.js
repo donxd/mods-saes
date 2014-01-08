@@ -2379,7 +2379,7 @@ function marcaTraslapes (){
 function removerMarcaResaltado (){
 	var posicionesFilasMarcas = new Array();
 	var registros = document.querySelectorAll('span.resaltar');
-	for (var i; = 0; i < registros.length; i++){
+	for (var i = 0; i < registros.length; i++){
 		registros[i].parentNode.removeChild(registros[i]);
 		// posicionesFilasMarcas.push(registros[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex);
 	}
