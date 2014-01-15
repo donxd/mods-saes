@@ -874,6 +874,10 @@ var atajos = false;
 function atajosEjecucion (lanzador){
 	var evento = lanzador || window.event;
 	var codigoTecla = evento.charCode || evento.keyCode;
+	
+	//solución de las teclas numéricas
+	if (codigoTecla > 95) codigoTecla -=48;
+	
 	switch (codigoTecla){
 		case 18: 	desActivaAtajos();
 			break;
@@ -1370,7 +1374,7 @@ function detectaPantalla (){
 				
 				ajustaPeriodos();
 			}
-			informacionHistorico();
+			// informacionHistorico();
 			break;
 		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
 			var evaluacionTutores = document.getElementById("ctl00_mainCopy_Pnl_Evaluacion");
@@ -2106,7 +2110,8 @@ function generarHorarios (){
 						// alert(i+" , "+n);
 						var posicionTraslape = gruposOrdenados.materias[i].grupos[n].horas.length;
 						for (var k = 0; !encontrado && k < gruposOrdenados.materias[i].grupos[n].horas.length; k++){
-							if (buscarArregloOrdenado(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k]) != -1){
+							if (buscarArreglo(combinacion.horas,gruposOrdenados.materias[i].grupos[n].horas[k]) != -1){
+								// log("traslape 1 "+combinacion.horas+"\n"+gruposOrdenados.materias[i].grupos[n].horas[k]);
 								encontrado = true;
 								posicionTraslape = k;
 							}
@@ -2142,11 +2147,19 @@ function generarHorarios (){
 							var nivel;
 							encontrado = false;
 							while (!encontrado){
+								// log("totalSecuencia :"+combinacion.secuencia.length);
 								for (var k = 0; !encontrado && k < combinacion.secuencia.length; k++){
-									if (buscarArregloOrdenado(gruposOrdenados.materias[k].grupos[combinacion.secuencia[k]].horas,gruposOrdenados.materias[i].grupos[n].horas[posicionTraslape]) != -1){
+									// log(k+"/"+combinacion.secuencia.length);
+									// log("traslape 2 \n"+gruposOrdenados.materias[k].grupos[combinacion.secuencia[k]].horas+"\n"+gruposOrdenados.materias[i].grupos[n].horas[posicionTraslape]+"<-");
+									if (buscarArreglo(gruposOrdenados.materias[k].grupos[combinacion.secuencia[k]].horas,gruposOrdenados.materias[i].grupos[n].horas[posicionTraslape]) != -1){
 										encontrado = true;
+										// log("en : 1");
 										nivel = k;
 									}
+								}
+								if (!encontrado) {
+									log("Inf");
+									break;
 								}
 							}
 
@@ -2725,7 +2738,7 @@ function mostrarHorarioGenerado(numero){
 		document.getElementById("exportar").classList.add("oculto");
 	}
 }
-function buscarArregloOrdenado (arreglo, buscar){
+function buscarArregloOrdenadoBinario (arreglo, buscar){
 	var k = parseInt(arreglo.length/2);
 	var i = 0;
 	var n = k;
@@ -2776,6 +2789,38 @@ function buscarArregloOrdenado (arreglo, buscar){
 		}
 	}
 	return pos;
+}
+function buscarArregloOrdenado (arreglo, buscar, version){
+	var posicion = -1;
+	var inicio = 0;
+	var n;
+	var fin = arreglo.length - 1;
+ 
+	while (inicio <= fin) {
+		n = (inicio + fin) / 2;
+		// console.log(buscar+"/"+arreglo[Math.round(n)]+" : "+Math.round(n));
+		if (buscar == arreglo[ version ? Math.round(n) : parseInt(n) ]) {
+			posicion = version ? Math.round(n) : parseInt(n);
+			break;
+		} else {
+			if (arreglo[ version ? Math.round(n) : parseInt(n) ] > buscar) {
+				fin = n - 1;
+			} else {
+				inicio = n + 1;
+			}
+		}
+	}
+	return posicion;
+}
+function buscarArreglo (arreglo, buscar){
+	var posicion = buscarArregloOrdenadoBinario(arreglo, buscar);
+	if (posicion == -1){
+		posicion = buscarArregloOrdenado (arreglo, buscar, false);
+		if (posicion == -1){
+			posicion = buscarArregloOrdenado (arreglo, buscar, true);
+		}
+	}
+	return posicion;
 }
 function mostrarHorario (){
 	// document.getElementById("asignaturas").classList.remove("ocultar");
