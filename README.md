@@ -6,6 +6,10 @@ pendientes
 	<-contemplar las opciones para la extensión
 	<-Responsive Desing???
 
+Versión 0.62
+<-Correción de errores
+	Marcado de traslapes
+
 Versión 0.61
 <-Correción de errores
 	Ciclo infinito traslapes y teclas de atajos

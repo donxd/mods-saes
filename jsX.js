@@ -435,11 +435,12 @@ function agregaBuscador (opc){
 	switch (opc){
 		case 1: //ocupabilidad
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
-			// var boton = document.createElement("input");
-			// boton.setAttribute("type","button");
-			// boton.setAttribute("value","Recargar");
-			// boton.addEventListener("click",actualizaOcupabilidad,true);
-			// controlesBuscador.appendChild(boton);
+			var boton = document.createElement("input");
+			boton.setAttribute("type","button");
+			boton.setAttribute("value","Recargar");
+			boton.setAttribute("id","boton_recargar");
+			boton.addEventListener("click",actualizaOcupabilidad,true);
+			controlesBuscador.appendChild(boton);
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
@@ -524,7 +525,7 @@ function temporizadorImportar (){
 //##############<-buscador
 
 function actualizaOcupabilidad(){
-	valida(2);
+	valida(3);
 }
 var READY_STATE_COMPLETE = 4;
 var peticion_http = null;
@@ -651,6 +652,20 @@ function valida (opc){
 				//~ theForm.__EVENTARGUMENT.value = eventArgument;
 				break;
 			case 3 :
+				// var recargar = document.getElementById("boton_recargar");
+
+				// var marco = document.createElement("iframe");
+				// marco.setAttribute("name","marco_recargar");
+				// marco.setAttribute("style","position: fixed; left: 10%; top: 10%; width: 85%; z-index: 99; height: 70%;");
+				// recargar.parentNode.appendChild(marco);
+
+				document.getElementById("__EVENTTARGET").value = "ctl00$mainCopy$dpdplan";
+
+				var formulario = document.getElementById("aspnetForm");
+				// formulario.setAttribute("target","marco_recargar");
+				formulario.submit();
+
+				/*
 				var elementos 		= document.forms[0].elements;
 				var parametros 		= "";
 				var parametros2 	= "";
@@ -691,6 +706,8 @@ function valida (opc){
 				peticion_http.open("POST", location.protocol+"//"+location.host+"/Academica/Ocupabilidad_grupos.aspx", true);
 				peticion_http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 				peticion_http.send(parametros);
+				*/
+
 				break;
 			case 4 :
 				peticion_http.onreadystatechange = procesaRespuesta;
@@ -1708,7 +1725,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += ".tooltip { display : inline; position : relative; } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(title); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : 220px; } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:before { border : solid; border-color : #000 transparent; border-width : 6px 6px 0 6px; bottom : 20px; content : ''; left : 50%; position : absolute; z-index : 99; } ";
-	estilosSeleccionMaterias.innerHTML += ".titulo_tabla { color : #FF9900; text-transform : uppercase; } ";
+	estilosSeleccionMaterias.innerHTML += ".titulo_tabla { color : #FF9900; text-transform : uppercase; } "; 
 
 	var medidasCeldas = medidasCeldasSeleccion();
 	for (var j = 0; j < medidasCeldas.length; j++) {
@@ -2327,7 +2344,7 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 
 		//Colocando el botón en los controles, si es que hay resultados
 		var informacionHorarios = document.getElementById("informacionHorarios");
-		if (informacionHorarios.innerHTML != chrome.i18n.getMessage("no_results")){
+		if (informacionHorarios.innerText != chrome.i18n.getMessage("no_results")){
 			// log("##"+informacionHorarios.innerHTML);
 			informacionHorarios = informacionHorarios.children[0].rows[0].cells[2];
 		}
@@ -2497,7 +2514,10 @@ function mostrarDetalleTraslapes (){
 			document.getElementById("detalleTraslapes").classList.add("oculto");
 			mostrarSeleccionMaterias();
 			document.getElementById("informacionHorarios").removeAttribute("class");
-			document.getElementById("seleccionHorarios").value = 0;
+			var seleccionHorarios = document.getElementById("seleccionHorarios");
+			if (seleccionHorarios != null){
+				seleccionHorarios.value = 0;
+			}
 			break;
 	}
 }
