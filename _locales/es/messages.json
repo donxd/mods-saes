@@ -310,5 +310,13 @@
 	"show_conflict" : {
 		"description" : "Resaltar el traslape",
 		"message" : "Marcar el traslape"
+	},
+	"selection_filter" : {
+		"description" : "Filtrar la seleccion de la sección Horarios",
+		"message" : "Filtrar selección (Horarios)"
+	},
+	"message_selection_filter" : {
+		"description" : "Mensaje para cuando no hay seleccionado algo en Horarios",
+		"message" : "No ha seleccionado ninguna materia (Sección de Horarios)."
 	}
 }

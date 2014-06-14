@@ -6,6 +6,9 @@ pendientes
 	<-contemplar las opciones para la extensión
 	<-Responsive Desing???
 
+Versión 0.63
+<-comparación selección y ocupabilidad
+
 Versión 0.62
 <-Correción de errores
 	Marcado de traslapes

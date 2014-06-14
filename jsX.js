@@ -437,9 +437,13 @@ function agregaBuscador (opc){
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
 			var boton = document.createElement("input");
 			boton.setAttribute("type","button");
-			boton.setAttribute("value","Recargar");
+			// boton.setAttribute("value","Recargar");
+			// boton.setAttribute("id","boton_recargar");
+			// boton.addEventListener("click",actualizaOcupabilidad,true);
+
+			boton.setAttribute("value",chrome.i18n.getMessage("selection_filter"));
 			boton.setAttribute("id","boton_recargar");
-			boton.addEventListener("click",actualizaOcupabilidad,true);
+			boton.addEventListener("click",filtraSeleccion,true);
 			controlesBuscador.appendChild(boton);
 			break;
 		case 2: //horarios
@@ -469,6 +473,72 @@ function agregaBuscador (opc){
 	}
 	document.getElementById(tipo).setAttribute("id","regs");
 	inicializar();
+}
+function filtraSeleccion (){
+	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != ""){
+		var listaMaterias = JSON.parse(localStorage.horarioMaterias);
+		if (listaMaterias.materias.length > 0){
+
+			var ocultos 	= new Array();
+			var visibles 	= new Array();
+			var encontrado;
+			var registros = document.getElementById("regs").rows;
+			var numRegistros = registros.length;
+			var inicio = 1; //posicion de incio en la tabla de los registros
+			
+
+			
+			// visibles.push(registros[registrosVisibles[i]].numero);
+			// ocultos.push(registros[registrosVisibles[i]].numero);
+
+
+		    //recorriendo los elementos de la lista
+			for (var i = 0; i < listaMaterias.materias.length; i++){
+
+				var registroMateria = listaMaterias.materias[i];
+				//recorriendo los registros de la tabla
+				for (var j = inicio; j < numRegistros; j++){
+					if (registros[j].cells[0].innerHTML == registroMateria.grupo && registros[j].cells[2].innerHTML == registroMateria.materia){
+						visibles.push(j);
+					}
+				}
+			}
+
+			visibles = ordenar(visibles);
+
+			//generando la lista de ocultos
+			for (var i = inicio; i < numRegistros; i++){
+				encontrado =  false;
+				for (var j = 0; !encontrado && j < visibles.length; j++){
+					if (i == visibles[j]){
+						encontrado = true;
+					}
+				}
+				if (!encontrado){
+					ocultos.push(i);
+				}
+			}
+
+			//mostrando
+			for (var j = 0; j < visibles.length; j++){
+				registros[ visibles[j] ].setAttribute("class","visible");
+			}
+
+			//ocultando
+			for (var j = 0; j < ocultos.length; j++){
+				registros[ ocultos[j] ].setAttribute("class","oculto");
+			}
+		    document.body.datosVisibles.push(visibles);
+		    contar();
+		} else {
+			alert("No ha seleccionado ninguna materia.");
+		}
+	} else {
+		mensajeFiltrado();
+	}
+}
+function mensajeFiltrado (){
+	alert(chrome.i18n.getMessage("message_selection_filter"));
 }
 function seleccionImportar (){
 	validaArchivo(this.files[0]);
