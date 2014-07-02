@@ -1,4 +1,4 @@
-var version = 0.63;
+var version = 0.64;
 function log (mensaje){
 	console.log (mensaje);
 }

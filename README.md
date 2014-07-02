@@ -6,6 +6,9 @@ pendientes
 	<-contemplar las opciones para la extensión
 	<-Responsive Desing???
 
+Versión 0.64
+<-Correciones diccionario y reseteo de busqueda (filtrado)
+
 Versión 0.63
 <-comparación selección y ocupabilidad
 

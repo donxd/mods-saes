@@ -413,7 +413,7 @@ function inicializar (){
 	buscador.columna = 0;
 	buscador.addEventListener("keyup",buscar,true);
   	document.getElementById("ver").addEventListener("click",verTodo,true);
-	buscador.addEventListener("click",modificaciones,true);
+	buscador.addEventListener("search",modificaciones,true);
 	inicializaDatos();
 }
 function inicializaDatos (){
@@ -1185,7 +1185,7 @@ function conexionDiccionario (){
 		case "esiqie":
 		case "esit":
 		case "upiig":
-			destinoConexion = "http://"+escuela+".tusprofes.tk/";
+			destinoConexion = "http://diccionariodemaestros.com/" + escuela;
 			break;
 		case "upiicsa":
 			destinoConexion = "http://foroupiicsa.net/diccionario/";
@@ -1228,7 +1228,8 @@ function verComentarios (){
 		formularioEnlace.action = destinoConexion;
 		formularioEnlace.setAttribute("id","formularioEnlace");
 		formularioEnlace.target = "_blank";
-		formularioEnlace.method = "POST";
+		formularioEnlace.method = "GET";
+		// formularioEnlace.method = "POST";
 		formularioEnlace.innerHTML = "<input type='hidden' name='sec' value='buscar'/><input type='hidden' name='n'/>";
 		document.body.appendChild(formularioEnlace);
 
