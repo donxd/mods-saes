@@ -5,6 +5,11 @@ pendientes
 		atajo el foco del cuadro de busqueda (tabindex)
 	<-contemplar las opciones para la extensión
 	<-Responsive Desing???
+	<-Corregir definitivamente el diseño
+	<-Identificar cuando tienes algo para reinscribirte
+
+Versión 0.65
+<-Correciones de detección del diseño y eliminación del autologin
 
 Versión 0.64
 <-Correciones diccionario y reseteo de busqueda (filtrado)

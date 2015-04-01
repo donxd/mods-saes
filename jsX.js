@@ -8,8 +8,8 @@ function ajustarDisenio (){
 		subMenu.style.width = "auto";
 		var disenio = document.createElement("style");
 		disenio.setAttribute("type","text/css");
-		disenio.innerHTML 	= "#subnav .item {	padding : 0px 7px;	border : none; display : inline-block; width : 150px; }";
-		var elementosMenu 	= document.getElementsByClassName("item ctl00_subMenu_4");
+		disenio.innerHTML = "#subnav .item {	padding : 0px 7px;	border : none; display : inline-block; width : 150px; }";
+		var elementosMenu = document.getElementsByClassName("item ctl00_subMenu_4");
 		for (var i = 0; i < elementosMenu.length; i++){
 			if (elementosMenu[i].children.length == 2){
 				elementosMenu[i].children[1].style.paddingLeft = "20px";
@@ -929,33 +929,23 @@ function actualizar (){
 }
 var identificado = false;
 function creaFlujo (){
-	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession") != null){
-		var salir = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession");
-		salir.tabIndex 	= 1;
-		// salir.innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+0+"</span>";
-		indiceTabulador = 2;
+	indiceTabulador = 1;
+	var enlace_logout = document.getElementById('ctl00_leftColumn_LoginStatusSession');
+	if (enlace_logout != null){
+		enlace_logout.tabIndex = indiceTabulador++;
 		identificado 	= true;
 	} else {
-		var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName");
-		boleta.tabIndex = 1;
-		//boleta.focus();
-		// var atajo=document.createElement("span");
-		// atajo.setAttribute("style","background-color:black;color:white;display:none;");
-		// atajo.setAttribute("name","atajo");
-		// atajo.innerHTML=0;
-		// boleta.parentNode.insertBefore(atajo,boleta.nextSibling);
-		var password = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password");
-		password.tabIndex 	= 2;
-		indiceTabulador 	= 4;
+		//cuadro boleta
+		document.getElementById("ctl00_leftColumn_LoginUser_UserName").tabIndex = indiceTabulador++;
+		//cuadro pass
+		document.getElementById("ctl00_leftColumn_LoginUser_Password").tabIndex = indiceTabulador++;
+		//cuadro capcha
+		document.getElementById("ctl00_leftColumn_LoginUser_CaptchaCodeTextBox").tabIndex = indiceTabulador++;
+		//boton iniciar
+		document.getElementById("ctl00_leftColumn_LoginUser_LoginButton").tabIndex = indiceTabulador++;
+		//recargar la imagen
+		document.getElementById("c_default_ctl00_leftcolumn_loginuser_logincaptcha_ReloadLink").tabIndex = indiceTabulador++;
 	}
-	// var mensaje = document.createElement("div");
-	// mensaje.setAttribute("style","background-color:#800000;height:18px;position:fixed;top:"+(window.innerHeight-18)+"px;left:0px;color:white;display:none;");
-	// mensaje.setAttribute("id","mensajeAtajos");
-	// mensaje.innerHTML="Atajos»presionar el # deseado.";
-	// document.body.appendChild(mensaje);
-
-	// var listaAtajos = document.createElement("div");
-	// listaAtajos.innerHTML = ""
 }
 var atajos = false;
 function atajosEjecucion (lanzador){
@@ -993,8 +983,8 @@ function teclasAtajos(codigoTecla){
 		if (posicion < ultimoAtajo){
 			switch (accesosAtajos[posicion]){
 				case "login":
-					if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName") != null){
-						document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
+					if (document.getElementById("ctl00_leftColumn_LoginUser_UserName") != null){
+						document.getElementById("ctl00_leftColumn_LoginUser_UserName").focus();
 					} else {
 						document.getElementById("__EVENTTARGET").value = "ctl00$leftColumn$LoginViewSession$LoginStatusSession$ctl00";
 						document.forms[0].submit();
@@ -1008,36 +998,20 @@ function teclasAtajos(codigoTecla){
 		desActivaAtajos();
 	}
 }
-// function quitaAtajos(){
-// 	var atajos = document.getElementsByName("atajo");
-// 	for (var i=0;i<atajos.length;i++){
-// 		atajos[i].style.display = "none";
-// 	}
-// 	document.getElementById("mensajeAtajos").style.display = "none";
-// }
-// function muestraAtajos(){
-// 	var atajos = document.getElementsByName("atajo");
-// 	for (var i=0;i<atajos.length;i++){
-// 		atajos[i].style.display = "";
-// 	}
-// 	document.getElementById("mensajeAtajos").style.display = "";
-// }
 function desActivaAtajos (){
 	if (atajos){
 		atajos = false;
 		document.getElementById("seccionAtajos").style.display = "none";
-		// quitaAtajos();
 	} else {
 		atajos = true;
 		document.getElementById("seccionAtajos").style.display = "";
-		// muestraAtajos();
 	}
 }
 function recordar (){
 	if (this.checked){
 		if (!identificado){
-			var boleta 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value;
-			var pass 	= document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value;
+			var boleta 	= document.getElementById("ctl00_leftColumn_LoginUser_UserName").value;
+			var pass 	= document.getElementById("ctl00_leftColumn_LoginUser_Password").value;
 			if (boleta.length > 0 && pass.length > 0){
 				chrome.extension.sendMessage( { command : "setDatos", escuela : location.host, boleta : boleta, pass : pass, identificar : true }, identificar);
 			} else {
@@ -1054,43 +1028,43 @@ function recordar (){
 	document.getElementById("cambiosIdentificar").style.display = "";
 }
 function cambioUsuario (){
-	if (this.id == "ctl00_leftColumn_LoginViewSession_LoginSession_UserName"){
-		document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = "";
+	if (this.id == "ctl00_leftColumn_LoginUser_UserName"){
+		document.getElementById("ctl00_leftColumn_LoginUser_Password").value = "";
 	}
 	document.getElementById("recordar").checked = false;
 }
 function identificar (respuesta){
 	switch (respuesta.command){
 		case "getDatos":
-			var recmen;
+			var reaccion_mensaje;
 			var identificar = document.createElement("span");
-			identificar.innerHTML = chrome.i18n.getMessage("autologin")+" <input type='checkbox' id='recordar' tabIndex='3' "+((respuesta.identificar && location.host == respuesta.escuela)?"checked":"")+"/><br/><span id='cambiosIdentificar'></span>";
+			identificar.id = 'cambiosIdentificar';
 			if (location.pathname == "/" && !identificado){
 				if (location.host == respuesta.escuela){
-					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
-					document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
-					document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
-					document.getElementById("__EVENTARGUMENT").value 	= "";
+					document.getElementById("ctl00_leftColumn_LoginUser_UserName").value = respuesta.boleta;
+					document.getElementById("ctl00_leftColumn_LoginUser_Password").value = respuesta.pass;
+					document.getElementById("__EVENTTARGET").value   = "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
+					document.getElementById("__EVENTARGUMENT").value = "";
 					if (respuesta.identificar){	
 						// identificado = true;
 						document.forms[0].submit();
 					}
 				} else {
-					document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
+					document.querySelector("#ctl00_leftColumn_LoginUser_UserName").focus();
 				}
-				recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
+				reaccion_mensaje = document.getElementById("ctl00_leftColumn_LoginUser_PasswordRequired");
 			} else {
-				var boleta = document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
-				if (boleta == respuesta.boleta && respuesta.identificar && location.host == respuesta.escuela){	
-					recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession");
+				var enlace_logout = document.getElementById('ctl00_leftColumn_LoginStatusSession');
+
+				// var boleta = document.getElementById("ctl00_leftColumn_LoginNameSession").innerHTML;
+				// if (boleta == respuesta.boleta && respuesta.identificar && location.host == respuesta.escuela){	
+				if (enlace_logout != null){	
+					reaccion_mensaje = document.getElementById("ctl00_leftColumn_LoginNameSession");
 				} else {
 					identificar.innerHTML = "";
 				}
 			}
-			if (identificar.innerHTML.length > 0){
-				recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
-				document.getElementById("recordar").addEventListener("click",recordar,true);
-			}
+			reaccion_mensaje.parentNode.insertBefore(identificar, reaccion_mensaje.nextSibling);
 			break;
 		case "setDatos":
 			var cambios = document.getElementById("cambiosIdentificar");
@@ -1108,27 +1082,28 @@ function ocultarCambios (){
 	document.getElementById("cambiosIdentificar").setAttribute("style","display:none;");
 }
 function reaccion (respuesta){
-	if (document.getElementById("ctl00_leftColumn_LoginViewSession_LoginStatusSession") == null){
+	if (document.getElementById('ctl00_leftColumn_LoginStatusSession') == null){
 		var errorIdentificacion = false;
 		var spans = document.getElementsByTagName("span");
 		for (var i = 0; !errorIdentificacion && (i < spans.length); i++){
 			if (spans[i].innerText == chrome.i18n.getMessage("data_save")) errorIdentificacion = true;
 		}
 		var identificar = document.createElement("span");
-		identificar.innerHTML = chrome.i18n.getMessage("autologin")+" <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
+		// identificar.innerHTML = chrome.i18n.getMessage("autologin")+" <input type='checkbox' id='recordar' tabIndex='3' /><br/><span id='cambiosIdentificar'></span>";
+		identificar.id = 'cambiosIdentificar';
 
-		var recmen = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_PasswordRequired");
-		recmen.parentNode.insertBefore(identificar, recmen.nextSibling);
-		document.getElementById("recordar").addEventListener("click",recordar,true);
+		var reaccion_mensaje = document.getElementById("ctl00_leftColumn_LoginUser_PasswordRequired");
+		reaccion_mensaje.parentNode.insertBefore(identificar, reaccion_mensaje.nextSibling);
+		// document.getElementById("recordar").addEventListener("click",recordar,true);
 
 		if (respuesta.command == "getDatos"){
 			if (location.host == respuesta.escuela){
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").value = respuesta.boleta;
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").value = respuesta.pass;
+				document.getElementById("ctl00_leftColumn_LoginUser_UserName").value = respuesta.boleta;
+				document.getElementById("ctl00_leftColumn_LoginUser_Password").value = respuesta.pass;
 				document.getElementById("__EVENTTARGET").value 		= "ctl00$leftColumn$LoginViewSession$LoginSession$LoginButton";
 				document.getElementById("__EVENTARGUMENT").value 	= "";
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_UserName").addEventListener("change",cambioUsuario,true);
-				document.getElementById("ctl00_leftColumn_LoginViewSession_LoginSession_Password").addEventListener("change",cambioUsuario,true);
+				document.getElementById("ctl00_leftColumn_LoginUser_UserName").addEventListener("change",cambioUsuario,true);
+				document.getElementById("ctl00_leftColumn_LoginUser_Password").addEventListener("change",cambioUsuario,true);
 				if (respuesta.identificar){			
 					if (errorIdentificacion){
 						alert(chrome.i18n.getMessage("message_error_login"));
@@ -1138,7 +1113,7 @@ function reaccion (respuesta){
 				}
 			}
 		}
-		document.querySelector("#ctl00_leftColumn_LoginViewSession_LoginSession_UserName").focus();
+		document.querySelector("#ctl00_leftColumn_LoginUser_UserName").focus();
 	}
 }
 var destinoConexion = "";
@@ -1348,14 +1323,8 @@ function informacionPlanes (){
 }
 function detectaPantalla (){
 	switch (location.pathname){
-		// case "/":
-		// 	chrome.extension.sendMessage( { command : "getDatos"}, identificar);
-		// 	break;
-		// case "/Default.aspx":
-		// 	chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
-		// 	break;
 		case "/alumnos/default.aspx":
-			var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
+			var boleta = document.getElementById("ctl00_leftColumn_LoginNameSession")
 			document.cookie = "boleta="+boleta+";path=/";
 			break;
 		case "/Academica/Equivalencias.aspx":
@@ -3419,7 +3388,7 @@ function horarioDirecto (){
 	var boton = comprobante.cloneNode(true);
 	boton.setAttribute("type","button");
 	var enlace = document.createElement("a");
-	var boleta = document.getElementById("ctl00_leftColumn_LoginViewSession_LoginNameSession").innerHTML;
+	var boleta = document.getElementById("ctl00_leftColumn_LoginNameSession").innerHTML;
 	enlace.setAttribute("href", location.protocol+"//"+location.host+"/PDF/Alumnos/Reinscripciones/"+boleta+"-ComprobanteHorario.pdf");
 	enlace.setAttribute("target","_blank");
 	enlace.appendChild(boton);
