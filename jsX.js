@@ -3,34 +3,215 @@ function log (mensaje){
 }
 var indiceTabulador;
 function ajustarDisenio (){
-	var subMenu = document.getElementById("ctl00_subMenu");
+	ajusta_estructura_pagina();
+	ajusta_menu();
+	ajusta_enlaces();
+	ajusta_elementos();
+	agrega_elementos_extension();
+}
+
+function ajusta_estructura_pagina (){
+	ajusta_ancho_contenedor_principal();
+	mueve_secciones_pagina();
+	agrega_estilos_secciones();
+}
+
+function mueve_secciones_pagina (){
+	mueve_elemento( '#leftcolumn', '#floatwrapper', ANTES_DE );
+	mueve_elemento( '#footer', '#centercolumn', DENTRO_DE );
+	mueve_elemento( '#breadcrumbs', '.container', ANTES_DE );
+}
+
+var DENTRO_DE  = 0;
+var ANTES_DE   = 1;
+var DESPUES_DE = 2;
+
+function mueve_elemento ( selector_elemento, selector_destino, posicion ){
+	var elemento = copiar_elemento( selector_elemento );
+	elimina_elemento( selector_elemento );
+	pegar_elemento( elemento, selector_destino, posicion );
+}
+
+function copiar_elemento ( selector_elemento ){
+	var elemento = getElementos( selector_elemento );
+	if ( elemento.length > 0 ){
+		return elemento[0].cloneNode( true );
+	}
+	return null;
+}
+
+function elimina_elemento ( selector_elemento ){
+	var elemento = getElementos( selector_elemento );
+	if ( elemento.length > 0 ){
+		elemento[0].parentNode.removeChild( elemento[0] );
+	}
+}
+
+function pegar_elemento ( elemento, selector_destino, posicion ){
+	switch ( posicion ){
+		case DENTRO_DE:
+			pega_elemento_dentro( elemento, selector_destino );
+			break;
+		case ANTES_DE:
+			pega_elemento_antes( elemento, selector_destino );
+			break;
+		case DESPUES_DE:
+			pega_elemento_despues( elemento, selector_destino );
+			break;
+	}
+}
+
+function pega_elemento_dentro ( elemento, selector_destino ){
+	var padre = getElementos( selector_destino );
+	if ( padre.length > 0 ){
+		padre[0].appendChild( elemento );
+	}
+}
+
+function pega_elemento_antes ( elemento, selector_destino ){
+	var elemento_hermano = getElementos( selector_destino );
+	if ( elemento_hermano.length > 0 ){
+		elemento_hermano[0].parentNode.insertBefore( elemento, elemento_hermano[0] );
+	}
+}
+
+function pega_elemento_despues ( elemento, selector_destino ){
+	var elemento_hermano = getElementos( selector_destino );
+	if ( elemento_hermano.length > 0 ){
+		if ( elemento_hermano[0].nextSibling ){
+			elemento_hermano[0].parentNode.insertBefore( elemento, elemento_hermano[0].nextSibling );
+		} else {
+			elemento_hermano[0].parentNode.appendChild( elemento );
+		}
+	}
+}
+
+function agrega_estilos_secciones (){
+	var menu_secciones = getElementos( '#leftcolumn' );
+	if ( menu_secciones.length > 0 ){
+		menu_secciones[0].style.display = 'table-cell';
+		menu_secciones[0].style.verticalAlign = 'top';
+	}
+
+	var contenido_principal = getElementos( '#floatwrapper' );
+	if ( contenido_principal.length > 0 ){
+		contenido_principal[0].setAttribute( 'style', ' display : table-cell; float : none; border-left: 1px solid #FFF; border-right: 1px solid #FFF; ')
+	}
+
+	var contenedor_contenido_principal = getElementos( '#contentwrapper' );
+	if ( contenedor_contenido_principal.length > 0 ){
+		contenedor_contenido_principal[0].style.marginLeft = '0px';
+	}
+
+	var accesos_rapidos = getElementos( '#rightcolumn' );
+	if ( accesos_rapidos.length > 0 ){
+		accesos_rapidos[0].style.verticalAlign = 'top';
+	}
+	
+	var contenedor = getElementos( '.container' );
+	if ( contenedor.length > 0 ){
+		contenedor[0].removeAttribute('style');
+	}
+
+
+	var elementos_menu_secciones = getElementos( '#leftcolumn .item' );
+	var numero_elementos = elementos_menu_secciones.length;
+	if ( numero_elementos > 0 ){
+		// console.log('--- numero_elementos [ menu ] : ', numero_elementos );
+		for ( var contador = 0; contador < numero_elementos; contador++ ){
+			elementos_menu_secciones[ contador ].style.width = '';
+		}
+	}
+
+	var contenedor_menu_secciones = getElementos( '#leftcolcontainer' );
+	if ( contenedor_menu_secciones.length > 0 ){
+		contenedor_menu_secciones[0].setAttribute( 'style', ' width : initial; ');
+	}
+
+	var contenedor_central = getElementos( '#centercolumn' );
+	if ( contenedor_central.length > 0 ){
+		contenedor_central[0].setAttribute( 'style', 'float : initial; width : initial; margin-left : initial; padding-top : 0px; ');
+	}
+
+	var contenedor_central = getElementos( '#breadcrumbs' );
+	if ( contenedor_central.length > 0 ){
+		contenedor_central[0].setAttribute( 'style', ' position : initial; top : initial; left : initial; font-size : 0.9em; padding : 10px 20px;' );
+	}
+
+	var opciones_secciones = getElementos( '#subnav > table > tbody > tr > td > table' );
+	var numero_elementos = opciones_secciones.length;
+	if ( numero_elementos > 0 ){
+		for ( var contador = 0; contador < numero_elementos; contador++ ){
+			opciones_secciones[ contador ].style.width = '100%';
+		}	
+	}	
+
+	var contenedor_central = getElementos( '#breadcrumbs' );
+	if ( contenedor_central.length > 0 ){
+		contenedor_central[0].setAttribute( 'style', ' position : initial; top : initial; left : initial; font-size : 0.9em; padding : 10px 20px;' );
+	}
+
+	setTimeout( ajusta_espacio_navegacion, 500 );
+}
+
+function ajusta_espacio_navegacion (){
+	var menu_secciones = getElementos( '#leftcolumn' );
+	var navegacion = getElementos( '#mainnav' );
+	if ( navegacion.length > 0 && menu_secciones.length > 0){
+		// console.log( '--- tamanio [ menu secciones ] : ', menu_secciones[0].clientWidth );
+		navegacion[0].setAttribute( 'style', 'padding: 0 '+ menu_secciones[0].clientWidth +'px; border-bottom: 1px solid #FFF; border-top: 1px solid #990000; background-color: #F2F2F2;' );
+	}
+}
+
+function ajusta_ancho_contenedor_principal (){
+	var contenedor_principal = getElementos( '#wrapper' );
+	if ( contenedor_principal.length > 0 ){
+		contenedor_principal[0].style.width   = '';
+		contenedor_principal[0].style.display = 'table';
+	}
+}
+
+function getElementos( selector ){
+	return document.querySelectorAll( selector );
+}
+
+function ajusta_menu (){
+	var subMenu = document.getElementById('ctl00_subMenu');
 	if (subMenu){
-		subMenu.style.width = "auto";
-		var disenio = document.createElement("style");
-		disenio.setAttribute("type","text/css");
-		disenio.innerHTML = "#subnav .item {	padding : 0px 7px;	border : none; display : inline-block; width : 150px; }";
-		var elementosMenu = document.getElementsByClassName("item ctl00_subMenu_4");
+		subMenu.style.width = 'auto';
+		var disenio = document.createElement('style');
+		disenio.setAttribute('type','text/css');
+		disenio.innerHTML = '#subnav .item { padding : 0px 7px;	border : none; display : block; }';
+		disenio.innerHTML += '#subnav .item a {	width : 100%; display : block; }';
+		disenio.innerHTML += '#subnav .selected:hover { background-color: #FF9900; color: #990000; }';
+		disenio.innerHTML += '#subnav .hover { background-color: initial; color: #990000; }';
+		disenio.innerHTML += '#subnav { margin-bottom: 0px; } ';
+		disenio.innerHTML += '.sidebarcontainer { margin : 0px auto } ';
+		
+		var elementosMenu = document.getElementsByClassName('item ctl00_subMenu_4');
 		for (var i = 0; i < elementosMenu.length; i++){
 			if (elementosMenu[i].children.length == 2){
-				elementosMenu[i].children[1].style.paddingLeft = "20px";
+				elementosMenu[i].children[1].style.paddingLeft = '20px';
 			}
 		}
-		var espaciosImagenes = document.getElementById("ctl00_subMenu").getElementsByTagName("br");
+		var espaciosImagenes = document.getElementById('ctl00_subMenu').getElementsByTagName('br');
 		while(espaciosImagenes.length != 0){
 			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
 		}
 		
-		var espaciosImagenes = document.getElementById("ctl00_subMenu").getElementsByTagName("img");
+		var espaciosImagenes = document.getElementById('ctl00_subMenu').getElementsByTagName('img');
 		while(espaciosImagenes.length != 0){
 			espaciosImagenes[0].parentNode.removeChild(espaciosImagenes[0]);
 		}
 
-		document.getElementById("subnav").insertBefore(disenio, document.getElementById("ctl00_subMenu").nextSibling);
+		document.getElementById('subnav').insertBefore(disenio, document.getElementById('ctl00_subMenu').nextSibling);
 	}
-	var links = document.getElementsByTagName("a");
+}
 
-	for (var i = 0; i < links.length; i++){
-		if (links[i].getAttribute("href") != null && links[i].getAttribute("href").length > 0){
+function ajusta_enlaces (){
+	var links = document.getElementsByTagName('a');
+	for ( var i = 0; i < links.length; i++ ){
+		if ( links[i].getAttribute('href') != null && links[i].getAttribute('href').length > 0 ){
 			//~ Academica/agenda_escolar.aspx
 			//~ Academica/horarios.aspx
 			//~ /Academica/Ocupabilidad_grupos.aspx
@@ -51,7 +232,7 @@ function ajustarDisenio (){
 			// 	i=links.length;
 			// 	break;
 			// }
-			switch (links[i].getAttribute("href")){
+			switch ( links[i].getAttribute('href') ){
 				// case "/default.aspx":
 				// case "/Alumnos/default.aspx":
 				// case "/Academica/default.aspx":
@@ -63,16 +244,34 @@ function ajustarDisenio (){
 				// 		tabAsignado=true;
 				// 	}
 				// 	break;
-				case "/Alumnos/ETS/default.aspx":
-					links[i].setAttribute("href","#");
+				case '/Alumnos/ETS/default.aspx':
+					links[i].setAttribute('href','#');
 					break;
-				case "/Reglamento/Default.aspx":
-					links[i].setAttribute("href",chrome.i18n.getMessage("bylaw"));
-					links[i].setAttribute("target","_blank");
+				case '/Reglamento/Default.aspx':
+					links[i].setAttribute('href',chrome.i18n.getMessage('bylaw'));
+					links[i].setAttribute('target','_blank');
 					// links[i].tabIndex=indiceTabulador;
 					// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
 					// indiceTabulador++;
 					// tabAsignado=true;
+					break;
+				case '/Alumnos/Saberes/DEFAULT.ASPX':
+					links[i].text = 'SPA';
+					break;
+				case '/Alumnos/Saberes/Inscripcion_Saberes.aspx':
+					links[i].text = 'Inscribir SPA';
+					break;
+				case '/Alumnos/Evaluacion_Docente/Default.aspx':
+					links[i].text = 'Profesores';
+					break;
+				case '/Alumnos/info_alumnos/Datos_Alumno.aspx':
+					links[i].text = 'General';
+					break;
+				case '/Alumnos/info_alumnos/DatosAlumnosMedicos.aspx':
+					links[i].text = 'Médicos';
+					break;
+				case '/Alumnos/info_alumnos/DatosAlumnosDeportivos.aspx':
+					links[i].text = 'Deportivos';
 					break;
 			}
 			// if (!tabAsignado){
@@ -80,36 +279,40 @@ function ajustarDisenio (){
 			// }
 		}
 	}
-	document.getElementById("contentwrapper").style.display	= "table";
-
-	document.getElementById("floatwrapper").style.display	= "table-cell";
-	document.getElementById("floatwrapper").style.float		= "none";
-
-	document.getElementById("rightcolumn").style.display	= "table-cell";
-	document.getElementById("rightcolumn").style.float		= "none";
-
-	document.getElementById("footer").style.display			= "table-row";
-
-	var configuracion = document.createElement("div");
-	configuracion.setAttribute("style","position : fixed; top : 2px; left :"+(window.innerWidth-123)+"px; text-align : right; width : 120px; background-color : rgba(132, 132, 132, 0.9);");
-	var imagenConfiguracion = document.createElement("img");
-	imagenConfiguracion.src = chrome.extension.getURL("/css/conf.png");
-	imagenConfiguracion.style.cursor = "pointer";
-	imagenConfiguracion.addEventListener("click",mostrarContacto,true);
-	var informacionContacto = document.createElement("div");
-	informacionContacto.innerHTML = chrome.i18n.getMessage("contact")+" : <br/><a target='_blank' style='color : #AEE8F3; ' href='"+chrome.i18n.getMessage("url_facebook")+"'>Complemento SAES</a><br/><a href='#' style='color : #AEE8F3;'>"+chrome.i18n.getMessage("email")+"</a>";
-	informacionContacto.setAttribute("style","display : none; color : #FFF; ");
-	informacionContacto.setAttribute("id","informacion_contacto");
-	configuracion.appendChild(imagenConfiguracion);
-	configuracion.appendChild(informacionContacto);
-	document.body.appendChild(configuracion);
 }
+
+function ajusta_elementos (){
+	document.getElementById('contentwrapper').style.display = 'table';
+	document.getElementById('rightcolumn').style.display    = 'table-cell';
+	document.getElementById('rightcolumn').style.float      = 'none';
+	// document.getElementById('footer').style.display         = 'table-row';
+}
+
+function agrega_elementos_extension (){
+	var configuracion = document.createElement('div');
+	configuracion.setAttribute( 'style', 'position : fixed; top : 2px; left :'+(window.innerWidth-123)+'px; text-align : right; width : 120px; background-color : rgba(132, 132, 132, 0.9);' );
+	
+	var imagenConfiguracion = document.createElement('img');
+	imagenConfiguracion.src = chrome.extension.getURL('/css/conf.png');
+	imagenConfiguracion.style.cursor = 'pointer';
+	imagenConfiguracion.addEventListener('click',mostrarContacto,true);
+	
+	var informacionContacto = document.createElement('div');
+	informacionContacto.innerHTML = chrome.i18n.getMessage('contact')+" : <br/><a target='_blank' style='color : #AEE8F3; ' href='"+chrome.i18n.getMessage("url_facebook")+"'>Complemento SAES</a><br/><a href='#' style='color : #AEE8F3;'>"+chrome.i18n.getMessage("email")+"</a>";
+	informacionContacto.setAttribute( 'style', 'display : none; color : #FFF; ' );
+	informacionContacto.setAttribute( 'id', 'informacion_contacto' );
+	
+	configuracion.appendChild( imagenConfiguracion );
+	configuracion.appendChild( informacionContacto );
+	document.body.appendChild( configuracion );
+}
+
 function mostrarContacto (){
-	var informacion_contacto = document.getElementById("informacion_contacto");
-	if (informacion_contacto.style.display == "none"){
-		informacion_contacto.style.display = "";
+	var informacion_contacto = document.getElementById('informacion_contacto');
+	if ( informacion_contacto.style.display == 'none' ){
+		informacion_contacto.style.display = '';
 	} else {
-		informacion_contacto.style.display = "none";
+		informacion_contacto.style.display = 'none';
 	}	
 }
 function pedir (tipo){
@@ -780,13 +983,18 @@ function valida (opc){
 
 				break;
 			case 4 :
-				peticion_http.onreadystatechange = procesaRespuesta;
-				peticion_http.open("GET", location.protocol+"//"+location.host+"/Alumnos/Reinscripciones/Reporte_Horario.aspx", true);
-				peticion_http.send("");
+				crea_peticion_ver_pantalla_horario_pdf ( peticion_http );
 				break;
 		}
 	}
 }
+
+function crea_peticion_ver_pantalla_horario_pdf ( peticion_http ){
+	peticion_http.onreadystatechange = procesaRespuesta;
+	peticion_http.open( 'GET', location.protocol+'//'+location.host+'/Alumnos/Reinscripciones/Reporte_Horario.aspx', true );
+	peticion_http.send('');
+}
+
 function procesaRespuesta () {
 	if (peticion_http.readyState == READY_STATE_COMPLETE) {
 		if (peticion_http.status == 200) {
@@ -899,19 +1107,24 @@ function procesaRespuesta () {
 			}
 			// peticion_http = null;
 		} else {
-			if (peticion_http.status == 500) {
-				var respuesta = peticion_http.responseText;
-
-				var mensaje = document.createElement("div");
-				// mensaje.setAttribute("style","width:"+window.window.innerWidth+"px;height:"+window.innerHeight+"px;position:fixed;top:50px;left:50px; overflow-y:yes;");
-				mensaje.setAttribute("style","position : fixed; top : 50px; left : 50px; background-color : gray; opacity : 0.95;");	
-				mensaje.innerHTML = respuesta;
-
-				document.body.appendChild(mensaje);
-			}
+			// crea_seccion_flotante_respuesta_peticion( peticion_http );
 		}
 	}
 }
+
+function crea_seccion_flotante_respuesta_peticion ( peticion_http ){
+	if (peticion_http.status == 500) {
+		var respuesta = peticion_http.responseText;
+
+		var mensaje = document.createElement("div");
+		// mensaje.setAttribute("style","width:"+window.window.innerWidth+"px;height:"+window.innerHeight+"px;position:fixed;top:50px;left:50px; overflow-y:yes;");
+		mensaje.setAttribute("style","position : fixed; top : 50px; left : 50px; background-color : gray; opacity : 0.95;");	
+		mensaje.innerHTML = respuesta;
+
+		document.body.appendChild( mensaje );
+	}
+}
+
 function generaAdvertenciaActualizacion (){
 	var mensaje = document.createElement("div");
 	mensaje.setAttribute("style"," background-color : #800000; width :"+window.innerWidth+"px; height : 18px; position : fixed; top :"+(window.innerHeight-18)+"px; left : 0px;");
@@ -931,9 +1144,9 @@ var identificado = false;
 function creaFlujo (){
 	indiceTabulador = 1;
 	var enlace_logout = document.getElementById('ctl00_leftColumn_LoginStatusSession');
-	if (enlace_logout != null){
+	if ( enlace_logout != null ){
 		enlace_logout.tabIndex = indiceTabulador++;
-		identificado 	= true;
+		identificado = true;
 	} else {
 		//cuadro boleta
 		document.getElementById("ctl00_leftColumn_LoginUser_UserName").tabIndex = indiceTabulador++;
@@ -1323,148 +1536,335 @@ function informacionPlanes (){
 }
 function detectaPantalla (){
 	switch (location.pathname){
-		case "/alumnos/default.aspx":
-			var boleta = document.getElementById("ctl00_leftColumn_LoginNameSession")
-			document.cookie = "boleta="+boleta+";path=/";
+		case '/':
+		case '/default.aspx':
+		case '/Default.aspx':
+			pantalla_inicio();
 			break;
-		case "/Academica/Equivalencias.aspx":
-			document.querySelector("div#ctl00_mainCopy_UP").addEventListener("DOMSubtreeModified",ajustaEquivalencias,true);
+		case '/alumnos/default.aspx':
+			pantalla_alumnos_inicio();
 			break;
-		case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
-		case "/Alumnos/Evaluacion_Docente/Califica_Profe.aspx":
-			evaluacionProfesores();
-			chrome.extension.sendMessage( { command : "getEvaluacionProfesores"}, controlaEvaluacion);
+		case '/Academica/Equivalencias.aspx':
+			pantalla_equivalencias();
 			break;
-		// case "/Alumnos/Evaluacion_docente/califica_profe.aspx":
-		case "/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx":
-		case "/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx":
-			chrome.extension.sendMessage( { command : "getEvaluacionProfesores"}, evaluarProfesor);
+		case '/Alumnos/Evaluacion_docente/califica_profe.aspx':
+		case '/Alumnos/Evaluacion_Docente/Califica_Profe.aspx':
+			pantalla_califica_profesor();
 			break;
-		case "/Academica/mapa_curricular.aspx":
+		case '/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx':
+		case '/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx':
+			pantalla_evalua_profesor();
+			break;
+		case '/Academica/mapa_curricular.aspx':
 			// informacionPlanes();
 			break;
-		case "/Academica/Ocupabilidad_grupos.aspx":
-			var periodo = document.getElementsByName("ctl00$mainCopy$rblEsquema");
-			if (periodo[0].checked != true && periodo[1].checked != true){
-				document.getElementById("ctl00_mainCopy_Chkespecialidad").disabled 	= true;
-				document.getElementById("ctl00_mainCopy_ChkSemestre").disabled 		= true;
-				document.getElementById("ctl00_mainCopy_Chkgrupo").disabled 		= true;
-				document.getElementById("ctl00_mainCopy_Chkmateria").disabled 		= true;
-			}
-			if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad") != null){
-				if (document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies.length > 0 && document.getElementById("ctl00_mainCopy_GrvOcupabilidad").tBodies[0].rows.length > 1){
-					marcaOcupados();
-					agregaBuscador(1);
-				}
-			}
+		case '/Academica/Ocupabilidad_grupos.aspx':
+			pantalla_ocupabilidad();
 			break;
-		case "/Academica/horarios.aspx":
-			if (document.getElementById("ctl00_mainCopy_dbgHorarios") != null){
-				if (document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies.length > 0 && document.getElementById("ctl00_mainCopy_dbgHorarios").tBodies[0].rows.length > 0){
-					document.getElementById("ctl00_mainCopy_Panel1").setAttribute("style","");
-					agregaBuscador(2);
-					retiraSabados();
-					conexionDiccionario();
-					seleccionMaterias();
-					cargarMateriasHorario();
-					seleccionOptativas();
-					cargarOptativas();
-					inicializarOrdenamiento();
-					verComentarios();
-					cargarHorariosGenerados();
-					cargarTraslapes();
-					// informacionExtra();
-				}
-			}
+		case '/Academica/horarios.aspx':
+			pantalla_horarios();
 			break;
-		case "/Academica/Calendario.aspx":
-			var tipo = document.getElementsByName("ctl00$mainCopy$rdlconsulta");
-			if (tipo[0].checked != true && tipo[0].checked != true){
-				document.getElementsByName("ctl00$mainCopy$dpdnombrecaptura")[0].disabled = true;
-			}
+		case '/Academica/Calendario.aspx':
+			pantalla_calendario();
 			break;
-		case "/Alumnos/Reinscripciones/Comprobante_Horario.aspx":
+		case '/Alumnos/Reinscripciones/Comprobante_Horario.aspx':
 			horarioDirecto();
-		case "/Alumnos/Informacion_semestral/Horario_Alumno.aspx":
-			document.getElementById("wrapper").style.width 			= "1200px";
-			document.getElementById("contentwrapper").style.width 	= "900px";
-			document.getElementById("floatwrapper").style.width 	= "900px";
-			document.getElementById("centercolumn").style.width 	= "900px";
-			document.getElementById("ctl00_mainCopy_PnlDatos").removeAttribute("style");
-			document.getElementById("ctl00_mainCopy_PnlDatos").style = "width:820px;";
-			document.getElementById("ctl00_mainCopy_GV_Horario").setAttribute("id","regs");
-			retiraSabados();
-			conexionDiccionario();
-			comentarioRapido();
 			break;
-		case "/Alumnos/Reinscripciones/reinscribir.aspx":
-
-			document.getElementById("wrapper").style.width 			= "1300px";
-			document.getElementById("contentwrapper").style.width 	= "1000px";
-			document.getElementById("floatwrapper").style.width 	= "1000px";
-			document.getElementById("centercolumn").style.width 	= "1000px";
-			document.getElementById("ctl00_mainCopy_div").style.width  = "";
-			document.getElementById("ctl00_mainCopy_div").style.height = "";
-			
-			document.getElementById("ctl00_mainCopy_UpdatePanel2").addEventListener("DOMSubtreeModified",tiempoHorarios2,true);
-			document.getElementById("ctl00_mainCopy_UpdatePanel1").addEventListener("DOMSubtreeModified",tiempoHorarios1,true);
-			expandirHorarios2();
-			expandirHorarios1();
-			cuentaMateriasInscripcion();
-
+		case '/Alumnos/Informacion_semestral/Horario_Alumno.aspx':
+			pantalla_horario_alumno();
 			break;
-		case "/Alumnos/boleta/kardex.aspx":
-			document.getElementById("ctl00_mainCopy_Panel1").removeAttribute("style");
-
-			if (document.getElementById("contentwrapper").children.length < 3){
-				var parteIzquierda = document.getElementById("rightcolumn").cloneNode(true);
-				document.getElementById("rightcolumn").parentNode.removeChild(document.getElementById("rightcolumn"));
-				document.getElementById("contentwrapper").appendChild(parteIzquierda);
-				
-				var piePagina = document.getElementById("footer").cloneNode(true);
-				document.getElementById("footer").parentNode.removeChild(document.getElementById("footer"));
-				document.getElementById("contentwrapper").appendChild(piePagina);
-				
-				var parteDerecha = document.getElementById("leftcolumn").cloneNode(true);
-				document.getElementById("leftcolumn").parentNode.removeChild(document.getElementById("leftcolumn"));
-				document.getElementById("floatwrapper").appendChild(parteDerecha);
-				
-				ajustaPeriodos();
-			}
-			// informacionHistorico();
+		case '/Alumnos/Reinscripciones/reinscribir.aspx':
+			pantalla_reinscribir();
 			break;
-		case "/Alumnos/tutores/Evaluacion_Tutores.aspx":
-			var evaluacionTutores = document.getElementById("ctl00_mainCopy_Pnl_Evaluacion");
-			if (evaluacionTutores){
-				// log("-> evaluando");
-				document.getElementById("ctl00_mainCopy_Pnl_Cuestionario").setAttribute("style","");
-				// var formulario = document.forms[0];
-				// var scripts = formulario.getElementsByTagName("script");
-				// // while (scripts.length > 0 ){
-
-				// 	scripts[8].parentNode.removeChild(scripts[8]);
-				// 	// scripts[7].parentNode.removeChild(scripts[7]);
-				// 	// scripts[6].parentNode.removeChild(scripts[6]);
-				// 	// scripts[5].parentNode.removeChild(scripts[5]);
-				// 	// scripts[4].parentNode.removeChild(scripts[4]);
-				// 	// scripts[2].parentNode.removeChild(scripts[2]);
-				// 	// scripts[3].parentNode.removeChild(scripts[3]);
-				// 	// scripts[0].parentNode.removeChild(scripts[0]);
-				// // }
-				// // var scripts = formulario.getElementsByTagName("script");
-				// // for (var i = 0; i < scripts.length; i++){
-				// // 	log(scripts[8]);
-				// // }
-				
-
-				// var nuevoFormulario = formulario.cloneNode(true);
-				// // nuevoFormulario.setAttribute("onsubmit","alert('Fu'); return false;");
-				// document.getElementsByTagName("body")[0].replaceChild(nuevoFormulario,formulario);
-				// setTimeout("calificaTutor()",1500);
-			}
+		case '/Alumnos/boleta/kardex.aspx':
+			pantalla_kardex();
+			break;
+		case '/Alumnos/tutores/Evaluacion_Tutores.aspx':
+			pantalla_evaluacion_tutores();
+			break;
+		case '/Alumnos/Reinscripciones/fichas_reinscripcion.aspx':
+			pantalla_ficha_reinscripcion();
+			break;
+		case '/Alumnos/info_alumnos/DatosAlumnosMedicos.aspx':
+			pantalla_datos_medicos();
+			break;
+		case '/Alumnos/info_alumnos/DatosAlumnosDeportivos.aspx':
+			pantalla_datos_deportivos();
+			break;
+		case '/Alumnos/Informacion_semestral/calificaciones_sem.aspx':
+			pantalla_calificaciones();
+			break;
+		case '/Alumnos/Reinscripciones/Reporte_Horario.aspx':
+			pantalla_reporte_horario();
+			break;
+		case '/Alumnos/Saberes/Inscripcion_Saberes.aspx':
+			pantalla_incripcion_spa();
+			break;
+		case '/Alumnos/Saberes/calificaciones_saberes.aspx':
+			pantalla_calificaciones_spa();
+			break;
+		case '/Alumnos/tutores/comentarios.aspx':
+			pantalla_tutores_comentarios();
 			break;
 	}
 }
+
+function pantalla_inicio (){
+	get_b64_capcha();
+	agrega_tamanio_minimo_contenido();
+}
+
+function get_b64_capcha (){
+	var capcha = getElementos( '#c_default_ctl00_leftcolumn_loginuser_logincaptcha_CaptchaImage' );
+	if ( capcha.length > 0 ){
+		var nueva_imagen = new Image();
+		nueva_imagen.onload = function(){
+			var objeto_canvas = document.createElement('canvas');
+			var ctx = objeto_canvas.getContext('2d');
+			objeto_canvas.height = this.height;
+			objeto_canvas.width = this.width;
+			ctx.drawImage(this, 0, 0);
+			var canvas_url = objeto_canvas.toDataURL();
+			console.log( '--- imagen_capcha b64 : ', canvas_url );
+			window.b64imagen = canvas_url;
+		};
+		nueva_imagen.src = capcha[0].src;
+	}
+}
+
+function pantalla_alumnos_inicio (){
+	var boleta = document.getElementById('ctl00_leftColumn_LoginNameSession');
+	document.cookie = 'boleta='+boleta.innerText+';path=/';
+}
+
+function pantalla_equivalencias (){
+	document.querySelector('div#ctl00_mainCopy_UP').addEventListener( 'DOMSubtreeModified', ajustaEquivalencias, true );
+
+	var contenedor_equivalencias = getElementos( '#ctl00_mainCopy_PnlDatos' );
+	if ( contenedor_equivalencias.length > 0 ){
+		contenedor_equivalencias[0].removeAttribute( 'style' );
+	}
+}
+
+function pantalla_califica_profesor (){
+	evaluacionProfesores();
+	chrome.extension.sendMessage( { command : 'getEvaluacionProfesores' }, controlaEvaluacion );
+	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_evalua_profesor (){
+	chrome.extension.sendMessage( { command : 'getEvaluacionProfesores' }, evaluarProfesor);
+}
+
+function pantalla_ocupabilidad (){
+	var periodo = document.getElementsByName('ctl00$mainCopy$rblEsquema');
+	if ( periodo[0].checked != true && periodo[1].checked != true ){
+		document.getElementById('ctl00_mainCopy_Chkespecialidad').disabled 	= true;
+		document.getElementById('ctl00_mainCopy_ChkSemestre').disabled 		= true;
+		document.getElementById('ctl00_mainCopy_Chkgrupo').disabled 		= true;
+		document.getElementById('ctl00_mainCopy_Chkmateria').disabled 		= true;
+	}
+	if ( document.getElementById('ctl00_mainCopy_GrvOcupabilidad') != null ){
+		if ( document.getElementById('ctl00_mainCopy_GrvOcupabilidad').tBodies.length > 0 
+				&& document.getElementById('ctl00_mainCopy_GrvOcupabilidad').tBodies[0].rows.length > 1 ){
+			marcaOcupados();
+			agregaBuscador(1);
+		}
+	}
+}
+
+function pantalla_horarios (){
+	if ( document.getElementById('ctl00_mainCopy_dbgHorarios') != null ){
+		if ( document.getElementById('ctl00_mainCopy_dbgHorarios').tBodies.length > 0 
+				&& document.getElementById('ctl00_mainCopy_dbgHorarios').tBodies[0].rows.length > 0 ){
+			document.getElementById('ctl00_mainCopy_Panel1').setAttribute( 'style', '');
+			agregaBuscador(2);
+			retiraSabados();
+			conexionDiccionario();
+			seleccionMaterias();
+			cargarMateriasHorario();
+			seleccionOptativas();
+			cargarOptativas();
+			inicializarOrdenamiento();
+			verComentarios();
+			cargarHorariosGenerados();
+			cargarTraslapes();
+			// informacionExtra();
+		}
+	}
+}
+
+function pantalla_calendario (){
+	var tipo = document.getElementsByName('ctl00$mainCopy$rdlconsulta');
+	if ( tipo[0].checked != true && tipo[0].checked != true ){
+		document.getElementsByName('ctl00$mainCopy$dpdnombrecaptura')[0].disabled = true;
+	}
+}
+
+function pantalla_horario_alumno (){
+	document.getElementById('wrapper').style.width        = '1200px';
+	document.getElementById('contentwrapper').style.width = '900px';
+	document.getElementById('floatwrapper').style.width   = '900px';
+	document.getElementById('centercolumn').style.width   = '900px';
+	document.getElementById('ctl00_mainCopy_PnlDatos').removeAttribute('style');
+	document.getElementById('ctl00_mainCopy_PnlDatos').style = 'width:820px;';
+	document.getElementById('ctl00_mainCopy_GV_Horario').setAttribute('id','regs');
+	retiraSabados();
+	conexionDiccionario();
+	comentarioRapido();
+}
+
+function pantalla_reinscribir (){
+	var horarios2 = getElementos( '#ctl00_mainCopy_UpdatePanel2' );
+	if ( horarios2.length > 0 ){
+		horarios2[0].addEventListener( 'DOMSubtreeModified', tiempoHorarios2, true );
+	}
+
+	var horarios1 = getElementos( '#ctl00_mainCopy_UpdatePanel1' );
+	if ( horarios1.length > 0 ){
+		horarios1[0].addEventListener( 'DOMSubtreeModified', tiempoHorarios1, true );
+	}
+
+	if ( horarios2.length > 0 && horarios1.length > 0 ){
+		expandirHorarios2();
+		expandirHorarios1();
+		cuentaMateriasInscripcion();
+		
+		document.getElementById('wrapper').style.width        = '1300px';
+		document.getElementById('contentwrapper').style.width = '1000px';
+		document.getElementById('floatwrapper').style.width   = '1000px';
+		document.getElementById('centercolumn').style.width   = '1000px';
+		document.getElementById('ctl00_mainCopy_div').style.width  = '';
+		document.getElementById('ctl00_mainCopy_div').style.height = '';
+	} else {
+		agrega_tamanio_minimo_contenido();
+	}
+}
+
+function pantalla_kardex (){
+	document.getElementById('ctl00_mainCopy_Panel1').removeAttribute('style');
+
+	if ( document.getElementById('contentwrapper').children.length < 3 ){
+		var parteIzquierda = document.getElementById('rightcolumn').cloneNode(true);
+		document.getElementById('rightcolumn').parentNode.removeChild( document.getElementById('rightcolumn') );
+		document.getElementById('contentwrapper').appendChild( parteIzquierda );
+		
+		var piePagina = document.getElementById('footer').cloneNode(true);
+		document.getElementById('footer').parentNode.removeChild(document.getElementById('footer'));
+		document.getElementById('contentwrapper').appendChild( piePagina );
+		
+		var parteDerecha = document.getElementById('leftcolumn').cloneNode(true);
+		document.getElementById('leftcolumn').parentNode.removeChild( document.getElementById('leftcolumn') );
+		document.getElementById('floatwrapper').appendChild( parteDerecha );
+		
+		ajustaPeriodos();
+	}
+
+	agrega_tamanio_minimo_contenido();
+
+	var tablas_niveles = getElementos( '#ctl00_mainCopy_Lbl_Kardex table' );
+	var numero_elementos = tablas_niveles.length;
+	if ( numero_elementos > 0 ){
+		for ( var contador = 0; contador < numero_elementos; contador++ ){
+			tablas_niveles[ contador ].setAttribute( 'style', 'border-collapse : collapse;' );
+		}
+	}
+
+	// informacionHistorico();
+}
+
+function agrega_tamanio_minimo_contenido (){
+	var contenedor_principal = getElementos( '.container' );
+	if ( contenedor_principal.length > 0 ){
+		contenedor_principal[0].setAttribute( 'style', 'min-width: 680px;' );
+	}
+}
+
+function pantalla_evaluacion_tutores (){
+	var evaluacionTutores = document.getElementById('ctl00_mainCopy_Pnl_Evaluacion');
+	if ( evaluacionTutores ){
+		// log('-> evaluando');
+		document.getElementById('ctl00_mainCopy_Pnl_Cuestionario').setAttribute( 'style', '' );
+		// var formulario = document.forms[0];
+		// var scripts = formulario.getElementsByTagName('script');
+		// // while (scripts.length > 0 ){
+
+		// 	scripts[8].parentNode.removeChild(scripts[8]);
+		// 	// scripts[7].parentNode.removeChild(scripts[7]);
+		// 	// scripts[6].parentNode.removeChild(scripts[6]);
+		// 	// scripts[5].parentNode.removeChild(scripts[5]);
+		// 	// scripts[4].parentNode.removeChild(scripts[4]);
+		// 	// scripts[2].parentNode.removeChild(scripts[2]);
+		// 	// scripts[3].parentNode.removeChild(scripts[3]);
+		// 	// scripts[0].parentNode.removeChild(scripts[0]);
+		// // }
+		// // var scripts = formulario.getElementsByTagName('script');
+		// // for (var i = 0; i < scripts.length; i++){
+		// // 	log(scripts[8]);
+		// // }
+		
+
+		// var nuevoFormulario = formulario.cloneNode(true);
+		// // nuevoFormulario.setAttribute('onsubmit',"alert('Fu'); return false;");
+		// document.getElementsByTagName('body')[0].replaceChild(nuevoFormulario,formulario);
+		// setTimeout( calificaTutor, 1500 );
+	}
+	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_ficha_reinscripcion (){
+	document.querySelector('#copy .container').removeAttribute('style');
+	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_datos_medicos (){
+	document.querySelector('#ctl00_mainCopy_PnlDatos').removeAttribute('style');
+}
+
+function pantalla_datos_deportivos (){
+	var boton_agregar_deporte = getElementos('#ctl00_mainCopy_BtnAgregarDep');
+	if ( boton_agregar_deporte.length > 0 ){
+		boton_agregar_deporte[0].style.width = '';
+	}
+
+	var boton_agregar_competencias = getElementos('#ctl00_mainCopy_BtnAgregarComp');
+	if ( boton_agregar_competencias.length > 0 ){
+		boton_agregar_competencias[0].style.width = '';
+	}
+
+	var contenedor_datos_deportivos = getElementos('#ctl00_mainCopy_PnlDatos');
+	if ( contenedor_datos_deportivos.length > 0 ){
+		contenedor_datos_deportivos[0].removeAttribute( 'style' );
+	}
+}
+
+function pantalla_calificaciones (){
+	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_reporte_horario (){
+	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_incripcion_spa (){
+	agrega_tamanio_minimo_contenido2();
+}
+
+function agrega_tamanio_minimo_contenido2 (){
+	var contenedor_principal = getElementos( '#centercolumn' );
+	if ( contenedor_principal.length > 0 ){
+		contenedor_principal[0].setAttribute( 'style', 'width: 680px;' );
+	}
+}
+
+function pantalla_calificaciones_spa (){
+	agrega_tamanio_minimo_contenido2();
+}
+
+function pantalla_tutores_comentarios (){
+	agrega_tamanio_minimo_contenido();
+}
+
 function controlaEvaluacion (respuesta){
 	if (respuesta.profesores.length > 0){
 		var califica = false;
@@ -1786,8 +2186,8 @@ function seleccionMaterias (){
 	for (var i = 1; i < tabla.rows.length; i++){
 		tabla.rows[i].insertCell(posicion);
 
-		var cuadro 		= cuadros.cloneNode(true);
-		cuadro.numero 	= i;
+		var cuadro    = cuadros.cloneNode(true);
+		cuadro.numero = i;
 		cuadro.addEventListener("click",agregarMateria,true);
 
 		tabla.rows[i].cells[posicion].appendChild(cuadro);
@@ -3384,16 +3784,29 @@ function retiraSabados (){
 }
 function horarioDirecto (){
 	valida(4);
-	var comprobante = document.getElementById("ctl00_mainCopy_BtnComprobante");
-	var boton = comprobante.cloneNode(true);
-	boton.setAttribute("type","button");
-	var enlace = document.createElement("a");
-	var boleta = document.getElementById("ctl00_leftColumn_LoginNameSession").innerHTML;
-	enlace.setAttribute("href", location.protocol+"//"+location.host+"/PDF/Alumnos/Reinscripciones/"+boleta+"-ComprobanteHorario.pdf");
-	enlace.setAttribute("target","_blank");
-	enlace.appendChild(boton);
-	comprobante.parentNode.replaceChild(enlace, comprobante);
+	agrega_tamanio_minimo_contenido();
+	agrega_enlace_horario_directo();
 }
+
+function agrega_enlace_horario_directo (){
+	var boton_comprobante = getElementos('#ctl00_mainCopy_BtnComprobante');
+	if ( boton_comprobante.length > 0 ){
+		var boton = boton_comprobante[0].cloneNode(true);
+		boton.setAttribute('type','button');
+		var enlace = document.createElement('a');
+		var boleta = document.getElementById('ctl00_leftColumn_LoginNameSession').innerHTML;
+		enlace.setAttribute('href', location.protocol+'//'+location.host+'/PDF/Alumnos/Reinscripciones/'+boleta+'-ComprobanteHorario.pdf');
+		enlace.setAttribute('target','_blank');
+		enlace.appendChild( boton );
+		boton_comprobante[0].parentNode.replaceChild( enlace, boton_comprobante[0] );
+	}
+
+	var contenedor_comprobante_horario = getElementos('#ctl00_mainCopy_PnlDatos');
+	if ( contenedor_comprobante_horario.length > 0 ){
+		contenedor_comprobante_horario[0].removeAttribute('style');
+	}
+}
+
 var accesosAtajos = new Array();
 var ultimoAtajo;
 function tablaAtajos (){

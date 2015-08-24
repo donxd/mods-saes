@@ -8,6 +8,9 @@ pendientes
 	<-Corregir definitivamente el diseño
 	<-Identificar cuando tienes algo para reinscribirte
 
+Versión 0.66
+<-Correciones de diseño e identificación de elementos
+
 Versión 0.65
 <-Correciones de detección del diseño y eliminación del autologin
 
