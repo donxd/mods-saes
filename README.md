@@ -9,6 +9,9 @@ pendientes
 	<-Identificar cuando tienes algo para reinscribirte
 
 Versión 0.66
+<-Correción al atajo de identificación
+
+Versión 0.66
 <-Correciones de diseño e identificación de elementos
 
 Versión 0.65

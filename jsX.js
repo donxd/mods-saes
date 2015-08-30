@@ -1185,32 +1185,51 @@ function atajosEjecucion (lanzador){
 		// 	break;
 	}
 }
-function teclasAtajos(codigoTecla){
-	if (atajos){
-		var posicion;
-		if (codigoTecla > 64){
-			posicion = codigoTecla-55;
-		} else {
-			posicion = parseInt(String.fromCharCode(codigoTecla));
-		}
-		if (posicion < ultimoAtajo){
-			switch (accesosAtajos[posicion]){
-				case "login":
-					if (document.getElementById("ctl00_leftColumn_LoginUser_UserName") != null){
-						document.getElementById("ctl00_leftColumn_LoginUser_UserName").focus();
-					} else {
-						document.getElementById("__EVENTTARGET").value = "ctl00$leftColumn$LoginViewSession$LoginStatusSession$ctl00";
-						document.forms[0].submit();
-					}
-					break;
-				default:
-					location.assign(location.protocol+"//"+location.host+accesosAtajos[posicion]);
-					break;
-			}
-		}
-		desActivaAtajos();
+function teclasAtajos ( codigoTecla ){
+	if ( ajatosHabilitados() ){
+		ejecutaAtajo( codigoTecla );
 	}
 }
+
+function ajatosHabilitados (){
+	return atajos;
+}
+
+function ejecutaAtajo ( codigoTecla ){
+	var posicion = posicionAtajo( codigoTecla );	
+	if ( posicion < ultimoAtajo ){
+		identificaAtajo( posicion );
+	}
+	desActivaAtajos();
+}
+
+function identificaAtajo ( posicion ){
+	switch ( accesosAtajos[ posicion ] ){
+		case 'login':
+			atajoIdentificacion();
+			break;
+		default:
+			location.assign(location.protocol+"//"+location.host+accesosAtajos[posicion]);
+			break;
+	}
+}
+
+function atajoIdentificacion (){
+	var enlace_salir = getElementos( '#ctl00_leftColumn_LoginStatusSession' );
+	if ( enlace_salir.length > 0 ){
+		enlace_salir[0].click();
+	} else {
+		document.getElementById('ctl00_leftColumn_LoginUser_UserName').focus();
+	}
+}
+
+function posicionAtajo ( codigoTecla ){
+	if ( codigoTecla > 64 ){
+		return ( codigoTecla - 55 );
+	}
+	return parseInt( String.fromCharCode( codigoTecla ) );
+}
+
 function desActivaAtajos (){
 	if (atajos){
 		atajos = false;
