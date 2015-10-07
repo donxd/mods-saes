@@ -291,20 +291,20 @@ function ajusta_elementos (){
 function agrega_elementos_extension (){
 	var configuracion = document.createElement('div');
 	configuracion.setAttribute( 'style', 'position : fixed; top : 2px; left :'+(window.innerWidth-123)+'px; text-align : right; width : 120px; background-color : rgba(132, 132, 132, 0.9);' );
-	
-	var imagenConfiguracion = document.createElement('img');
-	imagenConfiguracion.src = chrome.extension.getURL('/css/conf.png');
-	imagenConfiguracion.style.cursor = 'pointer';
-	imagenConfiguracion.addEventListener('click',mostrarContacto,true);
-	
-	var informacionContacto = document.createElement('div');
-	informacionContacto.innerHTML = chrome.i18n.getMessage('contact')+" : <br/><a target='_blank' style='color : #AEE8F3; ' href='"+chrome.i18n.getMessage("url_facebook")+"'>Complemento SAES</a><br/><a href='#' style='color : #AEE8F3;'>"+chrome.i18n.getMessage("email")+"</a>";
-	informacionContacto.setAttribute( 'style', 'display : none; color : #FFF; ' );
-	informacionContacto.setAttribute( 'id', 'informacion_contacto' );
-	
-	configuracion.appendChild( imagenConfiguracion );
-	configuracion.appendChild( informacionContacto );
+
+	configuracion.innerHTML = 
+		'<div class="contenedor_informacion_contacto"> \
+			<iframe src="https://www.facebook.com/plugins/like.php?app_id=970551892994864&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:450px; height:35px;" allowTransparency="true"></iframe> \
+			<img src="'+ chrome.extension.getURL('/css/conf.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
+			<div style="color: #FFF; display:none;" id="informacion_contacto"> \
+				'+ chrome.i18n.getMessage('contact') +'<br/> \
+				<a target="_blank" style="color : #AEE8F3; " href="'+ chrome.i18n.getMessage("url_facebook") +'">Complemento SAES</a><br/> \
+				<a href="#" style="color : #AEE8F3;">'+ chrome.i18n.getMessage("email") +'</a> \
+			</div> \
+		</div>';
+
 	document.body.appendChild( configuracion );
+	document.querySelector('.icono_configuracion').addEventListener( 'click', mostrarContacto, true );
 }
 
 function mostrarContacto (){
