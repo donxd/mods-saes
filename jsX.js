@@ -95,7 +95,7 @@ function agrega_estilos_secciones (){
 
 	var contenido_principal = getElementos( '#floatwrapper' );
 	if ( contenido_principal.length > 0 ){
-		contenido_principal[0].setAttribute( 'style', ' display : table-cell; float : none; border-left: 1px solid #FFF; border-right: 1px solid #FFF; ')
+		contenido_principal[0].setAttribute( 'style', ' display : table-cell; float : none; border-left: 1px solid #FFF; border-right: 1px solid #FFF; min-width: 648px;')
 	}
 
 	var contenedor_contenido_principal = getElementos( '#contentwrapper' );
@@ -144,11 +144,13 @@ function agrega_estilos_secciones (){
 		for ( var contador = 0; contador < numero_elementos; contador++ ){
 			opciones_secciones[ contador ].style.width = '100%';
 		}	
-	}	
+	}
 
-	var contenedor_central = getElementos( '#breadcrumbs' );
-	if ( contenedor_central.length > 0 ){
-		contenedor_central[0].setAttribute( 'style', ' position : initial; top : initial; left : initial; font-size : 0.9em; padding : 10px 20px;' );
+	var contenedor_descentralizado = getElementos( '#copy' );
+	if ( contenedor_descentralizado.length > 0 ){
+		if ( contenedor_descentralizado[ 0 ].children[ 0 ].nodeName == 'TABLE' ){
+			contenedor_descentralizado[ 0 ].children[ 0 ].setAttribute( 'style', 'background-color: #FFF; width: 100%;' );
+		}
 	}
 
 	setTimeout( ajusta_espacio_navegacion, 500 );
@@ -290,7 +292,7 @@ function ajusta_elementos (){
 
 function agrega_elementos_extension (){
 	var configuracion = document.createElement('div');
-	configuracion.setAttribute( 'style', 'position : fixed; top : 2px; left :'+(window.innerWidth-123)+'px; text-align : right; width : 120px; background-color : rgba(132, 132, 132, 0.9);' );
+	configuracion.setAttribute( 'style', 'position : fixed; top : 2px; left :'+(window.innerWidth-123)+'px; text-align : right; width : 120px; background-color : rgba(0,0,0,0);' );
 
 	configuracion.innerHTML = 
 		'<div class="contenedor_informacion_contacto"> \
@@ -638,16 +640,8 @@ function agregaBuscador (opc){
 	switch (opc){
 		case 1: //ocupabilidad
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
-			var boton = document.createElement("input");
-			boton.setAttribute("type","button");
-			// boton.setAttribute("value","Recargar");
-			// boton.setAttribute("id","boton_recargar");
-			// boton.addEventListener("click",actualizaOcupabilidad,true);
-
-			boton.setAttribute("value",chrome.i18n.getMessage("selection_filter"));
-			boton.setAttribute("id","boton_recargar");
-			boton.addEventListener("click",filtraSeleccion,true);
-			controlesBuscador.appendChild(boton);
+			insertar_boton_filtrar_seleccion( controlesBuscador );
+			insertar_boton_actualizar_ocupabilidad( controlesBuscador );
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
@@ -677,6 +671,28 @@ function agregaBuscador (opc){
 	document.getElementById(tipo).setAttribute("id","regs");
 	inicializar();
 }
+
+function insertar_boton_filtrar_seleccion ( controlesBuscador ){
+	var boton = document.createElement("input");
+	boton.setAttribute("type","button");
+	boton.setAttribute("value",chrome.i18n.getMessage("selection_filter"));
+	boton.addEventListener("click",filtraSeleccion,true);
+	controlesBuscador.appendChild(boton);
+}
+
+function insertar_boton_actualizar_ocupabilidad ( controlesBuscador ){
+	var boton = document.createElement("input");
+	boton.setAttribute("type","button");
+	boton.setAttribute("value",chrome.i18n.getMessage("reload"));
+	boton.setAttribute("id","boton_recargar");
+	boton.addEventListener("click",actualizaOcupabilidad2,true);
+	controlesBuscador.appendChild(boton);
+}
+
+function actualizaOcupabilidad2 (){
+	location.reload();
+}
+
 function filtraSeleccion (){
 	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != ""){
 		var listaMaterias = JSON.parse(localStorage.horarioMaterias);
@@ -1553,6 +1569,7 @@ function informacionPlanes (){
 	}
 	log("informacionPlanes******\n"+JSON.stringify(informacion));
 }
+
 function detectaPantalla (){
 	switch (location.pathname){
 		case '/':
@@ -1625,12 +1642,44 @@ function detectaPantalla (){
 		case '/Alumnos/tutores/comentarios.aspx':
 			pantalla_tutores_comentarios();
 			break;
+		case '/Academica/agenda_escolar.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Academica/Calendario_ets.aspx':
+			pantalla_calendario_ets();
+			break;
 	}
 }
 
 function pantalla_inicio (){
-	get_b64_capcha();
+	// get_b64_capcha();
 	agrega_tamanio_minimo_contenido();
+}
+
+function pantalla_calendario_ets (){
+	ajusta_controles_calendario_ets();
+}
+
+function ajusta_controles_calendario_ets (){
+	var contenedor_controles = getElementos( "div#copy table table" );
+	if ( contenedor_controles.length > 0 ){
+		contenedor_controles[ 0 ].setAttribute( 'style', 'text-align: left;' );
+	}
+
+	var contenedor_controles_individuales = getElementos( "div#copy table table tr td:first-child" );
+	var elemento_control;
+	if ( contenedor_controles_individuales.length > 0 ){
+
+		for ( var i = 0; i < contenedor_controles_individuales.length; i++ ){
+
+			elemento_control = contenedor_controles_individuales[ i ].querySelectorAll( 'input' );
+			if ( elemento_control.length > 0 && elemento_control[ 0 ] != null && elemento_control[ 0 ] != undefined ){
+				elemento_control[0].readOnly = true;
+				elemento_control[0].setAttribute( 'style', 'background-color: rgba(0,0,0,0); border: none; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; ' );
+			}
+
+		}
+	}
 }
 
 function get_b64_capcha (){
@@ -1644,7 +1693,7 @@ function get_b64_capcha (){
 			objeto_canvas.width = this.width;
 			ctx.drawImage(this, 0, 0);
 			var canvas_url = objeto_canvas.toDataURL();
-			console.log( '--- imagen_capcha b64 : ', canvas_url );
+			// console.log( '--- imagen_capcha b64 : ', canvas_url );
 			window.b64imagen = canvas_url;
 		};
 		nueva_imagen.src = capcha[0].src;
@@ -1678,10 +1727,17 @@ function pantalla_evalua_profesor (){
 function pantalla_ocupabilidad (){
 	var periodo = document.getElementsByName('ctl00$mainCopy$rblEsquema');
 	if ( periodo[0].checked != true && periodo[1].checked != true ){
-		document.getElementById('ctl00_mainCopy_Chkespecialidad').disabled 	= true;
-		document.getElementById('ctl00_mainCopy_ChkSemestre').disabled 		= true;
-		document.getElementById('ctl00_mainCopy_Chkgrupo').disabled 		= true;
-		document.getElementById('ctl00_mainCopy_Chkmateria').disabled 		= true;
+		
+		var elementos = document.querySelectorAll(
+			' #ctl00_mainCopy_Chkespecialidad \
+			, #ctl00_mainCopy_ChkSemestre \
+			, #ctl00_mainCopy_Chkgrupo \
+			, #ctl00_mainCopy_Chkmateria '
+		);
+		for ( var i in elementos ){
+			elementos[ i ].disabled = true;
+		}
+
 	}
 	if ( document.getElementById('ctl00_mainCopy_GrvOcupabilidad') != null ){
 		if ( document.getElementById('ctl00_mainCopy_GrvOcupabilidad').tBodies.length > 0 
@@ -1884,6 +1940,23 @@ function pantalla_tutores_comentarios (){
 	agrega_tamanio_minimo_contenido();
 }
 
+function pantalla_agenda_escolar (){
+	ajusta_tamanio_agenda();
+}
+
+function ajusta_tamanio_agenda (){
+	var contenedor_agenda = getElementos( '#ctl00_mainCopy_Panel' );
+	if ( contenedor_agenda.length > 0 ){
+		contenedor_agenda[ 0 ].setAttribute( 'style', 'height:350px; overflow:auto; ' );
+	}
+
+	var agenda_tabla = getElementos( '#ctl00_mainCopy_Panel table' );
+	if ( agenda_tabla.length > 0 ){
+		agenda_tabla[ 0 ].setAttribute( 'style', 'color : #000; background-color : #FFF; border-color : #DEDFDE; border-width : 1px; border-style : solid; border-collapse : collapse; ' );
+	}
+
+}
+
 function controlaEvaluacion (respuesta){
 	if (respuesta.profesores.length > 0){
 		var califica = false;
@@ -2013,11 +2086,17 @@ function autoEvaluacionGuardada (){
 	log("Evaluación - Guardada");
 }
 function ajustaEquivalencias (){
-	var equivalencias = document.querySelector("table#ctl00_mainCopy_GV_EquivalenciasA");
-	equivalencias.style.width = "auto";
-	var contenedor = document.querySelector("div#ctl00_mainCopy_PnlDatos");
-	contenedor.removeAttribute("style");
-	contenedor.parentNode.removeAttribute("style");
+	try {
+		var equivalencias = document.querySelector("table#ctl00_mainCopy_GV_EquivalenciasA");
+		equivalencias.style.width = "auto";
+	} catch ( error ){
+	}
+	try {
+		var contenedor = document.querySelector("div#ctl00_mainCopy_PnlDatos");
+		contenedor.removeAttribute("style");
+		contenedor.parentNode.removeAttribute("style");
+	} catch ( error ){
+	}
 }
 function informacionHistorico (){
 	var historial = document.getElementById("ctl00_mainCopy_Lbl_Kardex").getElementsByTagName("table");
@@ -2170,7 +2249,7 @@ function seleccionMaterias (){
 	// estilosSeleccionMaterias.innerHTML += "table.traslapes tr:not(.titulos) td { border : 1px solid #FFF } ";
 	estilosSeleccionMaterias.innerHTML += "table[name='traslapes'] td, div#informacionOptativas td { border : 1px solid #FFF; } table[name='traslapes'], table#tablaOptativas { border-collapse : collapse; } ";
 	estilosSeleccionMaterias.innerHTML += ".ocultar { display : none; } ";
-	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; padding-top : 3px; } ";
+	estilosSeleccionMaterias.innerHTML += "span#totalSeleccion { float:right; padding-right : 30px; /*padding-top : 3px;*/ } ";
 	// estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas table td { border: 1px solid #AAA; } ";
 	estilosSeleccionMaterias.innerHTML += "table#tablaAsignaturas td, th { padding : 0px 0px } ";
 	estilosSeleccionMaterias.innerHTML += "div[name='contenedorRegistro'] { cursor : pointer; } div[name='contenedorRegistro'] > table { width : 100% } ";
@@ -2345,7 +2424,7 @@ function mostrarOptativas (){
 }
 function agregarOptativa (materia){
 	var encontrado = false;
-	var listaOptativas = JSON.parse(localStorage.optativas);
+	var listaOptativas = getAlmacenamientoOptativas();
 	for (var i = 0; i < listaOptativas.length; i++){
 		if (materia == listaOptativas[i].materia) {
 			encontrado = true;
@@ -2358,6 +2437,15 @@ function agregarOptativa (materia){
 		insertarOptativas( [ { materia : materia } ]);
 	}
 }
+
+function getAlmacenamientoOptativas (){
+	if ( localStorage.optativas == null || localStorage.optativas == '' ){
+		localStorage.optativas = "[]";
+	}
+
+	return JSON.parse( localStorage.optativas );
+}
+
 function insertarOptativas (materias){
 	var tablaOptativas = document.getElementById("tablaOptativas");
 	var posicionFila = tablaOptativas.rows.length;
@@ -3473,7 +3561,7 @@ function agregarMateria (){
 			materiaH.cells[2].innerHTML = asignaturaH.profe;
 		}
 
-		for (j = 0; j < numeroDias; j++) materiaH.cells[3+j].innerHTML = dias[j];
+		for ( var j = 0; j < numeroDias; j++ ) materiaH.cells[3+j].innerHTML = dias[j];
 
 		materiaH.cells[cantidadCeldas-3].setAttribute("name","sabado");
 		
@@ -3542,6 +3630,7 @@ function borrarMateriasHorario (){
 	localStorage.traslapes         = "";
 	localStorage.materiasTraslapes = "";
 	localStorage.optativas         = "";
+	removerMateriasListaOptativas();
 	mostrarSeleccionMaterias();
 	document.getElementById("exportarSeleccion").value       = "";
 	document.getElementById("resultadoHorarios").innerHTML   = "";
@@ -3550,6 +3639,17 @@ function borrarMateriasHorario (){
 	// document.getElementById("exportar").style.display        = "none";
 	document.getElementById("exportar").classList.add("oculto");
 }
+
+function removerMateriasListaOptativas (){
+	var tablaOptativas = document.getElementById('tablaOptativas');
+	var numeroFilas = tablaOptativas.rows.length-1;
+
+	while ( numeroFilas > 0 ){
+		tablaOptativas.deleteRow( numeroFilas-- );
+	}
+
+}
+
 function ordenar(datos){
 	var limite = datos.length, k = parseInt(limite/2), i, j, temp;
 	while (k > 0){

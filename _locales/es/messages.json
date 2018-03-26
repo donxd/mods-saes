@@ -187,6 +187,10 @@
 		"description" : "Recargar la página",
 		"message" : "Se va a recargar la página."
 	},
+	"reload" : {
+		"description" : "Recargar",
+		"message" : "Recargar"
+	},
 	"no_results" : {
 		"description" : "Sin resultados de horarios ",
 		"message" : "No hay resultados"
