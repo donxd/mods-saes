@@ -3,11 +3,17 @@ function log (mensaje){
 }
 var indiceTabulador;
 function ajustarDisenio (){
-	ajusta_estructura_pagina();
-	ajusta_menu();
-	ajusta_enlaces();
-	ajusta_elementos();
+	if (!sinIdentificacion()){
+		ajusta_estructura_pagina();
+		ajusta_menu();
+		ajusta_enlaces();
+		ajusta_elementos();
+	}
 	agrega_elementos_extension();
+}
+
+function sinIdentificacion () {
+	return document.getElementById('ctl00_leftColumn_LoginUser_UserName');
 }
 
 function ajusta_estructura_pagina (){
@@ -292,17 +298,17 @@ function ajusta_elementos (){
 
 function agrega_elementos_extension (){
 	var configuracion = document.createElement('div');
-	configuracion.setAttribute( 'style', 'position : fixed; top : 2px; left :'+(window.innerWidth-123)+'px; text-align : right; width : 120px; background-color : rgba(0,0,0,0);' );
+	configuracion.setAttribute( 'style', 'position : fixed; top : 20px; right :10px; text-align : right; width : 120px; z-index: 9999; background-color : rgba(0,0,0,0);' );
 
 	configuracion.innerHTML = 
 		'<div class="contenedor_informacion_contacto"> \
-			<iframe src="https://www.facebook.com/plugins/like.php?app_id=970551892994864&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:450px; height:35px;" allowTransparency="true"></iframe> \
 			<img src="'+ chrome.extension.getURL('/css/conf.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
 			<div style="color: #FFF; display:none;" id="informacion_contacto"> \
 				'+ chrome.i18n.getMessage('contact') +'<br/> \
 				<a target="_blank" style="color : #AEE8F3; " href="'+ chrome.i18n.getMessage("url_facebook") +'">Complemento SAES</a><br/> \
 				<a href="#" style="color : #AEE8F3;">'+ chrome.i18n.getMessage("email") +'</a> \
 			</div> \
+			<iframe src="https://www.facebook.com/plugins/like.php?app_id=970551892994864&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:450px; height:35px;" allowTransparency="true"></iframe> \
 		</div>';
 
 	document.body.appendChild( configuracion );
@@ -1183,7 +1189,7 @@ function atajosEjecucion (lanzador){
 	
 	//solución de las teclas numéricas
 	if (codigoTecla > 95) codigoTecla -=48;
-	
+
 	switch (codigoTecla){
 		case 18: 	desActivaAtajos();
 			break;
@@ -1653,7 +1659,13 @@ function detectaPantalla (){
 
 function pantalla_inicio (){
 	// get_b64_capcha();
-	agrega_tamanio_minimo_contenido();
+	// agrega_tamanio_minimo_contenido();
+	document.querySelector('.sidebarcontainer').setAttribute('style', 'width: 160px; height: 40%;');
+	document.querySelector('#leftcolumn').setAttribute('style', 'position: relative; width: 165px; margin-left: -166px; padding-top: 30px;');
+	document.querySelector('#centercolumn').setAttribute('style', 'float: right; width: 648px; margin-left: -1px; padding-top: 30px;');
+	document.querySelector('#floatwrapper').setAttribute('style', 'float: left; width: 650px; margin-right: -1px;');
+	document.querySelector('#contentwrapper').setAttribute('style', 'position: relative; margin-left: 162px; width: 651px; border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF;');
+	document.querySelector('#wrapper').setAttribute('style', 'width: 1000px; margin: 0 auto; padding-bottom: 3px; border: 1px solid #FFFFFF; text-align: left; background-color: #E4E4E4; background-image: url(Images/main_bg.png); background-repeat: repeat-y; background-position: top center;');
 }
 
 function pantalla_calendario_ets (){
@@ -3934,7 +3946,7 @@ function tablaAtajos (){
 	seccionAtajos.setAttribute("style","display:none; position: fixed; background-color: maroon; color: white; top: 10%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; width:290px; margin: 0px 0px 0px -145px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000;");
 	// document.getElementById("mensajeAtajos").parentNode.insertBefore(seccionAtajos,document.getElementById("mensajeAtajos"));
 	document.body.appendChild(seccionAtajos);
-	chrome.extension.sendMessage( { command : "getAtajos" }, function(respuesta){
+	chrome.extension.sendMessage( { command : "getAtajos" }, (respuesta) => {
 		var seccionAtajos 		= document.getElementById("seccionAtajos");
 		seccionAtajos.innerHTML = "<table style='width:100%; border-collapse: collapse;'></table>";
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("shortcut")+"</td><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("section")+"</td></tr>";
@@ -3964,7 +3976,7 @@ function inicio(){
 	var pagina 	= /^https\:\/\/www[.]saes[.]\w+[.]ipn[.]mx$/;
 	var url 	= location.protocol+"//"+location.host;
 	if (url.match(pagina) && location.pathname.indexOf("/PDF/") != 0){
-		valida(1);
+		// valida(1);
 		creaFlujo();
 		tablaAtajos();
 		window.addEventListener("keyup",atajosEjecucion,true);

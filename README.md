@@ -1,6 +1,9 @@
 # Releases
 
-**Versión 0.66**
+**Versión 0.70**
+  * Corrección diseño del home page
+
+**Versión 0.67**
   * Correción al atajo de identificación
 
 **Versión 0.66**
