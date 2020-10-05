@@ -1,6 +1,6 @@
 {
 	"name" : "MODS SAES",
-	"version" : "0.71",
+	"version" : "0.71.1",
 	"manifest_version" : 2,
 	"description" : "__MSG_description__",
 	"minimum_chrome_version" : "18",
@@ -10,8 +10,8 @@
 		"48" : "/css/fu_48.png",
 		"128": "/css/fu_128.png"
 	},
-	"permissions" : ["tabs", "*://*.ipn.mx/*", "*://*.google.com/*", "storage", "unlimitedStorage"],
-	"homepage_url" : "https://www.facebook.com/ComplementoSaesChrome",
+	"permissions" : ["*://*.ipn.mx/*"],
+	"homepage_url" : "https://www.facebook.com/SaesIpnMods",
 	"options_page" :"opciones.html",
 	"background" : {
 		"scripts" : ["segundoPlano.js"],

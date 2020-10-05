@@ -313,12 +313,12 @@ function agrega_elementos_extension (){
 						<iframe id="containerFb" src="https://www.facebook.com/plugins/like.php?app_id=4393633594044167&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" \
 						scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:105px; height:20px;" allowTransparency="true"></iframe> \
 					</div> \
-					<div style="display: table-cell; padding-right: 6px;"> \
+					<div style="display: table-cell; padding-right: 6px; vertical-align: middle;"> \
 						<a href="'+ chrome.i18n.getMessage("url_facebook") +'" title="'+ chrome.i18n.getMessage("name_proy") +'" target="_blank">\
 							<img src="'+ chrome.extension.getURL('/css/f32.png') +'" style="cursor: pointer;">\
 						</a>\
 					</div> \
-					<div style="display: table-cell;"> \
+					<div style="display: table-cell; vertical-align: middle;"> \
 						<a href="'+ chrome.i18n.getMessage("url_patreon") +'" title="'+ chrome.i18n.getMessage("message_patreon") +'" target="_blank"> \
 							<img src="'+ chrome.extension.getURL('/css/p32.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
 						</a> \
@@ -1032,7 +1032,7 @@ function procesaRespuesta () {
 			// log("----> "+variable);
 			switch (variable){
 				case 1:
-					var respuestaXML = peticion_http.responseXML;					
+					var respuestaXML = peticion_http.responseXML;
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
 					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
 						if (respuesta.version < raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
@@ -1471,8 +1471,8 @@ function verComentarios (){
 
 		var enlaces = document.getElementById("regs");
 		for (var i = 1; i < enlaces.rows.length; i++){
-			enlaces.rows[i].cells[1].innerHTML = "<a href='#' name='diccionario' title='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+enlaces.rows[i].cells[1].innerHTML+"</a>";
-			enlaces.rows[i].cells[2].innerHTML = "<a href='#' name='diccionario' title='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+enlaces.rows[i].cells[2].innerHTML+"</a>";
+			enlaces.rows[i].cells[1].innerHTML = "<a href='#' name='diccionario' aria-label='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+enlaces.rows[i].cells[1].innerHTML+"</a>";
+			enlaces.rows[i].cells[2].innerHTML = "<a href='#' name='diccionario' aria-label='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+enlaces.rows[i].cells[2].innerHTML+"</a>";
 			// cuidado con los sin asignar y donde hay dos maestros en la misma materia
 		}
 		var nenlaces = document.getElementsByName("diccionario");
@@ -2280,7 +2280,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "div#informacionOptativas { text-align : center; } div#detalleTraslapes table, table#tablaOptativas { margin : 0px auto; } ";
 	estilosSeleccionMaterias.innerHTML += "div#controlesHorarios, div#informacionHorarios { background-color : #000 } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip { display : inline; position : relative; } ";
-	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(title); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : 220px; } ";
+	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(aria-label); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : 220px; } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:before { border : solid; border-color : #000 transparent; border-width : 6px 6px 0 6px; bottom : 20px; content : ''; left : 50%; position : absolute; z-index : 99; } ";
 	estilosSeleccionMaterias.innerHTML += ".titulo_tabla { color : #FF9900; text-transform : uppercase; } "; 
 
@@ -2297,7 +2297,8 @@ function seleccionMaterias (){
 
 	var cuadros   = document.createElement("input");
 	cuadros.type  = "checkbox";
-	cuadros.title = chrome.i18n.getMessage("add_subject");
+	// cuadros.title = chrome.i18n.getMessage("add_subject");
+	cuadros.setAttribute('aria-label', chrome.i18n.getMessage("add_subject"));
 	cuadros.setAttribute("class","tooltip");
 
 	for (var i = 1; i < tabla.rows.length; i++){
@@ -2891,7 +2892,7 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 			// id = buscaIdentificador(infoTraslapes[i],materias);
 			// porcentaje = calculaImpacto(infoTraslapes[i],gruposOrdenados);
 			// conflictos = listaConflictos(infoTraslapes[i],materias);
-			traslapes.rows[i+1].cells[0].innerHTML = "<a href='#' name='traslape' title='"+chrome.i18n.getMessage("show_conflict")+"' class='tooltip' style='color : #F5E638;'>"+buscaIdentificador(infoTraslapes[i],materias)+"</a>";
+			traslapes.rows[i+1].cells[0].innerHTML = "<a href='#' name='traslape' aria-label='"+chrome.i18n.getMessage("show_conflict")+"' class='tooltip' style='color : #F5E638;'>"+buscaIdentificador(infoTraslapes[i],materias)+"</a>";
 			traslapes.rows[i+1].cells[1].innerHTML = calculaImpacto(infoTraslapes[i],gruposOrdenados.materias,totalResultados);
 			traslapes.rows[i+1].cells[2].innerHTML = listaConflictos(infoTraslapes[i],materias);
 		}
@@ -3844,7 +3845,7 @@ function cargarMateriasHorario (){
 			materiaH.cells[1].innerHTML = materiasHorario.materias[i].materia;
 
 			if (destinoConexion != ""){
-				materiaH.cells[2].innerHTML = "<a href='#' name='diccionario' style='color:#F90;' title='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+materiasHorario.materias[i].profe+"</a>";
+				materiaH.cells[2].innerHTML = "<a href='#' name='diccionario' style='color:#F90;' aria-label='"+chrome.i18n.getMessage("comments")+"' class='tooltip'>"+materiasHorario.materias[i].profe+"</a>";
 			} else {
 				materiaH.cells[2].innerHTML = materiasHorario.materias[i].profe;
 			}
