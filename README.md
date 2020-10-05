@@ -1,5 +1,8 @@
 # Releases
 
+**Versión 0.71**
+  * Corrección de información de contacto
+
 **Versión 0.70**
   * Corrección diseño del home page
 

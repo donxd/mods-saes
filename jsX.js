@@ -195,7 +195,7 @@ function ajusta_menu (){
 		disenio.innerHTML += '#subnav .hover { background-color: initial; color: #990000; }';
 		disenio.innerHTML += '#subnav { margin-bottom: 0px; } ';
 		disenio.innerHTML += '.sidebarcontainer { margin : 0px auto } ';
-		
+
 		var elementosMenu = document.getElementsByClassName('item ctl00_subMenu_4');
 		for (var i = 0; i < elementosMenu.length; i++){
 			if (elementosMenu[i].children.length == 2){
@@ -298,31 +298,38 @@ function ajusta_elementos (){
 
 function agrega_elementos_extension (){
 	var configuracion = document.createElement('div');
-	configuracion.setAttribute( 'style', 'position : fixed; top : 20px; right :10px; text-align : right; width : 120px; z-index: 9999; background-color : rgba(0,0,0,0);' );
+	configuracion.setAttribute( 'style', 'position : fixed; top : 20px; right :10px; text-align : right; min-width : 120px; z-index: 9999; background-color : rgba(0,0,0,0);' );
 
 	configuracion.innerHTML = 
-		'<div class="contenedor_informacion_contacto"> \
-			<img src="'+ chrome.extension.getURL('/css/conf.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
-			<div style="color: #FFF; display:none;" id="informacion_contacto"> \
-				'+ chrome.i18n.getMessage('contact') +'<br/> \
-				<a target="_blank" style="color : #AEE8F3; " href="'+ chrome.i18n.getMessage("url_facebook") +'">Complemento SAES</a><br/> \
-				<a href="#" style="color : #AEE8F3;">'+ chrome.i18n.getMessage("email") +'</a> \
+		'<style> \
+			.icono_configuracion {display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); } \
+			.icono_configuracion:hover, .icono_configuracion:focus, .icono_configuracion:active {-webkit-animation-name: jumpy; animation-name: jumpy; -webkit-animation-duration: 1s; animation-duration: 1s; -webkit-animation-timing-function: ease-in-out; animation-timing-function: ease-in-out; -webkit-animation-iteration-count: 1; animation-iteration-count: 1; } \
+			@keyframes jumpy { 16.65% {-webkit-transform: translateY(8px); transform: translateY(8px); } 33.3% {-webkit-transform: translateY(-6px); transform: translateY(-6px); } 49.95% {-webkit-transform: translateY(4px); transform: translateY(4px); } 66.6% {-webkit-transform: translateY(-2px); transform: translateY(-2px); } 83.25% {-webkit-transform: translateY(1px); transform: translateY(1px); } 100% {-webkit-transform: translateY(0); transform: translateY(0); } } \
+		</style> \
+		<div class="contenedor_informacion_contacto"> \
+			<div style="display: table;"> \
+				<div style="display: table-row;"> \
+					<div style="display: table-cell; vertical-align: middle;"> \
+						<iframe id="containerFb" src="https://www.facebook.com/plugins/like.php?app_id=4393633594044167&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" \
+						scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:105px; height:20px;" allowTransparency="true"></iframe> \
+					</div> \
+					<div style="display: table-cell; padding-right: 6px;"> \
+						<a href="'+ chrome.i18n.getMessage("url_facebook") +'" title="'+ chrome.i18n.getMessage("name_proy") +'" target="_blank">\
+							<img src="'+ chrome.extension.getURL('/css/f32.png') +'" style="cursor: pointer;">\
+						</a>\
+					</div> \
+					<div style="display: table-cell;"> \
+						<a href="'+ chrome.i18n.getMessage("url_patreon") +'" title="'+ chrome.i18n.getMessage("message_patreon") +'" target="_blank"> \
+							<img src="'+ chrome.extension.getURL('/css/p32.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
+						</a> \
+					</div> \
+				</div> \
 			</div> \
-			<iframe src="https://www.facebook.com/plugins/like.php?app_id=970551892994864&amp;href='+ chrome.i18n.getMessage("url_facebook") +'&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:450px; height:35px;" allowTransparency="true"></iframe> \
 		</div>';
 
 	document.body.appendChild( configuracion );
-	document.querySelector('.icono_configuracion').addEventListener( 'click', mostrarContacto, true );
 }
 
-function mostrarContacto (){
-	var informacion_contacto = document.getElementById('informacion_contacto');
-	if ( informacion_contacto.style.display == 'none' ){
-		informacion_contacto.style.display = '';
-	} else {
-		informacion_contacto.style.display = 'none';
-	}	
-}
 function pedir (tipo){
 	// tipo 
 	// 	1 maestro

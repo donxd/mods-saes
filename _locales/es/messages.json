@@ -9,15 +9,31 @@
 	},
 	"contact" : {
 		"description" : "Información de contacto y soporte",
-		"message" : "Comentarios, dudas, problemas y sugerencias a"
+		"message" : "Comentarios, dudas, problemas y sugerencias a :"
+	},
+	"contact_2" : {
+		"description" : "Información de contacto y soporte",
+		"message" : "By "
+	},
+	"name_proy" : {
+		"description" : "Nombre del proyecto",
+		"message" : "MODS SAES"
 	},
 	"url_facebook" : {
 		"description" : "Página del proyecto en facebook",
-		"message" : "https://www.facebook.com/ComplementoSaesChrome"
+		"message" : "https://www.facebook.com/SaesIpnMods/"
+	},
+	"url_patreon" : {
+		"description" : "Página del proyecto en patreon",
+		"message" : "https://www.patreon.com/donxd"
 	},
 	"email" : {
 		"description" : "Correo soporte",
 		"message" : "n0s3.xd@gmail.com"
+	},
+	"email_name" : {
+		"description" : "Nombre correo soporte",
+		"message" : "donxd"
 	},
 	"options_score" : {
 		"description" : "Opciones de evaluación para los profesores",
@@ -98,6 +114,10 @@
 	"error_login" : {
 		"description" : "Datos incorrectos",
 		"message" : "El intento de conexión no fue correcto. Inténtelo de nuevo."
+	},
+	"message_patreon" : {
+		"description" : "Mensaje para patreon",
+		"message" : "¿Te gusta el proyecto? Apoya con Patron."
 	},
 	"message_error_login" : {
 		"description" : "Mensaje para datos incorrectos",
