@@ -275,6 +275,18 @@
 		"description" : "Detalle de los traslapes",
 		"message" : "» Ver detalles de traslapes"
 	},
+	"return_selection" : {
+		"description" : "Mensaje para regresar a la selección de materias",
+		"message" : "Ver selección"
+	},
+	"add_all_to_selection" : {
+		"description" : "Mensaje para añadir todo lo visible a la selección de materias",
+		"message" : "Agregar a la selección"
+	},
+	// "synchronize_selection" : {
+	// 	"description" : "Mensaje para sincronizar selección con ocupabilidad",
+	// 	"message" : "Sincronizar"
+	// },
 	"return" : {
 		"description" : "Regresar",
 		"message" : "Regresar"

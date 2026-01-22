@@ -1,5 +1,15 @@
 # Releases
 
+**Versión 0.72**
+  * Actualización chrome manifest v3
+  * Agregar service worker para resolución de mensajes
+  * Corregir comunicación plantel externo busqueda profesores
+  * Ajuste tamaño tooltip
+  * Ajuste en el layout de las secciones por cambios iniciales
+  * Boton para regresar a la selección de materias desde un horario generado
+  * Agregar boton de añardir todo lo visible en pantalla de horarios
+  * Función para ocultar información
+
 **Versión 0.71**
   * Corrección de información de contacto
 
@@ -19,7 +29,7 @@
   * Correciones diccionario y reseteo de busqueda (filtrado)
 
 **Versión 0.63**
-  * comparación selección y ocupabilidad
+  * Comparación entre selección materias y ocupabilidad (Sincronización)
 
 **Versión 0.62**
   * Correción de errores
@@ -44,15 +54,14 @@
 **Versión 0.58**
 
 # TODO
-
-  * sincronización selección y ocupabilidad (2 pestañas)
+  * Detectar autofresh???
   * corregir el filtrado de los registros
   * soporte para borrado y reemplazo de patron de busqueda
   * atajo el foco del cuadro de busqueda (tabindex)
   * contemplar las opciones para la extensión
-  * Responsive Desing???
-  * Corregir definitivamente el diseño
   * Identificar cuando tienes algo para reinscribirte
+  * Corregir definitivamente el diseño
+  * Responsive Desing??? 
 
 
 # Tasks

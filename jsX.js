@@ -8,8 +8,22 @@ function ajustarDisenio (){
 		ajusta_menu();
 		ajusta_enlaces();
 		ajusta_elementos();
+		// ocultaDatos();
 	}
 	agrega_elementos_extension();
+}
+
+function ocultaDatos () {
+	const infoUser = document.querySelector('#ctl00_mainCopy_FormView1_nombrelabel');
+	if (infoUser) {
+		document.querySelector('#ctl00_mainCopy_FormView1_nombrelabel').innerHTML = '___';
+	}
+
+	const infoUser2 = document.querySelector('#ctl00_mainCopy_Lbl_Nombre');
+	if (infoUser2) {
+		const info = infoUser2.querySelector('table tr:nth-child(2) td:nth-child(2)');
+		if (info) info.innerHTML = '___';
+	}
 }
 
 function sinIdentificacion () {
@@ -23,9 +37,9 @@ function ajusta_estructura_pagina (){
 }
 
 function mueve_secciones_pagina (){
-	mueve_elemento( '#leftcolumn', '#floatwrapper', ANTES_DE );
+	// mueve_elemento( '#leftcolumn', '#floatwrapper', ANTES_DE );
 	mueve_elemento( '#footer', '#centercolumn', DENTRO_DE );
-	mueve_elemento( '#breadcrumbs', '.container', ANTES_DE );
+	// mueve_elemento( '#breadcrumbs', '.container', ANTES_DE );
 }
 
 var DENTRO_DE  = 0;
@@ -95,7 +109,7 @@ function pega_elemento_despues ( elemento, selector_destino ){
 function agrega_estilos_secciones (){
 	var menu_secciones = getElementos( '#leftcolumn' );
 	if ( menu_secciones.length > 0 ){
-		menu_secciones[0].style.display = 'table-cell';
+		// menu_secciones[0].style.display = 'table-cell';
 		menu_secciones[0].style.verticalAlign = 'top';
 	}
 
@@ -256,8 +270,8 @@ function ajusta_enlaces (){
 					links[i].setAttribute('href','#');
 					break;
 				case '/Reglamento/Default.aspx':
-					links[i].setAttribute('href',chrome.i18n.getMessage('bylaw'));
-					links[i].setAttribute('target','_blank');
+					// links[i].setAttribute('href',chrome.i18n.getMessage('bylaw'));
+					// links[i].setAttribute('target','_blank');
 					// links[i].tabIndex=indiceTabulador;
 					// links[i].innerHTML+=" <span style='background-color:black;color:white;display:none;' name='atajo'>"+(indiceTabulador-1)+"</span>";
 					// indiceTabulador++;
@@ -273,6 +287,7 @@ function ajusta_enlaces (){
 					links[i].text = 'Profesores';
 					break;
 				case '/Alumnos/info_alumnos/Datos_Alumno.aspx':
+					pantalla_agenda_escolar();
 					links[i].text = 'General';
 					break;
 				case '/Alumnos/info_alumnos/DatosAlumnosMedicos.aspx':
@@ -280,6 +295,12 @@ function ajusta_enlaces (){
 					break;
 				case '/Alumnos/info_alumnos/DatosAlumnosDeportivos.aspx':
 					links[i].text = 'Deportivos';
+					break;
+				case '/Alumnos/info_alumnos/Datos_Extracurriculares.aspx':
+					pantalla_agenda_escolar();
+					pantallaDatosExtracurriculares();
+					break;
+				case '/Alumnos/Pase_Digital/Pase_Digital.aspx':
 					break;
 			}
 			// if (!tabAsignado){
@@ -289,10 +310,22 @@ function ajusta_enlaces (){
 	}
 }
 
+function pantallaDatosExtracurriculares () {
+	const leftcolumn = document.querySelector('#leftcolumn');
+	if (leftcolumn) {
+		leftcolumn.style.marginLeft = '-151px';
+	}
+}
+
 function ajusta_elementos (){
-	document.getElementById('contentwrapper').style.display = 'table';
-	document.getElementById('rightcolumn').style.display    = 'table-cell';
-	document.getElementById('rightcolumn').style.float      = 'none';
+	const contentwrapper = document.getElementById('contentwrapper');
+	const rightcolumn = document.getElementById('rightcolumn');
+	// const rightcolumn = document.getElementById('rightcolumn');
+	if (contentwrapper) contentwrapper.style.display = 'table';
+	if (rightcolumn) {
+		rightcolumn.style.display    = 'table-cell';
+		rightcolumn.style.float      = 'none';
+	}
 	// document.getElementById('footer').style.display         = 'table-row';
 }
 
@@ -315,12 +348,12 @@ function agrega_elementos_extension (){
 					</div> \
 					<div style="display: table-cell; padding-right: 6px; vertical-align: middle;"> \
 						<a href="'+ chrome.i18n.getMessage("url_facebook") +'" title="'+ chrome.i18n.getMessage("name_proy") +'" target="_blank">\
-							<img src="'+ chrome.extension.getURL('/css/f32.png') +'" style="cursor: pointer;">\
+							<img src="'+ chrome.runtime.getURL('/css/f32.png') +'" style="cursor: pointer;">\
 						</a>\
 					</div> \
 					<div style="display: table-cell; vertical-align: middle;"> \
 						<a href="'+ chrome.i18n.getMessage("url_patreon") +'" title="'+ chrome.i18n.getMessage("message_patreon") +'" target="_blank"> \
-							<img src="'+ chrome.extension.getURL('/css/p32.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
+							<img src="'+ chrome.runtime.getURL('/css/p32.png') +'" style="cursor: pointer;" class="icono_configuracion"> \
 						</a> \
 					</div> \
 				</div> \
@@ -655,6 +688,8 @@ function agregaBuscador (opc){
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
 			insertar_boton_filtrar_seleccion( controlesBuscador );
 			insertar_boton_actualizar_ocupabilidad( controlesBuscador );
+			// insertarBotonSincronizarSeleccion( controlesBuscador );
+			// prepararSincronizarSeleccion();
 			break;
 		case 2: //horarios
 			tipo = "ctl00_mainCopy_dbgHorarios";
@@ -684,6 +719,79 @@ function agregaBuscador (opc){
 	document.getElementById(tipo).setAttribute("id","regs");
 	inicializar();
 }
+
+// function prepararSincronizarSeleccion () {
+// 	materiasHorario.ocupabilidadData = new Map();
+
+// 	Array.from(document.querySelectorAll('#regs tr:nth-child(n+2)'))
+// 	.forEach(registro => {
+// 		const grupo = registroOcupabilidad.cells[0].innerText;
+// 		const materia = registroOcupabilidad.cells[2].innerText;
+// 		materiasHorario.ocupabilidadData.set(`${grupo}:${materia}`, registro);
+// 	});
+// }
+
+// function insertarBotonSincronizarSeleccion (controlesBuscador) {
+// 	var boton = document.createElement("input");
+// 	boton.setAttribute("type","button");
+// 	boton.setAttribute("value",chrome.i18n.getMessage("synchronize_selection"));
+// 	boton.setAttribute("id","synchronizeSelectionControl");
+// 	boton.addEventListener("click",sincronizaSeleccion,true);
+// 	controlesBuscador.appendChild(boton);
+// }
+
+// function sincronizaSeleccion () {
+// 	cargarMateriasHorarioGuardadas();
+// 	procesarSeleccionGuardadaOcupabilidad();
+// }
+
+// function procesarSeleccionGuardadaOcupabilidad (){
+// 	materiasHorario.materias.forEach(materia => {
+
+// 		const registro = materiasHorario.ocupabilidadData.get(`${materia.grupo}:${materia.materia}`);
+
+// 		if (registro) {
+// 			registro.classList.remove('oculto');
+// 		}
+// 	});
+
+// 		// Array.from(document.querySelectorAll('#regs tr:nth-child(n+2):not(.oculto)'))
+// 		// .find(registroOcupabilidad => {
+
+// 		// 	const datosRegistro = {
+// 		// 		grupo: registroOcupabilidad.cells[0].innerText,
+// 		// 		materia: registroOcupabilidad.cells[2].innerText,
+// 		// 	};
+
+// 		// 	if (!registroEncontradoDatos(datosRegistro, materiasHorario.materias)) {
+// 		// 		registroOcupabilidad.classList.add('oculto');
+// 		// 	} else {
+// 		// 		registroOcupabilidad.classList.remove('oculto');
+// 		// 	}
+// 		// });
+
+// 	// Array.from(document.querySelectorAll('#regs tr:nth-child(n+2):not(.oculto)'))
+// 	// .forEach(registroOcupabilidad => {
+
+// 	// 	const datosRegistro = {
+// 	// 		grupo: registroOcupabilidad.cells[0].innerText,
+// 	// 		materia: registroOcupabilidad.cells[2].innerText,
+// 	// 	};
+
+// 	// 	if (!registroEncontradoDatos(datosRegistro, materiasHorario.materias)) {
+// 	// 		registroOcupabilidad.classList.add('oculto');
+// 	// 	} else {
+// 	// 		registroOcupabilidad.classList.remove('oculto');
+// 	// 	}
+// 	// });
+// }
+
+// function registroEncontradoDatos (datosRegistro, datos) {
+// 	return !!(datos.find(materia => (
+// 		materia.grupo === datosRegistro.grupo && 
+// 		materia.materia === datosRegistro.materia
+// 	)));
+// }
 
 function insertar_boton_filtrar_seleccion ( controlesBuscador ){
 	var boton = document.createElement("input");
@@ -1034,7 +1142,7 @@ function procesaRespuesta () {
 				case 1:
 					var respuestaXML = peticion_http.responseXML;
 					var raiz = respuestaXML.getElementsByTagName("gupdate");
-					chrome.extension.sendMessage( { command : "getVersion"}, function(respuesta){
+					chrome.runtime.sendMessage( { command : "getVersion"}, function(respuesta){
 						if (respuesta.version < raiz[0].getElementsByTagName("app")[0].getElementsByTagName("updatecheck")[0].getAttribute("version")){
 							generaAdvertenciaActualizacion();
 						}	
@@ -1163,7 +1271,7 @@ function generaAdvertenciaActualizacion (){
 	var info 	= document.createElement("div");
 	info.id 	= "informacion";
 	info.setAttribute("style"," display : none; position : fixed; background-color : maroon; color : white; top : 6%; left : 50%; z-index : 1; font-size : 17px; margin : 0px 0px 0px -525px; -moz-box-shadow : 0 0 5px 5px #888; -webkit-box-shadow : 0 0 21px 5px#000; box-shadow : 0 0 20px 5px #000; width : 1050px; ");
-	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>"+chrome.i18n.getMessage("close_div")+"</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '>"+chrome.i18n.getMessage("update_instructions")+"</td><td><img src='"+chrome.extension.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.extension.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
+	info.innerHTML = "<div style='background-color:black; color:white; opacity: 0.85;'>"+chrome.i18n.getMessage("close_div")+"</div><div overflow-y:auto; max-height: 450px;'><table style = ' margin : 0 auto; '><tr><td style = ' text-align : justify; width : 151px; font-size : 21px; padding-right : 35px; '>"+chrome.i18n.getMessage("update_instructions")+"</td><td><img src='"+chrome.runtime.getURL("/css/1.jpg")+"'/><br><br><img src='"+chrome.runtime.getURL("/css/2.jpg")+"'/></td></tr></table></div>";
 	document.body.appendChild(info);
 }
 function actualizar (){
@@ -1177,16 +1285,22 @@ function creaFlujo (){
 		enlace_logout.tabIndex = indiceTabulador++;
 		identificado = true;
 	} else {
+
 		//cuadro boleta
-		document.getElementById("ctl00_leftColumn_LoginUser_UserName").tabIndex = indiceTabulador++;
+		const cuadroBoleta = document.getElementById("ctl00_leftColumn_LoginUser_UserName")
+		if (!!cuadroBoleta) cuadroBoleta.tabIndex = indiceTabulador++;
 		//cuadro pass
-		document.getElementById("ctl00_leftColumn_LoginUser_Password").tabIndex = indiceTabulador++;
+		const cuadroPass = document.getElementById("ctl00_leftColumn_LoginUser_Password")
+		if (!!cuadroPass) cuadroPass.tabIndex = indiceTabulador++;
 		//cuadro capcha
-		document.getElementById("ctl00_leftColumn_LoginUser_CaptchaCodeTextBox").tabIndex = indiceTabulador++;
+		const cuadroCapcha = document.getElementById("ctl00_leftColumn_LoginUser_CaptchaCodeTextBox")
+		if (!!cuadroCapcha) cuadroCapcha.tabIndex = indiceTabulador++;
 		//boton iniciar
-		document.getElementById("ctl00_leftColumn_LoginUser_LoginButton").tabIndex = indiceTabulador++;
+		const botonIniciar = document.getElementById("ctl00_leftColumn_LoginUser_LoginButton")
+		if (!!botonIniciar) botonIniciar.tabIndex = indiceTabulador++;
 		//recargar la imagen
-		document.getElementById("c_default_ctl00_leftcolumn_loginuser_logincaptcha_ReloadLink").tabIndex = indiceTabulador++;
+		const recargarImagen = document.getElementById("c_default_ctl00_leftcolumn_loginuser_logincaptcha_ReloadLink")
+		if (!!recargarImagen) recargarImagen.tabIndex = indiceTabulador++;
 	}
 }
 var atajos = false;
@@ -1274,14 +1388,14 @@ function recordar (){
 			var boleta 	= document.getElementById("ctl00_leftColumn_LoginUser_UserName").value;
 			var pass 	= document.getElementById("ctl00_leftColumn_LoginUser_Password").value;
 			if (boleta.length > 0 && pass.length > 0){
-				chrome.extension.sendMessage( { command : "setDatos", escuela : location.host, boleta : boleta, pass : pass, identificar : true }, identificar);
+				chrome.runtime.sendMessage( { command : "setDatos", escuela : location.host, boleta : boleta, pass : pass, identificar : true }, identificar);
 			} else {
 				alert(chrome.i18n.getMessage("error_data_login"));
 				this.checked = false;
 			}
 		}
 	} else {
-		chrome.extension.sendMessage( { command : "setDatos", identificar : false }, identificar);
+		chrome.runtime.sendMessage( { command : "setDatos", identificar : false }, identificar);
 		if (identificado){
 			document.getElementById("recordar").parentNode.style.display = "none";
 		}
@@ -1295,11 +1409,13 @@ function cambioUsuario (){
 	document.getElementById("recordar").checked = false;
 }
 function identificar (respuesta){
+	// console.log('identificar : ', respuesta.command);
 	switch (respuesta.command){
 		case "getDatos":
 			var reaccion_mensaje;
 			var identificar = document.createElement("span");
 			identificar.id = 'cambiosIdentificar';
+
 			if (location.pathname == "/" && !identificado){
 				if (location.host == respuesta.escuela){
 					document.getElementById("ctl00_leftColumn_LoginUser_UserName").value = respuesta.boleta;
@@ -1325,7 +1441,9 @@ function identificar (respuesta){
 					identificar.innerHTML = "";
 				}
 			}
-			reaccion_mensaje.parentNode.insertBefore(identificar, reaccion_mensaje.nextSibling);
+			if (!!reaccion_mensaje) {
+				reaccion_mensaje.parentNode.insertBefore(identificar, reaccion_mensaje.nextSibling);
+			}
 			break;
 		case "setDatos":
 			var cambios = document.getElementById("cambiosIdentificar");
@@ -1338,6 +1456,21 @@ function identificar (respuesta){
 			setTimeout(ocultarCambios,2000);
 			break;
 	}
+}
+function pantallaExpedienteDAE () {
+	pantalla_agenda_escolar();
+}
+function pantallaCambioCarrera () {
+	pantalla_agenda_escolar();
+}
+function pantallaISISA () {
+	pantalla_agenda_escolar();
+}
+function pantallaTramites (){
+	pantalla_agenda_escolar();
+}
+function pantallaDatosAcademicos (){
+	pantalla_agenda_escolar();
 }
 function ocultarCambios (){
 	document.getElementById("cambiosIdentificar").setAttribute("style","display:none;");
@@ -1424,7 +1557,7 @@ function conexionDiccionario (){
 			destinoConexion = "http://diccionariodemaestros.com/" + escuela;
 			break;
 		case "upiicsa":
-			destinoConexion = "http://foroupiicsa.net/diccionario/";
+			destinoConexion = "https://foroupiicsa.net/diccionario";
 			break;
 		default:
 			alert(chrome.i18n.getMessage("campus_not_found"));
@@ -1462,11 +1595,12 @@ function verComentarios (){
 	if (destinoConexion != ""){
 		var formularioEnlace 	= document.createElement("form");
 		formularioEnlace.action = destinoConexion;
+		formularioEnlace.baseURL = destinoConexion;
 		formularioEnlace.setAttribute("id","formularioEnlace");
 		formularioEnlace.target = "_blank";
-		formularioEnlace.method = "GET";
-		// formularioEnlace.method = "POST";
-		formularioEnlace.innerHTML = "<input type='hidden' name='sec' value='buscar'/><input type='hidden' name='n'/>";
+		// formularioEnlace.method = "GET";
+		formularioEnlace.method = "POST";
+		// formularioEnlace.innerHTML = "<input type='hidden' name='sec' value='buscar'/><input type='hidden' name='n'/>";
 		document.body.appendChild(formularioEnlace);
 
 		var enlaces = document.getElementById("regs");
@@ -1482,8 +1616,14 @@ function verComentarios (){
 	}
 }
 function enlaceVerComentarios (){
-	document.getElementsByName("n")[0].value = this.innerHTML;
-	document.getElementById("formularioEnlace").submit();
+	// document.getElementsByName("n")[0].value = this.innerHTML;
+	const search = this.innerHTML.replaceAll(' ', '+');
+	const formularioComentarios = document.getElementById("formularioEnlace");
+	formularioComentarios.action = `${formularioComentarios.baseURL}/buscar/${search}`;
+	// console.log('info send pp : ', this.innerHTML);
+	// console.log('info send : ', formularioComentarios.action);
+	formularioComentarios.submit();
+	formularioComentarios.action = `${formularioComentarios.baseURL}`;
 	estadoSeleccion = false;
 	setTimeout("estadoSeleccion = true;",1000);
 }
@@ -1590,15 +1730,35 @@ function detectaPantalla (){
 		case '/Default.aspx':
 			pantalla_inicio();
 			break;
+		case '/Alumnos/info_alumnos/Expediente_DAE.aspx':
+			pantallaExpedienteDAE();
+			break;
+		case '/Alumnos/CambiosCar/Default.aspx':
+			pantallaCambioCarrera();
+			break;
+		case '/Alumnos/ISISA/Default.aspx':
+			pantallaISISA();
+			break;
+		case '/Alumnos/boleta/default.aspx':
+			pantallaDatosAcademicos();
+			break;
+		case '/Alumnos/Tramites/Default.aspx':
+			pantallaTramites();
+			break;
 		case '/alumnos/default.aspx':
+		case '/Alumnos/default.aspx':
+			pantallaAlumnos();
 			pantalla_alumnos_inicio();
 			break;
 		case '/Academica/Equivalencias.aspx':
+			pantalla_agenda_escolar();
 			pantalla_equivalencias();
 			break;
 		case '/Alumnos/Evaluacion_docente/califica_profe.aspx':
 		case '/Alumnos/Evaluacion_Docente/Califica_Profe.aspx':
 			pantalla_califica_profesor();
+			pantalla_agenda_escolar();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Alumnos/Evaluacion_docente/evaluacion_profesor.aspx':
 		case '/Alumnos/Evaluacion_Docente/evaluacion_profesor.aspx':
@@ -1606,14 +1766,18 @@ function detectaPantalla (){
 			break;
 		case '/Academica/mapa_curricular.aspx':
 			// informacionPlanes();
+			pantalla_agenda_escolar();
 			break;
 		case '/Academica/Ocupabilidad_grupos.aspx':
+			pantalla_agenda_escolar();
 			pantalla_ocupabilidad();
 			break;
 		case '/Academica/horarios.aspx':
+			pantalla_agenda_escolar();
 			pantalla_horarios();
 			break;
 		case '/Academica/Calendario.aspx':
+			pantalla_agenda_escolar();
 			pantalla_calendario();
 			break;
 		case '/Alumnos/Reinscripciones/Comprobante_Horario.aspx':
@@ -1621,26 +1785,39 @@ function detectaPantalla (){
 			break;
 		case '/Alumnos/Informacion_semestral/Horario_Alumno.aspx':
 			pantalla_horario_alumno();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Alumnos/Reinscripciones/reinscribir.aspx':
 			pantalla_reinscribir();
+			pantalla_agenda_escolar();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Alumnos/boleta/kardex.aspx':
+			pantalla_agenda_escolar();
 			pantalla_kardex();
+			break;
+		case '/Alumnos/boleta/Estado_Alumno.aspx':
+			pantallaEstadoGeneral();
 			break;
 		case '/Alumnos/tutores/Evaluacion_Tutores.aspx':
 			pantalla_evaluacion_tutores();
+			pantalla_agenda_escolar();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Alumnos/Reinscripciones/fichas_reinscripcion.aspx':
 			pantalla_ficha_reinscripcion();
+			pantalla_agenda_escolar();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Alumnos/info_alumnos/DatosAlumnosMedicos.aspx':
 			pantalla_datos_medicos();
+			pantalla_agenda_escolar();
 			break;
 		case '/Alumnos/info_alumnos/DatosAlumnosDeportivos.aspx':
 			pantalla_datos_deportivos();
 			break;
 		case '/Alumnos/Informacion_semestral/calificaciones_sem.aspx':
+			pantalla_agenda_escolar();
 			pantalla_calificaciones();
 			break;
 		case '/Alumnos/Reinscripciones/Reporte_Horario.aspx':
@@ -1648,31 +1825,95 @@ function detectaPantalla (){
 			break;
 		case '/Alumnos/Saberes/Inscripcion_Saberes.aspx':
 			pantalla_incripcion_spa();
+			pantalla_agenda_escolar();
+			pantallaInscripcionSPA();
 			break;
 		case '/Alumnos/Saberes/calificaciones_saberes.aspx':
 			pantalla_calificaciones_spa();
+			pantalla_agenda_escolar();
 			break;
 		case '/Alumnos/tutores/comentarios.aspx':
 			pantalla_tutores_comentarios();
+			pantalla_agenda_escolar();
+			pantallaAjustaContenidoCentral();
 			break;
 		case '/Academica/agenda_escolar.aspx':
 			pantalla_agenda_escolar();
 			break;
 		case '/Academica/Calendario_ets.aspx':
+			pantalla_agenda_escolar();
 			pantalla_calendario_ets();
+			break;
+		case '/Alumnos/Dictamenes/Candidato.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/Dictamenes/respuesta_dictamen.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/Informacion_semestral/default.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/Reinscripciones/default.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/ETS/inscripcion_ets.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/ETS/calificaciones_ets.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/Saberes/DEFAULT.ASPX':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/tutores/Datos_Tutor.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/Evaluacion_Docente/Default.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/CambioCorreoPersonal.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/cambia_clave.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/info_alumnos/default.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Alumnos/info_alumnos/Datos_Alumno.aspx':
+			pantalla_agenda_escolar();
+			break;
+		case '/Ayuda/Ayuda.aspx':
+			pantallaAyuda();
 			break;
 	}
 }
-
+function pantallaAyuda () {
+	document.querySelector('#contentwrapper_psc .container').style.width = 'auto';
+}
+function pantallaEstadoGeneral () {
+	pantalla_agenda_escolar();
+}
+function pantallaInscripcionSPA (){
+	const contentwrapper = document.querySelector('#contentwrapper');
+	if (!!contentwrapper) {
+		contentwrapper.removeAttribute('style');
+		contentwrapper.style = 'display: table;';
+	}
+}
 function pantalla_inicio (){
+	const container = document.querySelector('#copy .container');
+	if (container) {
+		container.style = 'width: fit-content;';
+	}
 	// get_b64_capcha();
 	// agrega_tamanio_minimo_contenido();
-	document.querySelector('.sidebarcontainer').setAttribute('style', 'width: 160px; height: 40%;');
-	document.querySelector('#leftcolumn').setAttribute('style', 'position: relative; width: 165px; margin-left: -166px; padding-top: 30px;');
-	document.querySelector('#centercolumn').setAttribute('style', 'float: right; width: 648px; margin-left: -1px; padding-top: 30px;');
-	document.querySelector('#floatwrapper').setAttribute('style', 'float: left; width: 650px; margin-right: -1px;');
-	document.querySelector('#contentwrapper').setAttribute('style', 'position: relative; margin-left: 162px; width: 651px; border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF;');
-	document.querySelector('#wrapper').setAttribute('style', 'width: 1000px; margin: 0 auto; padding-bottom: 3px; border: 1px solid #FFFFFF; text-align: left; background-color: #E4E4E4; background-image: url(Images/main_bg.png); background-repeat: repeat-y; background-position: top center;');
+	// document.querySelector('.sidebarcontainer').setAttribute('style', 'width: 160px; height: 40%;');
+	// document.querySelector('#leftcolumn').setAttribute('style', 'position: relative; width: 165px; margin-left: -166px; padding-top: 30px;');
+	// document.querySelector('#centercolumn').setAttribute('style', 'float: right; width: 648px; margin-left: -1px; padding-top: 30px;');
+	// document.querySelector('#floatwrapper').setAttribute('style', 'float: left; width: 650px; margin-right: -1px;');
+	// document.querySelector('#contentwrapper').setAttribute('style', 'position: relative; margin-left: 162px; width: 651px; border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF;');
+	// document.querySelector('#wrapper').setAttribute('style', 'width: 1000px; margin: 0 auto; padding-bottom: 3px; border: 1px solid #FFFFFF; text-align: left; background-color: #E4E4E4; background-image: url(Images/main_bg.png); background-repeat: repeat-y; background-position: top center;');
 }
 
 function pantalla_calendario_ets (){
@@ -1719,13 +1960,31 @@ function get_b64_capcha (){
 	}
 }
 
+function pantallaAlumnos () {
+	const subnav = document.querySelector('#subnav');
+	if (subnav) {
+		subnav.style.width = 'auto';
+		subnav.style.display = 'flow';
+	}
+
+	const leftcolumn = document.querySelector('#leftcolumn');
+	if (leftcolumn) {
+		leftcolumn.style.marginLeft = '-146px';
+	}
+}
+
 function pantalla_alumnos_inicio (){
 	var boleta = document.getElementById('ctl00_leftColumn_LoginNameSession');
 	document.cookie = 'boleta='+boleta.innerText+';path=/';
 }
 
 function pantalla_equivalencias (){
-	document.querySelector('div#ctl00_mainCopy_UP').addEventListener( 'DOMSubtreeModified', ajustaEquivalencias, true );
+	const targetNode = document.querySelector('div#ctl00_mainCopy_UP');
+	const config = { attributes: true, childList: true, subtree: true };
+	const observer = new MutationObserver( () => ajustaEquivalencias());
+	observer.observe(targetNode, config);
+	// observer.disconnect();
+	// document.querySelector('div#ctl00_mainCopy_UP').addEventListener( 'DOMSubtreeModified', ajustaEquivalencias, true );
 
 	var contenedor_equivalencias = getElementos( '#ctl00_mainCopy_PnlDatos' );
 	if ( contenedor_equivalencias.length > 0 ){
@@ -1735,12 +1994,12 @@ function pantalla_equivalencias (){
 
 function pantalla_califica_profesor (){
 	evaluacionProfesores();
-	chrome.extension.sendMessage( { command : 'getEvaluacionProfesores' }, controlaEvaluacion );
+	chrome.runtime.sendMessage( { command : 'getEvaluacionProfesores' }, controlaEvaluacion );
 	agrega_tamanio_minimo_contenido();
 }
 
 function pantalla_evalua_profesor (){
-	chrome.extension.sendMessage( { command : 'getEvaluacionProfesores' }, evaluarProfesor);
+	chrome.runtime.sendMessage( { command : 'getEvaluacionProfesores' }, evaluarProfesor);
 }
 
 function pantalla_ocupabilidad (){
@@ -1796,13 +2055,21 @@ function pantalla_calendario (){
 }
 
 function pantalla_horario_alumno (){
-	document.getElementById('wrapper').style.width        = '1200px';
-	document.getElementById('contentwrapper').style.width = '900px';
-	document.getElementById('floatwrapper').style.width   = '900px';
-	document.getElementById('centercolumn').style.width   = '900px';
-	document.getElementById('ctl00_mainCopy_PnlDatos').removeAttribute('style');
-	document.getElementById('ctl00_mainCopy_PnlDatos').style = 'width:820px;';
-	document.getElementById('ctl00_mainCopy_GV_Horario').setAttribute('id','regs');
+	const wrapper = document.getElementById('wrapper')
+	if (!!wrapper) wrapper.style.width        = '1200px';
+	const contentwrapper = document.getElementById('contentwrapper')
+	if (!!contentwrapper) contentwrapper.style.width = '900px';
+	const floatwrapper = document.getElementById('floatwrapper')
+	if (!!floatwrapper) floatwrapper.style.width   = '900px';
+	const centercolumn = document.getElementById('centercolumn')
+	if (!!centercolumn) centercolumn.style.width   = '900px';
+	const ctl00_mainCopy_PnlDatos = document.getElementById('ctl00_mainCopy_PnlDatos')
+	if (!!ctl00_mainCopy_PnlDatos) {
+		ctl00_mainCopy_PnlDatos.removeAttribute('style');
+		ctl00_mainCopy_PnlDatos.style = 'width:820px;';
+	}
+	const ctl00_mainCopy_GV_Horario = document.getElementById('ctl00_mainCopy_GV_Horario')
+	if (!!ctl00_mainCopy_GV_Horario) ctl00_mainCopy_GV_Horario.setAttribute('id','regs');
 	retiraSabados();
 	conexionDiccionario();
 	comentarioRapido();
@@ -1836,33 +2103,42 @@ function pantalla_reinscribir (){
 }
 
 function pantalla_kardex (){
-	document.getElementById('ctl00_mainCopy_Panel1').removeAttribute('style');
-
-	if ( document.getElementById('contentwrapper').children.length < 3 ){
-		var parteIzquierda = document.getElementById('rightcolumn').cloneNode(true);
-		document.getElementById('rightcolumn').parentNode.removeChild( document.getElementById('rightcolumn') );
-		document.getElementById('contentwrapper').appendChild( parteIzquierda );
-		
-		var piePagina = document.getElementById('footer').cloneNode(true);
-		document.getElementById('footer').parentNode.removeChild(document.getElementById('footer'));
-		document.getElementById('contentwrapper').appendChild( piePagina );
-		
-		var parteDerecha = document.getElementById('leftcolumn').cloneNode(true);
-		document.getElementById('leftcolumn').parentNode.removeChild( document.getElementById('leftcolumn') );
-		document.getElementById('floatwrapper').appendChild( parteDerecha );
-		
-		ajustaPeriodos();
+	const containerData = document.querySelector('#ctl00_mainCopy_Panel1');
+	if (!!containerData) {
+		containerData.removeAttribute('style');
 	}
 
-	agrega_tamanio_minimo_contenido();
+	// document.getElementById('ctl00_mainCopy_Panel1').removeAttribute('style');
 
-	var tablas_niveles = getElementos( '#ctl00_mainCopy_Lbl_Kardex table' );
-	var numero_elementos = tablas_niveles.length;
-	if ( numero_elementos > 0 ){
-		for ( var contador = 0; contador < numero_elementos; contador++ ){
-			tablas_niveles[ contador ].setAttribute( 'style', 'border-collapse : collapse;' );
-		}
-	}
+	// if ( document.getElementById('contentwrapper').children.length < 3 ){
+	// 	var parteIzquierda = document.getElementById('rightcolumn').cloneNode(true);
+	// 	document.getElementById('rightcolumn').parentNode.removeChild( document.getElementById('rightcolumn') );
+	// 	document.getElementById('contentwrapper').appendChild( parteIzquierda );
+
+	// 	var piePagina = document.getElementById('footer').cloneNode(true);
+	// 	document.getElementById('footer').parentNode.removeChild(document.getElementById('footer'));
+	// 	document.getElementById('contentwrapper').appendChild( piePagina );
+
+	// 	var parteDerecha = document.getElementById('leftcolumn').cloneNode(true);
+	// 	document.getElementById('leftcolumn').parentNode.removeChild( document.getElementById('leftcolumn') );
+	// 	document.getElementById('floatwrapper').appendChild( parteDerecha );
+
+	// 	// ajustaPeriodos();
+	// 	// const rightcolumn = document.querySelector('#rightcolumn');
+	// 	// if (rightcolumn) {
+	// 	// 	rightcolumn.style.float = 'right';
+	// 	// }
+	// }
+
+	// agrega_tamanio_minimo_contenido();
+
+	// var tablas_niveles = getElementos( '#ctl00_mainCopy_Lbl_Kardex table' );
+	// var numero_elementos = tablas_niveles.length;
+	// if ( numero_elementos > 0 ){
+	// 	for ( var contador = 0; contador < numero_elementos; contador++ ){
+	// 		tablas_niveles[ contador ].setAttribute( 'style', 'border-collapse : collapse;' );
+	// 	}
+	// }
 
 	// informacionHistorico();
 }
@@ -1906,6 +2182,10 @@ function pantalla_evaluacion_tutores (){
 	agrega_tamanio_minimo_contenido();
 }
 
+function pantallaAjustaContenidoCentral (){
+	document.querySelector('#centercolumn').style.width = 'min-content';
+}
+
 function pantalla_ficha_reinscripcion (){
 	document.querySelector('#copy .container').removeAttribute('style');
 	agrega_tamanio_minimo_contenido();
@@ -1934,6 +2214,7 @@ function pantalla_datos_deportivos (){
 
 function pantalla_calificaciones (){
 	agrega_tamanio_minimo_contenido();
+	document.querySelector('#centercolumn').style.width = 'fit-content';
 }
 
 function pantalla_reporte_horario (){
@@ -1964,6 +2245,18 @@ function pantalla_agenda_escolar (){
 }
 
 function ajusta_tamanio_agenda (){
+	var menu_secciones = getElementos( '#leftcolumn' );
+	if ( menu_secciones.length > 0 ){
+		// menu_secciones[0].style.display = 'table-cell';
+		menu_secciones[0].style.marginLeft = '0';
+	}
+
+	var contenedor_central = getElementos( '#centercolumn' );
+	if ( contenedor_central.length > 0 ){
+		// contenedor_central[0].setAttribute( 'style', 'float : right; width : 648px; margin-left : -1px;; padding-top : 30px; ');
+		contenedor_central[0].setAttribute( 'style', 'float : right; width : 648px; margin-left : calc(150px - 100%); padding-top : 30px; ');
+	}
+
 	var contenedor_agenda = getElementos( '#ctl00_mainCopy_Panel' );
 	if ( contenedor_agenda.length > 0 ){
 		contenedor_agenda[ 0 ].setAttribute( 'style', 'height:350px; overflow:auto; ' );
@@ -1977,7 +2270,7 @@ function ajusta_tamanio_agenda (){
 }
 
 function controlaEvaluacion (respuesta){
-	if (respuesta.profesores.length > 0){
+	if ((!!respuesta) && respuesta.profesores.length > 0){
 		var califica = false;
 		var listaProfesores = document.querySelector("#ctl00_mainCopy_GV_Profe");
 		if (listaProfesores){
@@ -1996,13 +2289,13 @@ function controlaEvaluacion (respuesta){
 			desactivaEvaluacionProfesores();
 			// ejecutaEvaluacionProfesor();
 		} else {
-			chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);
+			chrome.runtime.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);
 		}
 	}
 }
 function cancelaEvaluacionProfesores (){
 	clearTimeout(temporizadorEvaluacionProfesores);
-	chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);	
+	chrome.runtime.sendMessage( { command : "setEvaluacionProfesores", calificacion : "", profesores : [] }, autoEvaluacionGuardada);	
 
 	var activarEvaluacion = document.querySelector("#aplicaCalificacion");
 	activarEvaluacion.value = chrome.i18n.getMessage("apply_autoevaluation");
@@ -2094,7 +2387,7 @@ function aplicaEvaluacionProfesores (){
 			for (var i = 0; i < checkProfesores.length; i++) {
 				profesores.push(checkProfesores[i].parentNode.parentNode.cells[3].querySelectorAll("a")[1].search);
 			}
-			chrome.extension.sendMessage( { command : "setEvaluacionProfesores", calificacion : calificacion, profesores : profesores }, autoEvaluacionGuardada);
+			chrome.runtime.sendMessage( { command : "setEvaluacionProfesores", calificacion : calificacion, profesores : profesores }, autoEvaluacionGuardada);
 			desactivaEvaluacionProfesores();
 		} else {
 			alert(chrome.i18n.getMessage("text_nothing_selected_score"));
@@ -2280,7 +2573,7 @@ function seleccionMaterias (){
 	estilosSeleccionMaterias.innerHTML += "div#informacionOptativas { text-align : center; } div#detalleTraslapes table, table#tablaOptativas { margin : 0px auto; } ";
 	estilosSeleccionMaterias.innerHTML += "div#controlesHorarios, div#informacionHorarios { background-color : #000 } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip { display : inline; position : relative; } ";
-	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(aria-label); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : 220px; } ";
+	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:after { background : rgba(0,0,0,.75); border-radius : 5px; bottom : 26px; color : #FFF; content : attr(aria-label); font-size : 14px; text-aling : justify; left : 20%; padding : 5px 15px; position : absolute; z-index : 98; width : max-content; } ";
 	estilosSeleccionMaterias.innerHTML += ".tooltip:hover:before { border : solid; border-color : #000 transparent; border-width : 6px 6px 0 6px; bottom : 20px; content : ''; left : 50%; position : absolute; z-index : 99; } ";
 	estilosSeleccionMaterias.innerHTML += ".titulo_tabla { color : #FF9900; text-transform : uppercase; } "; 
 
@@ -2300,6 +2593,7 @@ function seleccionMaterias (){
 	// cuadros.title = chrome.i18n.getMessage("add_subject");
 	cuadros.setAttribute('aria-label', chrome.i18n.getMessage("add_subject"));
 	cuadros.setAttribute("class","tooltip");
+	cuadros.setAttribute("name","controlSelection");
 
 	for (var i = 1; i < tabla.rows.length; i++){
 		tabla.rows[i].insertCell(posicion);
@@ -2353,7 +2647,15 @@ function seleccionMaterias (){
 	mostrarMateriasHorario.value 	= chrome.i18n.getMessage("show_selection");
 	mostrarMateriasHorario.setAttribute("id","mostrarMateriasHorario");
 	mostrarMateriasHorario.addEventListener("click",mostrarHorario,true);
-	document.getElementById("contador").parentNode.appendChild(mostrarMateriasHorario);	
+
+	const botonAgregarTodo = document.createElement('input');
+	botonAgregarTodo.setAttribute('id', 'addAllToSelectionOptions');
+	botonAgregarTodo.type = "button";
+	botonAgregarTodo.value = chrome.i18n.getMessage("add_all_to_selection");
+	botonAgregarTodo.addEventListener("click",agregarElementosVisibles,true);
+
+	document.getElementById("contador").parentNode.appendChild(mostrarMateriasHorario);
+	document.getElementById("contador").parentNode.appendChild(botonAgregarTodo);
 
 	tabla.parentNode.appendChild(materiasSeleccionadas);
 	tabla.parentNode.appendChild(estilosSeleccionMaterias);
@@ -2363,6 +2665,19 @@ function seleccionMaterias (){
 	document.getElementById("exportar_boton").addEventListener("click",exportar,true);
 	document.getElementById("optativas").addEventListener("click",mostrarOptativas,true);
 	// setTimeout(quitaEspacioCeldas,5000);
+}
+function agregarElementosVisibles () {
+	// console.log('agregarElementosVisibles : i');
+
+	const controles = document.querySelectorAll('#regs tr:not(.oculto) td input[name=controlSelection]:not(:checked)');
+	// console.log('agregarElementosVisibles : controles : ', controles);
+	// console.log('agregarElementosVisibles : controles len : ', controles.length);
+	Array.from(controles).forEach(control => {
+		control.click(); // ver si no explota por tanto evento detonado en poco tiempo
+		// if (!control.checked) {
+		// }
+	});
+	// console.log('agregarElementosVisibles : f');
 }
 function seleccionOptativas (){
 	//Construyendo la tabla de optativas
@@ -2427,6 +2742,7 @@ function mostrarOptativas (){
 			document.getElementById("informacionOptativas").removeAttribute("class");
 			document.getElementById("asignaturasSeleccionadas").classList.add("oculto");
 			document.getElementById("controlesHorarios").classList.add("oculto");
+			document.getElementById("returnSelectionOptions").classList.add("oculto");
 			document.getElementById("informacionHorarios").classList.add("oculto");
 			document.getElementById("resultadoHorarios").classList.add("oculto");
 			break;
@@ -2909,17 +3225,31 @@ function informeTraslapes (infoTraslapes, gruposOrdenados){
 		botonDetalles.value = chrome.i18n.getMessage("details");
 		botonDetalles.addEventListener("click",mostrarDetalleTraslapes,true);
 
+		var botonRegresarSeleccion = document.createElement("input");
+		botonRegresarSeleccion.setAttribute('id', 'returnSelectionOptions');
+		botonRegresarSeleccion.type = "button";
+		botonRegresarSeleccion.value = chrome.i18n.getMessage("return_selection");
+		botonRegresarSeleccion.classList.add('oculto');
+		botonRegresarSeleccion.addEventListener("click",mostrarSeleccionMateriasDirecto,true);
+
 		//Colocando el botón en los controles, si es que hay resultados
 		var informacionHorarios = document.getElementById("informacionHorarios");
 		if (informacionHorarios.innerText != chrome.i18n.getMessage("no_results")){
 			// log("##"+informacionHorarios.innerHTML);
 			informacionHorarios = informacionHorarios.children[0].rows[0].cells[2];
 		}
+
 		informacionHorarios.appendChild(botonDetalles);
+		informacionHorarios.appendChild(botonRegresarSeleccion);
+
 		verTraslapes();
 	} else {
 		localStorage.traslapes = "";
 	}
+}
+function mostrarSeleccionMateriasDirecto () {
+	document.getElementById("seleccionHorarios").value = '0';
+	mostrarSeleccionMaterias();
 }
 function verTraslapes (){
 	var materiasTraslapes = document.getElementsByName("traslape");
@@ -3073,6 +3403,7 @@ function mostrarDetalleTraslapes (){
 			document.getElementById("detalleTraslapes").removeAttribute("class");
 			document.getElementById("asignaturasSeleccionadas").classList.add("oculto");
 			document.getElementById("controlesHorarios").classList.add("oculto");
+			document.getElementById("returnSelectionOptions").classList.remove("oculto");
 			document.getElementById("informacionHorarios").classList.add("oculto");
 			document.getElementById("resultadoHorarios").classList.add("oculto");
 			break;
@@ -3302,6 +3633,9 @@ function mostrarSeleccionMaterias (){
 	document.getElementById("asignaturasSeleccionadas").removeAttribute("class");
 	// document.getElementById("controlesHorarios").style.display = "";
 	document.getElementById("controlesHorarios").removeAttribute("class");
+	const returnSelectionOptions = document.getElementById("returnSelectionOptions");
+	if (returnSelectionOptions) returnSelectionOptions.classList.add("oculto");
+	// document.getElementById("returnSelectionOptions")
 	// document.getElementById("resultadoHorarios").style.display = "none";
 	document.getElementById("resultadoHorarios").classList.add("oculto");
 }
@@ -3321,6 +3655,7 @@ function mostrarHorarioGenerado(numero){
 		document.getElementById("asignaturasSeleccionadas").classList.add("oculto");
 		// document.getElementById("controlesHorarios").style.display = "none";
 		document.getElementById("controlesHorarios").classList.add("oculto");
+		document.getElementById("returnSelectionOptions").classList.remove("oculto");
 		// document.getElementById("exportar").style.display = "none";
 		document.getElementById("exportar").classList.add("oculto");
 	}
@@ -3556,7 +3891,7 @@ function agregarMateria (){
 		materiaH.cells[1].innerHTML = asignaturaH.materia;
 
 		var quitarMateria = document.createElement("img");
-		quitarMateria.src = chrome.extension.getURL("/css/menos.png");
+		quitarMateria.src = chrome.runtime.getURL("/css/menos.png");
 		quitarMateria.style.cursor = "pointer";
 		quitarMateria.title = chrome.i18n.getMessage("delete_subject");
 		quitarMateria.addEventListener("click",removerMateria,true);
@@ -3805,6 +4140,8 @@ function actualizaMaterias (){
 function cargarMateriasHorario (){
 	if (localStorage.horarioMaterias != null && localStorage.horarioMaterias != "" && localStorage.horarioMaterias != "null" ){
 
+		// console.log('cargarMateriasHorario : localStorage.horarioMaterias : ', localStorage.horarioMaterias);
+
 		materiasHorario = JSON.parse(localStorage.horarioMaterias);
 		var tabla = document.getElementById("regs");
 		var asignaturasTabla = document.getElementById("tablaAsignaturas");
@@ -3815,7 +4152,7 @@ function cargarMateriasHorario (){
 		var posicionCheck  = sabadoActivo ? 11 : 10;
 
 		var quitarMaterias   = document.createElement("img");
-		quitarMaterias.src   = chrome.extension.getURL("/css/menos.png");
+		quitarMaterias.src   = chrome.runtime.getURL("/css/menos.png");
 		quitarMaterias.title = chrome.i18n.getMessage("delete_subject");
 		quitarMaterias.style.cursor = "pointer";
 		// quitarMaterias.setAttribute("class","tooltip");
@@ -3908,17 +4245,21 @@ function marcaOcupados (){
 var sabadoActivo = false;
 function retiraSabados (){
 	var tabla = document.getElementById("regs");
-	var eliminar = true;
-	for (var i = 1; i < tabla.rows.length; i++){
-		if (tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != " " && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
-	}
-	if (eliminar){
-		totalColumnas--;
-		for (var i = 0; i < tabla.rows.length; i++){
-			tabla.rows[i].deleteCell(10);
+	if (!!tabla) {
+		var eliminar = true;
+		for (var i = 1; i < tabla.rows.length; i++){
+			if ((!!tabla.rows[i]) && (!!tabla.rows[i].cells[10]) && tabla.rows[i].cells[10].innerHTML != "" && tabla.rows[i].cells[10].innerHTML != " " && tabla.rows[i].cells[10].innerHTML != "&nbsp;") eliminar = false;
 		}
-	} else {
-		sabadoActivo = true;
+		if (eliminar){
+			totalColumnas--;
+			for (var i = 0; i < tabla.rows.length; i++){
+				if ((!!tabla.rows[i]) && (tabla.rows[i].cells.length > 10)) {
+					tabla.rows[i].deleteCell(10);
+				}
+			}
+		} else {
+			sabadoActivo = true;
+		}
 	}
 }
 function horarioDirecto (){
@@ -3954,7 +4295,7 @@ function tablaAtajos (){
 	seccionAtajos.setAttribute("style","display:none; position: fixed; background-color: maroon; color: white; top: 10%; left: 50%; opacity: 0.85; z-index: 1; font-size: 17px; width:290px; margin: 0px 0px 0px -145px; -moz-box-shadow: 0 0 5px 5px #888; -webkit-box-shadow: 0 0 20px 5px#000; box-shadow: 0 0 20px 5px #000;");
 	// document.getElementById("mensajeAtajos").parentNode.insertBefore(seccionAtajos,document.getElementById("mensajeAtajos"));
 	document.body.appendChild(seccionAtajos);
-	chrome.extension.sendMessage( { command : "getAtajos" }, (respuesta) => {
+	chrome.runtime.sendMessage( { command : "getAtajos" }, (respuesta) => {
 		var seccionAtajos 		= document.getElementById("seccionAtajos");
 		seccionAtajos.innerHTML = "<table style='width:100%; border-collapse: collapse;'></table>";
 		var contenidoAtajos 	= "<tr style='background-color:#000;'><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("shortcut")+"</td><td style='padding:0px 10px 0px 10px;'>"+chrome.i18n.getMessage("section")+"</td></tr>";
@@ -3975,9 +4316,9 @@ function tablaAtajos (){
 }
 function agregaIdentificacion (){
 	if (location.pathname != "/Default.aspx" && location.pathname != "/default.aspx"){
-		chrome.extension.sendMessage( { command : "getDatos"}, identificar);
+		chrome.runtime.sendMessage( { command : "getDatos"}, identificar);
 	} else {
-		chrome.extension.sendMessage( { command : "getDatos"}, reaccion);
+		chrome.runtime.sendMessage( { command : "getDatos"}, reaccion);
 	}
 }
 function inicio(){

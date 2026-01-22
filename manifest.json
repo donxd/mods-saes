@@ -1,23 +1,29 @@
 {
 	"name" : "MODS SAES",
-	"version" : "0.71.1",
-	"manifest_version" : 2,
+	"version" : "0.71.2",
+	"manifest_version" : 3,
 	"description" : "__MSG_description__",
-	"minimum_chrome_version" : "18",
+	"minimum_chrome_version" : "88",
 	"default_locale" : "es",
 	"icons": {
 		"16" : "/css/fu_16.png",
 		"48" : "/css/fu_48.png",
 		"128": "/css/fu_128.png"
 	},
-	"permissions" : ["*://*.ipn.mx/*"],
+	"permissions" : [
+		"storage"
+	],
 	"homepage_url" : "https://www.facebook.com/SaesIpnMods",
 	"options_page" :"opciones.html",
 	"background" : {
-		"scripts" : ["segundoPlano.js"],
-		"persistent" : false
+		"service_worker" : "segundoPlanoSw.js"
 	},
-	"web_accessible_resources" : ["css/menos.png", "css/1.jpg", "css/2.jpg", "css/conf.png", "css/p32.png", "css/f32.png"],
+	"web_accessible_resources" : [
+		{
+			"resources": ["css/menos.png", "css/1.jpg", "css/2.jpg", "css/conf.png", "css/p32.png", "css/f32.png"],
+			"matches": ["*://*.ipn.mx/*"]
+		}
+	],
 	"content_scripts" : [
 		{
 			"matches" : ["*://*.ipn.mx/PDF/Alumnos/Reinscripciones/*"],
