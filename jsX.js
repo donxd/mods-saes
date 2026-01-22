@@ -347,6 +347,16 @@ function agrega_elementos_extension (){
 						scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:105px; height:20px;" allowTransparency="true"></iframe> \
 					</div> \
 					<div style="display: table-cell; padding-right: 6px; vertical-align: middle;"> \
+						<a href="'+ chrome.i18n.getMessage("url_tw") +'" title="'+ chrome.i18n.getMessage("message_tw") +'" target="_blank">\
+							<img src="'+ chrome.runtime.getURL('/css/tw32.png') +'" class="pulse" style="cursor: pointer;">\
+						</a>\
+					</div> \
+					<div style="display: table-cell; padding-right: 6px; vertical-align: middle;"> \
+						<a href="'+ chrome.i18n.getMessage("url_yt") +'" title="'+ chrome.i18n.getMessage("message_yt") +'" target="_blank">\
+							<img src="'+ chrome.runtime.getURL('/css/y32.png') +'" class="pulse" style="cursor: pointer;">\
+						</a>\
+					</div> \
+					<div style="display: table-cell; padding-right: 6px; vertical-align: middle;"> \
 						<a href="'+ chrome.i18n.getMessage("url_facebook") +'" title="'+ chrome.i18n.getMessage("name_proy") +'" target="_blank">\
 							<img src="'+ chrome.runtime.getURL('/css/f32.png') +'" style="cursor: pointer;">\
 						</a>\

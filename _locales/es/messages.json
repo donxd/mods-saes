@@ -27,6 +27,14 @@
 		"description" : "Página del proyecto en patreon",
 		"message" : "https://www.patreon.com/donxd"
 	},
+	"url_tw" : {
+		"description" : "Página de apoyo en tw",
+		"message" : "https://www.twitch.tv/eld0nxd"
+	},
+	"url_yt" : {
+		"description" : "Página de apoyo en yt",
+		"message" : "https://www.youtube.com/@donxdi/streams"
+	},
 	"email" : {
 		"description" : "Correo soporte",
 		"message" : "n0s3.xd@gmail.com"
@@ -114,6 +122,14 @@
 	"error_login" : {
 		"description" : "Datos incorrectos",
 		"message" : "El intento de conexión no fue correcto. Inténtelo de nuevo."
+	},
+	"message_tw" : {
+		"description" : "Mensaje para tw",
+		"message" : "Hay directos en Twitch, da tu opinión y comentarios. "
+	},
+	"message_yt" : {
+		"description" : "Mensaje para yt",
+		"message" : "Dudas y sugerencias en directo en Youtube."
 	},
 	"message_patreon" : {
 		"description" : "Mensaje para patreon",

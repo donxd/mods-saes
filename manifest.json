@@ -20,7 +20,7 @@
 	},
 	"web_accessible_resources" : [
 		{
-			"resources": ["css/menos.png", "css/1.jpg", "css/2.jpg", "css/conf.png", "css/p32.png", "css/f32.png"],
+			"resources": ["css/menos.png", "css/1.jpg", "css/2.jpg", "css/conf.png", "css/p32.png", "css/tw32.png", "css/y32.png", "css/f32.png"],
 			"matches": ["*://*.ipn.mx/*"]
 		}
 	],
