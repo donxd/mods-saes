@@ -1,6 +1,6 @@
 {
 	"name" : "MODS SAES",
-	"version" : "0.71.2",
+	"version" : "0.73",
 	"manifest_version" : 3,
 	"description" : "__MSG_description__",
 	"minimum_chrome_version" : "88",
@@ -11,7 +11,6 @@
 		"128": "/css/fu_128.png"
 	},
 	"permissions" : [
-		"storage"
 	],
 	"homepage_url" : "https://www.facebook.com/SaesIpnMods",
 	"options_page" :"opciones.html",
