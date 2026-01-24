@@ -299,10 +299,6 @@
 		"description" : "Mensaje para añadir todo lo visible a la selección de materias",
 		"message" : "Agregar a la selección"
 	},
-	// "synchronize_selection" : {
-	// 	"description" : "Mensaje para sincronizar selección con ocupabilidad",
-	// 	"message" : "Sincronizar"
-	// },
 	"return" : {
 		"description" : "Regresar",
 		"message" : "Regresar"
