@@ -2844,27 +2844,53 @@ function removerOptativaTabla (posicion){
 	tablaOptativas.deleteRow(posicion);
 }
 function exportar (){
-	var port = chrome.extension.connect({ name: "msg" });
-	port.postMessage({ method : 'limpiar' });
-	port.postMessage({ method : 'exportar', datos : localStorage.horarioMaterias });
-	port.onMessage.addListener(function (data) {
-		if (data.method == 'hecho') {
-			var fecha = new Date();
-			var nombreArchivo = fecha.getFullYear()+"-"+(fecha.getMonth() < 9 ? "0"+(fecha.getMonth()+1) : fecha.getMonth())+"-"+fecha.getDate()+"["+document.getElementById("totalSeleccion").innerHTML+"]"+".txt";
-			// log("nombre "+data.archivo+"\nurl"+data.url);
-			var link = document.createElement('a');
-			link.setAttribute('href', data.url);
-			link.setAttribute('download', nombreArchivo);
-			link.setAttribute('id', "respaldo");
-			document.body.appendChild(link);
+	const data = localStorage.horarioMaterias;
+	const blob = new Blob([data], { type: 'text/plain' });
+	const fileURL = URL.createObjectURL(blob);
 
-			var clickEvent = document.createEvent("MouseEvent");
-			clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-			link.dispatchEvent(clickEvent);
-			// setTimeout(function () { document.removeChild(link); }, 10);
-			setTimeout(eliminaEnlace, 10);
-		}
-	});	
+	const fecha = new Date();
+	const nombreArchivo = fecha.getFullYear()+"-"+(fecha.getMonth() < 9 ? "0"+(fecha.getMonth()+1) : fecha.getMonth())+"-"+fecha.getDate()+"["+document.getElementById("totalSeleccion").innerHTML+"]"+".txt";
+	// log("nombre "+data.archivo+"\nurl"+data.url);
+	const link = document.createElement('a');
+	// link.setAttribute('href', data.url);
+	link.setAttribute('href', fileURL);
+	link.setAttribute('download', nombreArchivo);
+	link.setAttribute('id', "respaldo");
+	document.body.appendChild(link);
+	
+
+
+	link.click();
+	// const clickEvent = document.createEvent("MouseEvent");
+	// clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	// link.dispatchEvent(clickEvent);
+	// setTimeout(function () { document.removeChild(link); }, 10);
+	setTimeout(() => {
+		eliminaEnlace();
+		URL.revokeObjectURL(fileURL);
+	}, 10);
+
+	// var port = chrome.runtime.connect({ name: "msg" });
+	// port.postMessage({ method : 'limpiar' });
+	// port.postMessage({ method : 'exportar', datos : localStorage.horarioMaterias });
+	// port.onMessage.addListener(function (data) {
+	// 	if (data.method == 'hecho') {
+	// 		var fecha = new Date();
+	// 		var nombreArchivo = fecha.getFullYear()+"-"+(fecha.getMonth() < 9 ? "0"+(fecha.getMonth()+1) : fecha.getMonth())+"-"+fecha.getDate()+"["+document.getElementById("totalSeleccion").innerHTML+"]"+".txt";
+	// 		// log("nombre "+data.archivo+"\nurl"+data.url);
+	// 		var link = document.createElement('a');
+	// 		link.setAttribute('href', data.url);
+	// 		link.setAttribute('download', nombreArchivo);
+	// 		link.setAttribute('id', "respaldo");
+	// 		document.body.appendChild(link);
+
+	// 		var clickEvent = document.createEvent("MouseEvent");
+	// 		clickEvent.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	// 		link.dispatchEvent(clickEvent);
+	// 		// setTimeout(function () { document.removeChild(link); }, 10);
+	// 		setTimeout(eliminaEnlace, 10);
+	// 	}
+	// });	
 }
 function eliminaEnlace (){
 	var enlace = document.getElementById("respaldo");
