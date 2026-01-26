@@ -1,6 +1,6 @@
 {
 	"name" : "MODS SAES",
-	"version" : "0.73",
+	"version" : "0.74",
 	"manifest_version" : 3,
 	"description" : "__MSG_description__",
 	"minimum_chrome_version" : "88",
@@ -9,6 +9,9 @@
 		"16" : "/css/fu_16.png",
 		"48" : "/css/fu_48.png",
 		"128": "/css/fu_128.png"
+	},
+	"action": {
+		"default_popup": "selectionSchool.html"
 	},
 	"permissions" : [
 	],

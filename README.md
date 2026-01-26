@@ -9,6 +9,7 @@
   * Boton para regresar a la selección de materias desde un horario generado
   * Agregar boton de añardir todo lo visible en pantalla de horarios
   * Función para ocultar información
+  * Agregar lista de planteles directo del icono de la extensión
 
 **Versión 0.71**
   * Corrección de información de contacto

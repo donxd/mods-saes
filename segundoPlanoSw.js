@@ -1,6 +1,6 @@
 console.log('hi sw');
 
-const version = 0.73;
+const version = 0.74;
 
 const log = (mensaje) => {
 	console.log (mensaje);
