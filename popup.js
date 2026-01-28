@@ -1,6 +1,79 @@
 window.onload = () => {
+	generateDataTable();
+	addEventSearch();
+	getDataPopup();
+}
+
+function getDataPopup (){
+	console.log('recovery data popup 1');
+	const dataPopup = localStorage.getItem('searchPopup');
+	// chrome.runtime.sendMessage( { command : "getDataPopup" }, (respuesta) => {
+	// 	console.log('info sw : ', respuesta);
+	// 	console.log('recovery data popup 3');
+	// });
+	// console.log('recovery data popup 2');
+	if (dataPopup.length) {
+		const controlSearch = document.querySelector("[name=search]");
+		controlSearch.value = dataPopup;
+		filterRows(dataPopup);
+	} else {
+		showAllRows();
+	}
+	console.log('recovery data popup 2 : dataPopup : ', dataPopup);
+}
+
+function generateDataTable () {
 	const dataTable = document.querySelector('#regs');
 	dataTable.innerHTML = getDataSchools();
+}
+
+function addEventSearch () {
+	const controlSearch = document.querySelector("[name=search]");
+	controlSearch.addEventListener('change', () => searchOption(controlSearch), true);
+}
+
+function searchOption (controlSearch) {
+	const valueSearch = controlSearch.value;
+
+	if (valueSearch.length ){
+		filterRows(valueSearch);
+	} else {
+		showAllRows();
+	}
+	saveSearchPopup(valueSearch);
+}
+
+function saveSearchPopup (valueSearch) {
+	console.log('saveSearchPopup init 1 ');
+	// chrome.runtime.sendMessage( { command : "saveDataPopup", data: valueSearch }, (respuesta) => {
+	// 	console.log('response save data 3 : ', respuesta);
+	// });
+	// if (valueSearch.length) {
+		localStorage.setItem('searchPopup', valueSearch);
+	// }
+	console.log('saveSearchPopup end 2');
+}
+
+function filterRows (valueSearch) {
+	// console.log('valueSearch : ', (valueSearch));
+	Array.from(document.querySelectorAll('#regs tr:not(.hidden)'))
+	.forEach(row => {
+		// console.log('row text : ', (row.children[0].innerText));
+		const rowValue = row.children[0].innerText.toLowerCase();
+		valueSearch = valueSearch.toLowerCase();
+
+		// if (!row.children[0].innerText.includes(valueSearch)) {
+		if (!rowValue.includes(valueSearch)) {
+			row.classList.add('hidden');
+		} else {
+			row.classList.remove('hidden');
+		}
+	});
+}
+
+function showAllRows () {
+	Array.from(document.querySelectorAll('#regs tr.hidden'))
+	.forEach(row => row.classList.remove('hidden'));
 }
 
 function getDataSchools () {
@@ -69,7 +142,13 @@ function getDataSchools () {
 		},
 	];
 	let data = info.map(level => {
-		let dataLevel = `<h2>Nivel ${level.level}</h2><br/><table>${getDataLevel(level)}<table>`;
+		let dataLevel = `
+		<details open>
+			<summary>
+				<span class="level">Nivel ${level.level}</span>
+			</summary>
+			<table>${getDataLevel(level)}</table>
+		</details>`;
 
 		return dataLevel;
 	}).join('');

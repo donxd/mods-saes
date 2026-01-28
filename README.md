@@ -10,6 +10,7 @@
   * Agregar boton de añardir todo lo visible en pantalla de horarios
   * Función para ocultar información
   * Agregar lista de planteles directo del icono de la extensión
+  * Buscador en la lista de planteles con persistencia
 
 **Versión 0.71**
   * Corrección de información de contacto

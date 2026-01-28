@@ -1,6 +1,6 @@
 console.log('hi sw');
 
-const version = 0.74;
+const version = 0.75;
 
 const log = (mensaje) => {
 	console.log (mensaje);
@@ -25,6 +25,23 @@ chrome.runtime.onMessage.addListener((request, sender, callback) => {
 				version : version
 			});
 			break;
+		// case "getDataPopup":
+		// 	chrome.storage.local.get(['searchPopup']).then(dataPopup => {
+		// 		callback({
+		// 			action : 'done',
+		// 			data: dataPopup,
+		// 		});
+		// 	});
+		// 	// callback({data: 'test'});
+		// 	break;
+		// case "saveDataPopup":
+		// 	const dataPopup = request.data;
+		// 	chrome.storage.local.set({'searchPopup': dataPopup}).then(() => {
+		// 		callback({
+		// 			action : 'done'
+		// 		});
+		// 	});
+		// 	break;
 		case "getDatos":
 			var autoIdentificar = true;
 			if (localStorage.autoIdentificar == undefined){
