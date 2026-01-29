@@ -698,6 +698,7 @@ function agregaBuscador (opc){
 			tipo = "ctl00_mainCopy_GrvOcupabilidad";
 			insertar_boton_filtrar_seleccion( controlesBuscador );
 			insertar_boton_actualizar_ocupabilidad( controlesBuscador );
+			insertarCampoTiempo(controlesBuscador);
 			// insertarBotonSincronizarSeleccion( controlesBuscador );
 			// prepararSincronizarSeleccion();
 			break;
@@ -820,8 +821,77 @@ function insertar_boton_actualizar_ocupabilidad ( controlesBuscador ){
 	controlesBuscador.appendChild(boton);
 }
 
+function insertarCampoTiempo (controlesBuscador) {
+	let containerTime = document.querySelector('#containerTime');
+	let timeZ = Temporal.Now.zonedDateTimeISO()
+	let timeText = `${timeZ.toPlainDate().toString()} ${timeZ.toPlainTime().toString()}`;
+
+	if (!!!containerTime) {
+		containerTime = document.createElement('span');
+		containerTime.setAttribute('id','containerTime');
+		controlesBuscador.appendChild(containerTime);
+	}
+	containerTime.innerText = timeText;
+}
+
 function actualizaOcupabilidad2 (){
-	location.reload();
+	// location.reload();
+	console.log('actualizaOcupabilidad2');
+
+	let data = new URLSearchParams();
+	let selectorControls = 'input[type=hidden], [name="ctl00$mainCopy$rblEsquema"], [name="ctl00$mainCopy$rblEsquema"]:checked, [name="ctl00$mainCopy$txtCarrera"], [name="ctl00$mainCopy$dpdcarrera"], [name="ctl00$mainCopy$txtplan"], [name="ctl00$mainCopy$dpdplan"]';
+
+	Array.from(document.querySelectorAll(selectorControls))
+	.forEach(control => {
+		data.append(control.name, control.value);
+	});
+
+	fetch(window.location.href, {
+		method: 'POST',
+		body: data,
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+	}).then(res => res.text())
+	.then(resText => {
+		// console.log('@@ : ', resText);
+		processReloadData(resText);
+	}).catch(err => {
+		console.log('error : ', err);
+	});
+}
+
+function processReloadData (resText) {
+	const parser = new DOMParser();
+	const doc = parser.parseFromString(resText, "text/xml");
+	const dataTable = doc.querySelector('#ctl00_mainCopy_GrvOcupabilidad');
+	// // console.log('processReloadData : ', doc);
+	// console.log('processReloadData : ', dataTable);
+
+	// const infoTable = Array.from(dataTable.querySelectorAll('tr:nth-child(n+2)'))
+	// .map(row => {
+	// 	const dataRow = {
+	// 		grupo: row.cells[0].innerText, 
+	// 		codigoMateria: row.cells[1].innerText, 
+	// 		nombreMateria: row.cells[2].innerText, 
+	// 		semestre: row.cells[3].innerText, 
+	// 		cupo: row.cells[4].innerText, 
+	// 		inscritos: row.cells[5].innerText, 
+	// 		disponibles: row.cells[6].innerText, 
+	// 	};
+
+	// 	return dataRow;
+	// });
+
+	// console.log('processReloadData : new data : ', infoTable);
+
+	// console.log('processReloadData : current table : ', document.querySelector('#regs'));
+	// console.log('processReloadData : new table : ', dataTable);
+
+	document.querySelector('#regs').innerHTML = dataTable.innerHTML;
+	insertarCampoTiempo();
+	marcaOcupados();
+	inicializar();
 }
 
 function filtraSeleccion (){
@@ -1349,7 +1419,7 @@ function ajatosHabilitados (){
 }
 
 function ejecutaAtajo ( codigoTecla ){
-	var posicion = posicionAtajo( codigoTecla );	
+	var posicion = posicionAtajo( codigoTecla );
 	if ( posicion < ultimoAtajo ){
 		identificaAtajo( posicion );
 	}
@@ -1357,6 +1427,7 @@ function ejecutaAtajo ( codigoTecla ){
 }
 
 function identificaAtajo ( posicion ){
+	// console.log('identificaAtajo : tecla : ', posicion);
 	switch ( accesosAtajos[ posicion ] ){
 		case 'login':
 			atajoIdentificacion();

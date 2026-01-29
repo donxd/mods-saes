@@ -1,6 +1,15 @@
 # Releases
 
-**Versión 0.72**
+**Versión 0.76**
+  * Recarga ocupabilidad mediante botón 
+
+**Versión 0.75**
+  * Buscador en la lista de planteles con persistencia
+
+**Versión 0.74**
+  * Agregar lista de planteles directo del icono de la extensión
+
+**Versión 0.73**
   * Actualización chrome manifest v3
   * Agregar service worker para resolución de mensajes
   * Corregir comunicación plantel externo busqueda profesores
@@ -9,8 +18,9 @@
   * Boton para regresar a la selección de materias desde un horario generado
   * Agregar boton de añardir todo lo visible en pantalla de horarios
   * Función para ocultar información
-  * Agregar lista de planteles directo del icono de la extensión
-  * Buscador en la lista de planteles con persistencia
+
+**Versión 0.72**
+  * ???
 
 **Versión 0.71**
   * Corrección de información de contacto
@@ -78,7 +88,6 @@
 ***
 
   * Contador para reinscripción
-  * Recarga ocupabilidad - Congelado
   * Calificación de los Tutores - Congelado
   * Correción para autoidentificación
   * Correciones para los días sábado

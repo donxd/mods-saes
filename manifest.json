@@ -1,6 +1,6 @@
 {
 	"name" : "MODS SAES",
-	"version" : "0.75",
+	"version" : "0.76",
 	"manifest_version" : 3,
 	"description" : "__MSG_description__",
 	"minimum_chrome_version" : "88",
